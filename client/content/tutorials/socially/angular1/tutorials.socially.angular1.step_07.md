@@ -1,11 +1,11 @@
 {{#template name="tutorials.socially.angular1.step_07.md"}}
 {{> downloadPreviousStep stepName="step_06"}}
 
-OK, so we have a working app, but, like a tutorial, it's not well organized.
+Отлично, теперь у нас есть работающее приложение, но пока оно не хорошо организовано.
 
-It is really important to organize your app in a standard way, and in Meteor, the structure itself has meaning and implications.
+Очень правильно с самого начала организовать ваше приложение стандартным образом и в Meteor, структура имеет значение и использование.
 
-In this step, we are going to combine Meteor's and Angular 1's standard ways of structuring an app into one unified standard structure.
+На этом шаге, мы скомбинируем стандартные способы In this step, we are going to combine Meteor's and Angular 1's standard ways of structuring an app into one unified standard structure.
 
 
 # Meteor folder structure

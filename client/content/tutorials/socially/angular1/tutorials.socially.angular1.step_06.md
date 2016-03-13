@@ -1,60 +1,60 @@
 {{#template name="tutorials.socially.angular1.step_06.md"}}
 {{> downloadPreviousStep stepName="step_05"}}
 
-In this step, we will implement the party details view, which is displayed when a user clicks on a party in the parties list.
-The user will also be able to change the party's details.
+На этом этапе мы создадим детальный вид для отдельной вечеринки, который будет выводиться при нажатии пользователем на вечеринку в списке. 
+Также пользователь сможет менять детали вечеринки.
 
-To implement the party details view we will use `helpers`.
+Для создания вывода деталей вечеринки мы будем использовать `хелперы`.
 
-We used `helpers` in the previous Component we implemented, but now we will demonstrate how to use it with a single object instead of a Mongo.Collection cursor.
+Мы использовали `хелперы` в предыдущем Компоненте, но теперь мы продемонтсрируем как использовать его с одним объектом вместо Mongo.Collection cursor.
 
-# Implement the component
+# Создание компонента
 
-We'll expand the `partyDetails` by using `helpers` method, and we will use [findOne](http://docs.meteor.com/#/full/findone) method from the Mongo.Collection, which returns a single object.
+Мы расширим `partyDetails` используя метод `хелпер` и мы будем использовать [findOne](http://docs.meteor.com/#/full/findone) метод из Mongo.Collection, который возвращает один объект.
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="6.1"}}
 
-In our example we find our relevant party by it's id, and used a regular MongoDB syntax to create our `findOne` query, which explained in Meteor's [collection.findOne](http://docs.meteor.com/#/full/findone) documentation.
+В нашем примере мы найдём нашу соответсвтующую вечеринку по её id и будем использоввать обычный MongoDB синтаксис для создания нашего `findOne` запроса, о котором можно почитать в документации Meteor [collection.findOne](http://docs.meteor.com/#/full/findone).
 
-So after declaring this helper, we can just use `this.party` in our Component's Controller, or `partyDetails.party` in our HTML view.
+После декларирования этого хелпера нам нужно просто использовать `this.party` в нашем контроллере компонента или `partyDetails.party` в нашем HTML отображении.
 
-# Component template
+# Шаблон компонента
 
-In `party-details.html` let's replace the binding to the `partyDetails.partyId` with a binding to `partyDetails.party.name` and `partyDetails.party.description`:
+В `party-details.html` давайте заменим связывание с `partyDetails.partyId` на связывание с `partyDetails.party.name` и `partyDetails.party.description`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="6.2"}}
 
-We used `ng-model` and created a form with the party details, now we just missing the "Save" button!
+Мы использовали `ng-model` и создали форму всередине деталей вечеринки, теперь нам нехватает только кнопки "Сохранить"!
 
-# Add Save logic
+# Добавляем логику сохранения
 
-First, let's add a button, and we will use `ng-click` with the name of the method that we will later implement:
+Во-первых, добавим кнопку и будем использовать `ng-click` с названием метода, который мы будем разворачивать:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="6.3"}}
 
-> We also added a "Back" button with uses `ui-sref` attribute, which is a shorthand for creating a link for a state.
+> Мы также добавили кнопку "Back" с использованием аттрибута `ui-sref` - это короткая запись для создания ссылки на состояние.
 
-And now let's implement the logic of the "Save" button on the controller:
+Давайте создадим логику кнопки "Save" в контроллере:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="6.4"}}
 
-We used [Parties.update](http://docs.meteor.com/#/full/update) method which is a method that comes from the Mongo.Collection object. 
+Мы использовали метод [Parties.update](http://docs.meteor.com/#/full/update) - это метод, который нам предоставлен объектом Mongo.Collection. 
 
-The first parameter is the parties we want to update, in this case, we send the specific party's id, just like we did with `findOne`.
+Первый параметр - это вечеринки, которые нужно обновить, в этом случае, мы отправляем определённую id вечеринки, совсем как мы делали с `findOne`.
 
-In the second parameter we specify the action we want to perform, in our case we used the `$set` operator to update the actual relevant fields.
+Во втором параметре мы определяем действие, которое нужно совершить, в нашем случае мы использовали оператор `$set` для обновления текущих относительных полей.
 
-We can also handle success or fail when using `Parties.update` by adding a callback as the third argument, for example:
+Также мы обработаем успех или провал, когда будем использовать `Parties.update` через добавление колбека как третьего аргумента, например:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="6.5"}}
 
 
-# Summary
+# Итоги
 
-We've seen the power of using Meteor.Collection API and how we can get single object from the collections.
+Мы увидели силу использования Meteor.Collection API и как мы можем получать один объект из коллекции.
 
-We also learned how to update an object with the user's data!
+Также мы научились обновлять объект используя данные пользователя!
 
-Let's move on to provide some order and structure in our application.
+Давайте продолжим упорядочивая и структурируя наше приложение.
 
 {{/template}}

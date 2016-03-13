@@ -1,65 +1,89 @@
 {{#template name="tutorials.socially.angular1.step_04.md"}}
 {{> downloadPreviousStep stepName="step_03"}}
 
-Now that we have full data binding from server to client, let's interact with the data and see the updates in action.
+Теперь у нас есть полное связывание данных от сервера к клиенту, давайте настроим взаимодействие с данными и увидим как осуществляются обновления.
 
-In this chapter you will add the ability to insert a new party and delete an existing one from the UI.
+В этой главе вы добавите возможность вставлять новую вечеринку и удалять существующую через UI.
 
-First, let's create a simple form with a button that will add a new party, we will add it above the list, inside the `partiesList` Component view:
+Во-первых создадим простую форму с кнопкой, которая будет добавлять новую вечеринку, мы добавим её сверху списка, всередине контейнера контроллера "PartiesListCtrl".
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="4.1"}}
+{{> DiffBox tutorialName="angular-meteor" step="4.1"}}
 
-Now we need to make this form functional.
+Теперь добавим функционала к этой форме.
 
 ## ng-model
 
-First things first, let's bind the value of the inputs into a new party variable.
+Свяжем значения инпутов в новую переменную вечеринки.
 
-To do that we'll use the simple and powerful [ng-model](https://docs.angularjs.org/api/ng/directive/ngModel) Angular 1 directive.
+Чтобы сделать это воспользуемся простой и мощной директивой [ng-model](https://docs.angularjs.org/api/ng/directive/ngModel) Angular 1.
 
-Add `ng-model` to the form like this:
+Добавим `ng-model` к форме так:
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="4.2"}}
+{{> DiffBox tutorialName="angular-meteor" step="4.2"}}
 
-Now each time the user types inside these inputs, the value of the newParty component variable will be automatically updated.  Conversely, if `partiesList.newParty` is changed outside of the HTML, the input values will be updated accordingly.
+Теперь каждый раз когда пользователь вводит эти инпуты, значение newParty переменной будет автоматически обновлятс. И напротив, если `$scope.newParty` меняется вне HTML, значения инпутов будут обновляться соответственно.
 
 ## ng-click
 
-Now let's bind a click event to the add button with Angular 1's [ng-click](https://docs.angularjs.org/api/ng/directive/ngClick) directive.
+Свяжем событие нажатия кнопки добавить с директивой Angular 1 [ng-click](https://docs.angularjs.org/api/ng/directive/ngClick).
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="4.3"}}
+{{> DiffBox tutorialName="angular-meteor" step="4.3"}}
 
-`ng-click` binds the click event to an expression - we just call a method that we will implement soon on the `partiesList`!
+`ng-click` связывает событие нажатия с выражением.
+Таким образом мы берём массив области видимости вечериной(когда обращаемся к переменным области видимости в HTML, нет нужды добавлять $scope. перед ними) и делать push переменной newParty в неё.
 
-Now let's implement the logic on the controller of the Component:
-
-{{> DiffBox tutorialName="meteor-angular1-socially" step="4.4"}}
-
-> Parties is a Mongo.Collection object, and the [insert method](http://docs.meteor.com/#/full/insert) inserts a new object to the collection and assign an id for the new object.
-
-> Meteor support Javascript ES2015 as default so we can take advantage of that and define our `addParty` function as an [Arrow Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
-
-Open a different browser, click the button and see how the party is added on both clients. So simple!
-
-Now, let's add the ability to delete parties.
-
-Let's add an X button to each party:
-
-{{> DiffBox tutorialName="meteor-angular1-socially" step="4.5"}}
-
-This time we are binding `ng-click` to a controller function that gets the current party as a parameter.
-
-Let's go into the controller and add that function.
-
-Add the function inside the `partiesList` component in `app.js`:
-
-{{> DiffBox tutorialName="meteor-angular1-socially" step="4.6"}}
+Откроем другой браузер, нажмём кнопку и увидим как добавиться вечеринка на обеих клиентах. Так просто!
 
 
-Now try to delete a few parties and also watch them being removed from other browser clients.
+Добавим возможность удаления вечеринок.
 
-# Summary
+Добавим к каждой вечеринке кнопку Х:
 
-So now you've seen how easy it is to manipulate the data using Angular 1's powerful directives and sync that data with Meteor's powerful Mongo.Collection API.
+{{> DiffBox tutorialName="angular-meteor" step="4.4"}}
+
+Сейчас мы связываем ng-click к функции области видимости, которая получает текущую вечеринку как параметр.
+
+Зайдём в контроллер и добавим эту функцию.
+
+Добавим функцию всередине PartiesListCtrl в `app.js`:
+
+{{> DiffBox tutorialName="angular-meteor" step="4.5"}}
+
+Попытаемся удалить несколько вечеринок и посмотрим как они удаляться из клиентов других браузеров.
+
+# AngularMeteorCollection функции
+
+$meteor.collection возвращает значение в новой коллекции типом [AngularMeteorCollection](/api/AngularMeteorCollection).
+
+Она не только отвечает за обновление коллекции, но и также содержит функции хелперов для сохранения и удаления объектов.
+
+Попробуем использовать эти хелпер-функции вместо текущей имплементации.
+
+Заменим наш `push` на `save` в действии кнопки добавить:
+
+{{> DiffBox tutorialName="angular-meteor" step="4.6"}}
+
+Не многое изменилось, кроме маленького улучшения произодительности, но давайте теперь сменим нашу функцию удаления:
+
+{{> DiffBox tutorialName="angular-meteor" step="4.7"}}
+
+Намного лучше и значительно улучшилась производительность!
+
+Добавить кнопку для удаления всех вечеринок:
+
+{{> DiffBox tutorialName="angular-meteor" step="4.8"}}
+
+не забываем добавить эту новую функцию к области видимости:
+
+{{> DiffBox tutorialName="angular-meteor" step="4.9"}}
+
+Снова, очень простой синтакс.
+
+Можете прочитать больше про AngularMeteorCollection и её функции хелперы в [API reference](/api/AngularMeteorCollection).
+
+
+# Итоги
+
+Теперь вы видите как просто можно управлять данными используя мощные директивы Angular 1 и синхронизировать все данные с помощью Meteor Mongo.collection API.
 
 {{/template}}

@@ -1,106 +1,126 @@
 {{#template name="tutorials.socially.angular1.step_05.md"}}
 {{> downloadPreviousStep stepName="step_04"}}
 
-In this step, you will learn how to create a layout template and how to build an app that has multiple views by adding routing, using an Angular 1 module called `ui-router`.
+На этом этапе вы научитесь создавать шаблон макета и как строить приложение, которое имеет различные отображения через добавление маршрутов используя Angular 1 модуль называемый `ui-router`.
 
-The goals for this step:
+Цели этого этапа:
 
-* When you navigate to `index.html`, you will be redirected to `/parties` and the party list should appear in the browser.
-* When you click on a party link the URL should change to one specific to that party and the stub of a party detail page is displayed.
+* Когда вы переходите к `index.html`, вы будете перенаправлены к `index.ng.html/parties` и список вечеринок должен появится в браузере.
+* Когда вы нажимаете ссылку вечеринки URL должен поменятся на соответствующий этой вечеринке иstub of a party detail page is displayed.
 
-# Dependencies
+# Зависимости
 
-The routing functionality added by this step is provided by the [ui-router](https://github.com/angular-ui/ui-router) module, which is distributed separately from the core Angular 1 framework.
+Функциональность маршрутов добавленная на этом этапе обеспечена модулем [ui-router](https://github.com/angular-ui/ui-router), который распространяется отдельно от ядра Angular 1.
 
-We will install ui-router with the help of [the official Meteor package](https://atmospherejs.com/angularui/angular-ui-router).
+Мы установим ui-router с помощью [официального пакета Meteor](https://atmospherejs.com/angularui/angular-ui-router).
 
-Type in the command line:
+Наберите это в командной строке:
 
     meteor add angularui:angular-ui-router
 
-Then add the ui-router as a dependency to our angular app in `app.js`:
+Далее добавьте ui-router как зависимость к нашему приложению в `app.js`:
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="5.2"}}
+{{> DiffBox tutorialName="angular-meteor" step="5.2"}}
 
-# Multiple Views, Routing and Layout Template
+# Множественные отображения, маршрутизация и шаблон макета
 
-Our app is slowly growing and becoming more complex.
-Until now, the app provided our users with a single view (the list of all parties), and all of the template code was located in the `main.html` file.
+Наше приложение медленно растёт и стаёт более сложным.
+До этого момента приложение выдавало пользователям только одно отображение (список всех вечеринок) и весь код шаблона находился в файле `index.ng.html`.
 
-The next step in building the app is to add a view that will show detailed information about each of the parties on our list.
+Следующим шагом добавим отображение, которое покажет детальную информацию про каждую вечеринку в нашем списке.
 
-To add the detailed view, we could expand the `main.html` file to contain template code for both views, but that would get messy very quickly.
+Для добавления детального вида, мы могли бы расширить файл `index.ng.html` и поместить туда код обеих отображений, но всё станет очень быстро запутанным.
 
-Instead, we are going to turn the `index.html` template into what we call a "layout template". This is a template that is common for all views in our application.
-Other "partial templates" are then included into this layout template depending on the current "route" — the view that is currently displayed to the user.
+Вместо этого, мы переделаем шаблон `index.html` в так называемый "шаблон макета". Это шаблон общий для всех отображений в нашем приложении.
 
-Application routes in Angular 1 are declared via the [$stateProvider](https://github.com/angular-ui/ui-router/wiki), which is the provider of the $state service.
-This service makes it easy to wire together controllers, view templates, and the current URL location in the browser.
-Using this feature we can implement deep linking, which lets us utilize the browser's history (back and forward navigation) and bookmarks.
+Другие "частные шаблоны" включаются в этот шаблон макета в зависимости от текущего "маршрута" -  отображения, которое выводится в данный момент пользователю.
+
+Маршруты приложения в Angular 1 декларируются через [$stateProvider](https://github.com/angular-ui/ui-router/wiki), который является провайдером службы $state.
+Эта служба облегчает соединение контроллеров, шаблонов отображений и текущее URL положение в браузере.
+Используя эту функцию мы можем развернуть глубокую перелинковку, которая позволит нам использовать историю браузера (навигацию вперёд-назад) и закладки.
 
 
-# Template
+# Шаблон
 
-The `$state` service is normally used in conjunction with the uiView directive.
-The role of the `ui-view` directive is to include the view template for the current route into the layout template.
-This makes it a perfect fit for our `main.html` file.
+Служба $state обычно используется вместе с директивой uiView.
+Роль директивы uiView - включить шаблон отображения для текущего маршрута в шаблон макета.
+Это отлично подходит для нашего `index.ng.html` шаблона.
 
-Now let's go back to `index.html` and replace the content with the `ui-view` directive:
+Давайте создадим новый html-файл `parties-list.ng.html` и вставим существующий код списка из `index.ng.html` в него:
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="5.3"}}
+{{> DiffBox tutorialName="angular-meteor" step="5.3"}}
 
-Notice we did 3 things:
+Код почти такой же за исключением двоих изменений:
 
-1. Replaced all the content with ui-view (this will be responsible for including the right content according to the current URL).
-2. Added a `h1` header with a link to the main parties page.
-3. We also added a `base` tag in the head (required when using HTML5 location mode - would be explained a bit further).
+- Добавленна ссылка с названиями вечеринок (эта ссылка ведёт на детальную страницу вечеринки)
+- Удаление div с ng-controller информацией будет обработан определением маршрутов (см. дальше)
 
-> Note that you can remove `main.html` now, because it's no longer in use!
+Вернёмся к `index.html` и заменим содержимое с директивой `ui-view`:
+
+{{> DiffBox tutorialName="angular-meteor" step="5.4"}}
+
+Обратите внимание - мы сделали 3 вещи:
+
+1. Заменили весь контенк с ui-view (это будет отвечать за включение правильного содержимого при нажатии на текущий URL).
+2. Добавили `h1` header with a link to the main parties page.
+3. We also added a `base` tag in the head (required when using HTML5 location mode).
+
+Now we can delete the `index.ng.html` file, it's not used any more.
+
+Let's add a placeholder to the new party details page.
+Create a new html file called `party-details.ng.html` and paste in the following code:
+
+{{> DiffBox tutorialName="angular-meteor" step="5.6"}}
+
+This code can serve as a placeholder for now. We'll get back to filling out the details later on.
 
 # Routes definition
 
 Now let's configure our routes.
 Add this config code in `app.js`, after the Angular 1 app has been defined:
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="5.4"}}
+{{> DiffBox tutorialName="angular-meteor" step="5.7"}}
 
-And we will also add a state for a new page that will display the party details:
-
-{{> DiffBox tutorialName="meteor-angular1-socially" step="5.6"}}
+Using the Angular 1 app's .config() method, we request the `$stateProvider` to be injected into our config function and use the state method to define our routes.
 
 Our application routes are defined as follows:
 
-* **('/parties')**: The parties list view will be shown when the URL hash fragment is /parties. To construct this view, Angular 1 will use the parties-list Component.
-* **('/parties/:partyId')**: The party details view will be shown when the URL hash fragment matches '/parties/:partyId', where `:partyId` is a variable part of the URL. To construct the party details view, Angular will use the party-details Component.
+* **('/parties')**: The parties list view will be shown when the URL hash fragment is /parties. To construct this view, Angular 1 will use the parties-list.ng.html template and the PartiesListCtrl controller.
+* **('/parties/:partyId')**: The party details view will be shown when the URL hash fragment matches '/parties/:partyId', where :partyId is a variable part of the URL. To construct the party details view, Angular will use the party-details.ng.html template and the PartyDetailsCtrl controller.
 * **$urlRouterProvider.otherwise('/parties')**: Triggers a redirection to /parties when the browser address doesn't match either of our routes.
 * **$locationProvider.html5Mode(true)**: Sets the URL to look like a regular one. more about it [here](https://docs.angularjs.org/guide/$location#hashbang-and-html5-modes).
-* Each template is just a regular usage of our components.
+* Each template gets loaded by it's **absolute path** to the project's top folder ('party-details.ng.html').  this is done by angular-meteor's build process which loads the templates into a cache and names them according to their paths.
+If the templates are coming from a package, they will get a prefix of the package name like so - 'my-app_my-package_client/views/my-template.ng.html'.
+You can read more about the templating build process in [our code](https://github.com/Urigo/angular-meteor/blob/master/plugin/handler.js).
 
 Note the use of the `:partyId` parameter in the second route declaration.
 The $state service uses the route declaration — `/parties/:partyId` — as a template that is matched against the current URL.
-All variables defined with the : notation are passed into the Component through the `$stateParams` object.
+All variables defined with the : notation are extracted into the $stateParams object.
 
-# Components
+# Controllers
 
-But we still need to define our `partyDetails` component.
+As you might have seen we removed the controller definition from the ng-controller directive in the `index.ng.html` and moved it into the routes definitions.
 
-Add this new Component code under the existing component:
+But we still need to define our `PartyDetailsCtrl` controller.
+Add this code under the existing controller:
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="5.7"}}
-
-And let's create the view for this Component in a new file:
-
-{{> DiffBox tutorialName="meteor-angular1-socially" step="5.8"}}
-
-Now let's add a link from each party in the parties list to it's details page:
-
-{{> DiffBox tutorialName="meteor-angular1-socially" step="5.9"}}
+{{> DiffBox tutorialName="angular-meteor" step="5.8"}}
 
 Now all is in place.  Run the app and you'll notice a few things:
 
 * Click on the link in the name of a party - notice that you moved into a different view and that the party's id appears in both the browser's url and in the template.
 * Click back - you are back to the main list, this is because of ui-router's integration with the browser's history.
-* Try to put arbitrary text in the URL - something like [http://localhost:3000/strange-url](http://localhost:3000/strange-url).  You should to be automatically redirected to the main parties list.
+* Try to put arbitrary text in the URL - something like http://localhost:3000/strange-url.  You should to be automatically redirected to the main parties list.
+
+
+#### Common Mistakes
+
+If you haven't entered the correct absolute path when defining the routes (e.g. by accident adding a relative one), then you might get the following error:
+
+WARNING: Tried to load angular more than once.
+
+If that's the case, double check your paths and remember to use the file extension `.ng.html`.
+
 
 # Summary
 

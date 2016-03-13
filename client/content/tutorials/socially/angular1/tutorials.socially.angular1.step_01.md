@@ -1,12 +1,12 @@
 {{#template name="tutorials.socially.angular1.step_01.md"}}
 {{> downloadPreviousStep stepName="step_00"}}
 
-Let's create a purely static HTML page and then examine how we can turn this HTML code into a template that Angular 1 will use to dynamically display the same result with any set of data.
+Давайте создадим полностью статичную HTML страницу и далее проверим как мы можем переделать этот HTML код в шаблон, который будет использовать Angular 1 для динамического отображения одинакового результата с любым набором данных.
 
-Add this template HTML to `main.html`:
+Добавьте шаблон HTML к `index.ng.html`:
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="1.1"}}
+{{> DiffBox tutorialName="angular-meteor" step="1.1"}}
 
-Next we'll dynamically generate the same list using Angular 1.
+Далее мы сгенерируем динамически тот же список используя Angular 1.
 
 {{/template}}

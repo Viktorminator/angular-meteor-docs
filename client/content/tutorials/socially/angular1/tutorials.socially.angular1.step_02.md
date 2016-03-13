@@ -1,68 +1,66 @@
 {{#template name="tutorials.socially.angular1.step_02.md"}}
 {{> downloadPreviousStep stepName="step_01"}}
 
-It's time to make our web app dynamic — with Angular 1.
+Сделаем теперь наше веб-приложение динамическим с помощью Angular 1.
 
-This step is focused on client side Angular 1 tools. The next one will show you the power of Meteor.
+Этот шаг сфокусирован на клиенте с Angular 1 инструментами. Далее мы покажем силу Meteor.
 
-# View and Template
+# Отображение и шаблон
 
-In Angular 1, the view is a projection of the model through the HTML template. This means that whenever the model changes, Angular 1 refreshes the appropriate binding points, which updates the view.
+В Angular 1 отображение - это проекция модели через шаблон HTML. Это значит, что когда бы не менялась модель, Angular 1 обновляет соответствующие связывающие точки, которые обновляют отображение.
 
-Let's change our template to be dynamic:
+Давайте сделаем наш шаблон динамическим:
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="2.1" filename="main.html"}}
+{{> DiffBox tutorialName="angular-meteor" step="2.1"}}
 
-We replaced the hard-coded party list with the [ngRepeat](https://docs.angularjs.org/api/ng/directive/ngRepeat) directive and two Angular 1 expressions:
+Мы заменим список вечеринок на директиву [ngRepeat](https://docs.angularjs.org/api/ng/directive/ngRepeat) и два выражения Angular 1:
 
-* The `ng-repeat="party in parties"` attribute in the `li` tag is an Angular 1 repeater directive. The repeater tells Angular 1 to create a `li` element for each party in the list using the `li` tag as the template.
-* The expressions wrapped in double-curly-braces ( `{{dstache}}party.name}}` and `{{dstache}}party.description}}` ) will be replaced by the value of the expressions.
+* Аттрибут `ng-repeat="party in parties"` в теге `li` - это директива Angular 1 повторителя, который говорит Angular 1 создать элемент `li` для каждой вечеринки в списке используя тег `li` как шаблон.
+* Выражения обёрнутые в двойные фигурные скобки ( `{{dstache}}party.name}}` и `{{dstache}}party.description}}` ) будут заменены значениями выражений.
 
-We have added a new directive, called `ng-controller`, which attaches the `PartiesListCtrl` controller to the `div` tag. At this point *the expressions in double-curly-braces are referring to our application model, which is set up in our `PartiesListCtrl` controller.*
+Мы добавили новую директиву, называемую `ng-controller`, которая приклрепляет контроллер `PartiesListCtrl` к тегу `div`. Здесь *выражения в двойных фигурных кавчычках обращаются к нашей модели приложения, которая устанавленна в нашем контроллере `PartiesListCtrl`.*
 
 
-# Model and Controller
+# Модель и контроллер
 
-To create our controller and model we start with `PartiesListCtrl` controller and place data in it.
+Для создания нашего контроллера и модели мы начнём с контроллера `PartiesListCtrl` и разместим в нём данные.
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="2.2"}}
+{{> DiffBox tutorialName="angular-meteor" step="2.2"}}
 
-We declared a controller called `PartiesListCtrl` and registered it in our Angular 1 module app - `socially`.
+Мы описали контроллер с названием `PartiesListCtrl` и зарегистрировали его в модули приложения Angular 1 - `socially`.
 
-The data model is now instantiated within the `PartiesListCtrl` controller.
+Модель данных теперь инстанцирован всередине контроллера `PartiesListCtrl`.
 
-Although the controller is not yet doing very much, it plays a crucial role. By providing context for our data model, the controller allows us to establish data-binding between the model and the view. We connected the dots between the presentation, the data, and the logic components as follows:
+Также контроллер пока ещё не совсем хорошо работает, он играет решающую роль. Обеспечивая контекст для нашей модели данных, контроллер позволяет нам установить связывание данными между моделью и отображением. Мы соединяем точки между представлением, данными и логическими компонентами следующим образом:
 
-* The ngController directive, located on the `div` tag, references the name of our controller, `PartiesListCtrl` (located in the JavaScript file `app.js`).
-* The `PartiesListCtrl` controller attaches the party data to the `$scope` that was injected into our controller function. This controller scope is available to all bindings located within the `div ng-controller="PartiesListCtrl">` tag.
+* Директива ngController, размещённая в теге `div`, ссылается на имя нашего контроллера `PartiesListCtrl` (размещённого в файле JavaScript `app.js`).
+* Контроллер `PartiesListCtrl` прирепляет частично данные к `$scope`, который иньектируется в функцию нашего контроллера. Контроллерский scope доступен ко всем связям размещённым всередине тега `div ng-controller="PartiesListCtrl">`.
 
-# ng-annotate
+# ng-annotate и .ng.js
 
-As you may know, when using AngularJS dependency injection, we used strings for [dependency annotations](https://docs.angularjs.org/guide/di#dependency-annotation) that avoids minification problems:
+Как вы можете видеть, когда мы описали контроллер, мы использовали строки для [аннотаций зависимости](https://docs.angularjs.org/guide/di#dependency-annotation) которая убирает проблемы минификации:
 
     angular.module('socially').controller('PartiesListCtrl', ['$scope',
       function($scope){
         // ...
     }]);
 
-There is a very popular Angular 1 tool that's called [ng-annotate](https://github.com/olov/ng-annotate) that takes care of that for us so we can write regular code that won't get mangled in minification.
+Существует очень популярный Angular 1 инструмент [ng-annotate](https://github.com/olov/ng-annotate), который заботися об этом всём, поэтому мы можем писать обычный код, который затем минифицируется.
 
-angular-meteor uses that process automatically so you do not need to add those extra definitions and just write your app without minification issues!
+angular-meteor делает это автоматически. Всё, что нужно - это сменить названия файлов с `.js` на `.ng.js`
 
-So let's change our code to the regular and shorter declaration way:
+Давайте поменяем `app.js` на `app.ng.js` и сменим использование в нашем контроллере:
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="2.3"}}
+{{> DiffBox tutorialName="angular-meteor" step="2.4"}}
 
-and let's add the `ng-strict-di` directive so that if case there is a minification problem, we will find in already in development and not only after minification in production:
+И отныне каждый файл Angular 1, который мы будем создавать будет использовать расширение `ng.js`!
 
-{{> DiffBox tutorialName="meteor-angular1-socially" step="2.4"}}
+# Итоги
 
-# Summary
+Теперь у вас есть динамическое приложение с отдельными компонентами - модель, отображение и контроллер.
 
-You now have a dynamic app that features separate model, view and controller components.
+Но это всё клиент, что отлично для уроков, но в реальном приложении нам нужно сохранять данные на сервере и синхронизировать все клиенты с ним. 
 
-But, this is all client side, which is nice for tutorials, but in a real application we need to persist the data on the server and sync all the clients with it.
-
-Go to [step 3](/tutorial/step_03) to learn how to bind our application to the great power of Meteor.
+Перейдите к [шагу 3](/tutorial/step_03), чтобы изучить как связать наше приложение с великой мощью Meteor.
 
 {{/template}}

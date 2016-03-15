@@ -1,78 +1,77 @@
 {{#template name="tutorials.socially.angular1.step_08.md"}}
 {{> downloadPreviousStep stepName="step_07"}}
 
-One of Meteor's most powerful packages is the Meteor account system.
+Один из наиболее мощных Meteor пакетов - это система аккаунтов Meteor.
 
-Right now, our app is publishing all the parties to all the clients, and all the clients can change those parties. The changes are then reflected back to all
-the other clients automatically.
+Прямо сейчас наше приложение публикует все вечеринки, всех клиентов и клиенты могут менять эти вечеринки. Изменения отображаются у всех клиентов автоматически. 
 
-This is super powerful and easy, but what about security?  We don't want any user to be able to change any party...
+Это супермощно и легко, но что по поводу безопастности? Мы не хотим, чтобы любой пользователь менял вечеринку...
 
-First thing we should do is to remove the `insecure` package that automatically added to any new Meteor application.
+Сперва нам унжно убрать небезопасный пакет, который автоматически добавляется к любому приложению Meteor.
 
-The 'insecure' package makes the default behaviour of Meteor collections to permit all.
+'Небезопасный' пакет по-умолчанию предоставляет полный доступ всем к коллекциям Meteor.
 
-By removing that package the default behaviour is changed to deny all.
+Удалив этот пакет по-умолчанию мы запретим всем доступ.
 
-Execute this command in the command line:
+Сделайте это выполнив команду:
 
     $ meteor remove insecure
 
-Now let's try to change the parties array or a specific party.  We get 
+Теперь попробуем сменить массив вечеринок или отдельную вечеринку. Мы получим:
 
     remove failed: Access denied
     
-In the console because we don't have permissions to do that.    
+В консоли, так как у нас нет разрешение сделать это.
 
-Now, we need to write an explicit security rule for each operation we want to allow the client to do on the Mongo collection.
+Теперь, нам нужно написать дополнительное правило безопастности для каждой операции с Mongo коллекцией, которую мы хотим разрешить клиенту выполнять.
 
-So first, let's add the `accounts-password` Meteor package.
-It's a very powerful package for all the user operations you can think of: login, sign-up, change password, password recovery, email confirmation and more.
+Во-первых, добавим пакет `accounts-password`.
+Это очень мощный пакет для всех операций пользователя, о которых вы хотите подумать: вход, подписка, смена пароля, восстановление пароля, подтверждение email и остальное.
 
     $ meteor add accounts-password
 
-Now we will also add the `dotansimha:accounts-ui-angular` package.  This package contains all the HTML and CSS we need for the user operation forms.
+Также мы добавим пакет `dotansimha:accounts-ui-angular`. Этот пакет содержит все HTML и CSS, которые нам нужны для операций пользователя с формами.
 
-Later on in this tutorial we will replace those default account-ui forms with custom Angular 1 forms.
+Позже в этом уроке мы заменим формы по-умолчанию в account-ui формами Angular 1.
 
     $ meteor add dotansimha:accounts-ui-angular
 
-Now let's add dependency to the `accounts.ui` module in our module definition:
+Давайте добавим зависимость модуля `accounts.ui` к нашему определению модуля.
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="8.4"}}
 
-Now let's add the `login-buttons` directive (part of `accounts.ui` module) into our app, into index.html.
+Добавим директиву `login-buttons` (часть модуля `accounts.ui` module) в наше приложение в файл index.html.
 
-So the `index.html` will look like this:
+Теперь наш `index.html` примет вид:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="8.5"}}
 
-Run the code, create an account, login, logout...
+Запустите код, создайте аккаунт, вход, выход...
 
-Now that we have our account system, we can start defining our security rules for the parties.
+Теперь у нас есть аккаунт система, мы можем начать определять наши правила безопастности для вечеринок.
 
-Let's go to the model folder and change the file to look like this:
+Перейдём к папке моделей и сменим её вид на такой:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="8.6"}}
 
-The [collection.allow Meteor function](http://docs.meteor.com/#/full/allow) defines the permissions that the client needs to write directly to the collection (like we did until now).
+[Функция Meteor collection.allow](http://docs.meteor.com/#/full/allow) определяет разрешения необходимые клиенту для записи напрямую в коллекцию (что мы и делали до сих пор).
 
-In each callback of action type (insert, update, remove) the functions should return true if they think the operation should be allowed.
-Otherwise they should return false, or nothing at all (undefined).
+В каждом колбеке типов действий (insert, update, remove) функции должны возвращать true, если они думают, что операции должны быть разрешены.
+Иначе они должны возвращать false или совсем ничего (undefined).
 
-The available callbacks are:
+Доступные колбеки:
 
 * `insert(userId, doc)`
 
-  The user userId wants to insert the document doc into the collection. Return true if this should be allowed.
+  Пользователь userId хочет вставить документ doc в коллекцию. Возвращает true если это позволено.
 
-  doc will contain the _id field if one was explicitly set by the client, or if there is an active transform. You can use this to prevent users from specifying arbitrary _id fields.
+  doc будет содержать _id поле, если оно избыточно было установлено клиентом или есть активная трансформация. Вы можете использовать это для защиты пользователей от определения _id полей.
 
 * `update(userId, doc, fieldNames, modifier)`
 
-  The user userId wants to update a document doc. (doc is the current version of the document from the database, without the proposed update.) Return true to permit the change.
+  Пользователь userId хочет обновить документ doc. (doc - это текущая версия документа из базы данных, без предложенного обновления). Возвращает true при разрешении изменений.
 
-  fieldNames is an array of the (top-level) fields in doc that the client wants to modify, for example ['name', 'score'].
+  fieldNames - это массив (top-level) полей в doc that the client wants to modify, for example ['name', 'score'].
 
   modifier is the raw Mongo modifier that the client wants to execute; for example, {$set: {'name.first': "Alice"}, $inc: {score: 1}}.
 

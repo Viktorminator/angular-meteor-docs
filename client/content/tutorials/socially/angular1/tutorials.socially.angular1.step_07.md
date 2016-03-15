@@ -5,100 +5,100 @@
 
 Очень правильно с самого начала организовать ваше приложение стандартным образом и в Meteor, структура имеет значение и использование.
 
-На этом шаге, мы скомбинируем стандартные способы In this step, we are going to combine Meteor's and Angular 1's standard ways of structuring an app into one unified standard structure.
+На этом шаге, мы скомбинируем стандартные способы In this step, we are going to combine Meteor's и Angular 1's standard ways of structuring an app into one unified standard structure.
 
 
-# Meteor folder structure
+# Структура папок Meteor
 
-From the `docs.meteor.com` site:
+Из сайта `docs.meteor.com`:
 
-> A Meteor application is a mix of JavaScript that runs inside a client web browser, JavaScript that runs on the Meteor server inside a Node.js container, and all the supporting HTML fragments, CSS rules, and static assets.
-> Meteor automates the packaging and transmission of these different components. And, it is quite flexible about how you choose to structure those components in your file tree.
+> Meteor приложение - это смесь JavaScript, которая запускается всередине клиентского браузреа, JavaScript, который запускается всередине сервера Meteor всередине контейнера Node.js и все поддерживающие HTML фрагменты, CSS правила и стачические объекты.
+> Meteor автоматизирует пакетирование и преедачу этих разных компонентов. И, он достаточно гибок насчёт того, как вы структурируете эти все компоненты в вашем дереве файлов.
 >
-> Files outside the **client**, **server** and **tests** subdirectories are loaded on both the client and the server!
-> That's the place for model definitions and other functions.
+> Файлы вне поддиректорий **client**, **server** и **tests** загружаются в клиенте и сервере!
+> Это место для определения модели и других функций.
 >
-> CSS files are gathered together as well: the client will get a bundle with all the CSS in your tree (excluding the server, public, and private subdirectories).
+> Файлы CSS собраны вместе: клиент получит связку со всем и CSS в вашем дереве (исключая server, public, и private поддиректории).
 >
-> In development mode, JavaScript and CSS files are sent individually to make debugging easier.
+> В режиме разработки JavaScript и CSS файлы отправляются отдельно для облегчения отладки.
 
-## Load order
+## Порядок загрузки
 
-It is best to write your application in such a way that it is insensitive to the order in which files are loaded. This can be achieved by using, for example, Meteor.startup or by moving load order sensitive code into packages, which can explicitly control both the load order of their contents and their load order with respect to other packages.
-However, sometimes load order dependencies in your application are unavoidable.
+Лучше написать наше приложение таким образом, чтобы оно было нечувствительно к порядку, в котором загружаются файлы. Это может быть достигнуто, например, использованием Meteor.startup или передвиженим чувствительного к порядку загрузки кода в пакеты, что может дать избыточный контроль над порядком загрузки их содержимого и их порядка загрузки исходя из других пакетов.
+Тем не менее, иногда использование зависимостей порядка загрузки неизбежно в вашем приложении.
 
-The JavaScript and CSS files in an application are loaded according to these rules:
+Файлы JavaScript и CSS в приложении загружаются исходя из этих правил:
 
 ### server
 
-Meteor gathers any files under the **private** subdirectory and makes the contents of these files available to server code via the Assets API. The **private** subdirectory is the place for any files that should be accessible to server code but not served to the client, like private data files.
+Meteor собирает любые файлы в поддиректории **private** и делает содержимое этих файлов доступным к серверному коду через Assets API. Поддиректория **private** - это место для любых файлов, к которым нужно иметь доступ к серверному коду, но не должны отдаваться клиенту, как приватные файлы данных.
 
-Any sensitive code that you don't want served to the client, such as code containing passwords or authentication mechanisms, should be kept in the server directory.
+Любой чувствительный код, который вы не хотите передавать на клиент, такой как, например, пароли и механизмы авторизации, должны содержаться в директории server.
 
 ### client
 
-Files inside the **client** folder will run only on the client side.
+Файлы, всередине **client** папки должны запускаться только на клиенте.
 
-There are more assets to consider on the client side. Meteor gathers all JavaScript files in your tree, with the exception of the server, public, and private subdirectories, for the client. It minifies this bundle and serves it to each new client. You're free to use a single JavaScript file for your entire application, or create a nested tree of separate files, or anything in between.
+Есть больше аспектов, которые необходимо принять во внимание на клиентской стороне. Meteor собирает все JavaScript файлы в вашем дереве, за исключением server, public и private поддиректорий для клиента. Он минифицирует эту сборку и отправляет её каждому новому клиенту. У вас есть полная свобода использовать один JavaScript файл во всём приложении или создать сложное дерево отдельных файлов или что-то типа того.
 
 ### public
 
-Lastly, the Meteor server will serve any files under the public directory. This is the place for images, favicon.ico, robots.txt, and anything else.
+Наконец, Meteor сервер обслуживает любые файлы в папке public. Это место для изображений, favicon.ico, robots.txt и всего остального.
 
-### More rules
+### Больше правил
 
-* Files in subdirectories are loaded before files in parent directories, so that files in the deepest subdirectory are loaded first, and files in the root directory are loaded last.
-* Within a directory, files are loaded in alphabetical order by filename.
-* After sorting as described above, all files under directories named **lib** are moved before everything else (preserving their order).
-* Finally, all files that match main.* are moved after everything else (preserving their order).
+* Файлы в поддиректориях загружаются перед файлами в родительских директориях, поэтому файлы в самых глубоких папках загружаются первыми и файлы в корневой папке загружаются последними.
+* Всередине папки файлы загружаются в алфавитном порядке по названию файла.
+* После сортировку описаной выше, все файлы в папках под названием **lib** помещаются в самый перёд (сохраняя порядок).
+* Наконец, все файлы, которые соответствуют main.* шаблону перемещаются  в конец после всех остальных (сохраняя их порядок).
 
 
-# Angular 1 folder structure
+# Структура папок Angular 1
 
-There are many ways to organize and structure an Angular 1 app.
+Есть много способов организации и структурирования приложения Angular 1.
 
-The two main approaches are:
+Два основных подхода это:
 
-* Sorting by file type (controllers, views, etc..)
-* Sorting based on functionality (users, parties, products, etc..)
+* Сортировка по типу файла (контроллеры, отображения и др.)
+* Сортировка по функциональности (пользователи, вечеринки, товары и др.)
 
-The first approach seems to work better with smaller applications and is also the current structure of the [yeoman-angular-generator](https://github.com/yeoman/generator-angular).
+Первый подход хорошо работает в маленьких приложениях и входит в текущую структуру [yeoman-angular-generator](https://github.com/yeoman/generator-angular).
 
-The second approach seems to work better for large scale applications.
+Второй подход лучше работает в больших приложениях.
 
-As we are working close with the Meteor collections, we believe a better approach will be based on functionality, which also correlates to the Meteor's collection structure.
+Мы работает вместе с коллекциями Meteor и думаю, что лучший подход основан на функциональности, который также коллерирует со структурой коллекций Meteor.
 
-For more Angular 1 structuring and best practices please read this amazing [style-guide](https://github.com/johnpapa/angularjs-styleguide#application-structure) and for best practices for Meteor apps read Meteor's [official guide](http://guide.meteor.com/).
+Для большего структурирования Angular 1 и лучших практик, пожалуйста, прочтите этот отличный [style-guide](https://github.com/johnpapa/angularjs-styleguide#application-structure) и для лучших практик для Meteor приложений читайте [официальное руководство](http://guide.meteor.com/).
 
-# Re-structuring our app
+# Реструктурирование нашего приложения
 
-So now let's re-structure our app (to see the end result and all the steps in git diff you can click [here](https://github.com/Urigo/meteor-angular-socially/compare/step_06...step_07)):
+Давайте реструктурируем наше приложение (чтобы увидеть окончательный результат и все изменения в гите, можете кликнуть [здесь](https://github.com/Urigo/meteor-angular-socially/compare/step_06...step_07)):
 
-1. Create a folder named `client` under the root folder.  This is where all the code inside `Meteor.isClient` will go (without the need of Meteor.isClient anymore)
-2. The first thing that needs to be loaded in the `client` folder is the Angular 1 app declaration. After that, the rest of the client code can be loaded in any order. So create a `lib` folder inside the `client` folder and create `app.js` file inside. Everything inside the `client` folder runs only on the browser so we don't need `if (Meteor.isClient)` conditions anymore.  Move the Angular module declaration to that `app.js`:
+1. Создайте папку с именем `client` в корне. Здесь будет размещён весь код для `Meteor.isClient` (поэтому не нужно будет писать больше Meteor.isClient)
+2. Первой вещью, которая загрузится - это папка `client` с описанием Angular 1 приложения. После этого весь остальной клиентский код может быть загружен в любом порядке. Поэтому создайте папку `lib` всередине клиентской папки `client` и создайте файл `app.js` всередине. Всё всередине папки `client` будет запускаться только в браузере, поэтому нам не нужно больше использовать условие `if (Meteor.isClient)`. Поместите декларирование модуля Angular в этот `app.js`:
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.1"}}
-3. The parties Mongo collection needs to run on both client and server. Create a folder called `model` under the root folder. Inside create a file called `parties.js` and cut this line from `app.js` - `Parties = new Mongo.Collection("parties");` - and place it in `parties.js`.
+3. Коллекция вечеринок Mongo должна запускаться на клиенте и сервере. Создайте папку с названием `model` в корневой папке. Всередине создайте файл с названием `parties.js` и вырежте строку из `app.js` - `Parties = new Mongo.Collection("parties");` - и поместите её в `parties.js`.
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.2"}}
-4. Create a `server` folder under the root folder. Everything inside that folder will run only on the server. Now create a folder called `startup` under the `server` folder. Now move `server.js` under that folder and rename it to `loadParties.js`. Now remove the `if (Meteor.isServer)` statement because there is no need for the if statement anymore because all the code inside the `server` folder runs only on the server.
+4. Создайте папку `server` в корневой папке. Всё всередине этой папки будет запускаться только на сервере. Теперь создайте папку с названием `startup` в папке `server`. Теперь переместите `server.js` в эту папку и переименуйте её на `loadParties.js`. Теперь уберите `if (Meteor.isServer)` выражение, так как нет нужды для выражения if более, так как весь код всередине папки `server` запускается только на сервере.
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.3"}}
-5. Create a file called `routes.js` under the `client` folder. Cut the `.config` code that defines the routes and paste it inside that file.
+5. Создайте файл `routes.js` в папке `client`. Вырежте код `.config`, который определяет маршруты и вставьте его всередине этого файла.
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.4"}}
-6. Create a folder called `parties` inside the `client` folder. and inside it create another two folders - one for each component we have. one called `parties-list` and one called `party-details`.
-7. Create a new file inside the `client/parties/parties-list` folder called `parties-list.component.js`. Cut the code for the `partiesList` component from `app.js` and place it in there.
+6. Создайте папку `parties` всередине `client`. И создайте в ней две папки - по одной для каждого нашего компонента, одну назовите `parties-list` и вторую `party-details`.
+7. Создайте новый файл всередине папки `client/parties/parties-list` с названием `parties-list.component.js`. Вырежте код для `partiesList` компонента от `app.js` и поместите его туда.
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.5"}}
-8. Now move `parties-list.html` into `client/parties/parties-list`.
+8. Теперь переместите `parties-list.html` в `client/parties/parties-list`.
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.6"}}
-9. Create a new file inside the `client/parties/party-details` folder called `party-details.component.js`. Cut the code for the `partyDetails` component from `app.js` and place it in there.
+9. Создайте новый файл всередине папки `client/parties/party-details` с названием  `party-details.component.js`. Вырежте код для компонента `partyDetails` из `app.js` и поместите его туда.
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.7"}}
-10. Now move `party-details.html` into `client/parties/party-details`.
+10. Теперь поместите `party-details.html` в `client/parties/party-details`.
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.8"}}
-11. We need to update the `templateUrl` in our components to support the new path, because that paths are absolute and not relative:
+11. Нам нужно обновить  `templateUrl` в наших компонентах для поддержки нового путя, потому что эти пути абсолютны, а не относительны:
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.9" filename="client/parties/parties-list/parties-list.component.js"}}
 {{> DiffBox tutorialName="meteor-angular1-socially" step="7.9" filename="client/parties/party-details/party-details.component.js"}}
-13. Move `index.html` inside the client folder
-14. Don't forget to delete the original `app.js` files from the project's root folder.
+13. Поместите `index.html` всередине клиентской папки.
+14. Не забудьте удалить оригинальные файлы `app.js` из корня проекта.
 
-As you can see, everything is still working as before.
-We haven't needed to change any references in `index.html` like other frameworks. Meteor just takes care of all this.
+Как видите, всё работало так, как и ранее.
+Нам не нужно менять любые ссылки в `index.html` как в других фреймворках, Метеор позаботиться об этом сам.
 
 {{/template}}

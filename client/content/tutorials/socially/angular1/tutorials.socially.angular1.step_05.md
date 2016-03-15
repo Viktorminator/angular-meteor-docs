@@ -1,4 +1,4 @@
-{{#template name="tutorials.socially.angular1.step_05.md"}}
+{{#template name="tutorial.step_05.md"}}
 {{> downloadPreviousStep stepName="step_04"}}
 
 На этом этапе вы научитесь создавать шаблон макета и как строить приложение, которое имеет различные отображения через добавление маршрутов используя Angular 1 модуль называемый `ui-router`.
@@ -7,6 +7,7 @@
 
 * Когда вы переходите к `index.html`, вы будете перенаправлены к `index.ng.html/parties` и список вечеринок должен появится в браузере.
 * Когда вы нажимаете ссылку вечеринки URL должен поменятся на соответствующий этой вечеринке иstub of a party detail page is displayed.
+
 
 # Зависимости
 
@@ -63,67 +64,66 @@
 
 1. Заменили весь контенк с ui-view (это будет отвечать за включение правильного содержимого при нажатии на текущий URL).
 2. Добавили `h1` header with a link to the main parties page.
-3. We also added a `base` tag in the head (required when using HTML5 location mode).
+3. Также мы добавили тег `base` в наш head (нужен при использовании HTML5 режима локации).
 
-Now we can delete the `index.ng.html` file, it's not used any more.
+Теперь мы можем удалить `index.ng.html` файл, он уже больше не используется.
 
-Let's add a placeholder to the new party details page.
-Create a new html file called `party-details.ng.html` and paste in the following code:
+Добавим плейсхолдер в новую страницу деталей вечеринки.
+Создайте новый html файл с названием `party-details.ng.html` и вставьте следующий код:
 
 {{> DiffBox tutorialName="angular-meteor" step="5.6"}}
 
-This code can serve as a placeholder for now. We'll get back to filling out the details later on.
+Этот код может служить как плейсхолдер. Мы вернёмся к заполнению деталей попозже.
 
-# Routes definition
+# Определение маршрутов
 
-Now let's configure our routes.
-Add this config code in `app.js`, after the Angular 1 app has been defined:
+Сконфигурируем наши маршруты.
+Добавим этот код конфигурации в `app.js`, после определения приложения Angular 1:
 
 {{> DiffBox tutorialName="angular-meteor" step="5.7"}}
 
-Using the Angular 1 app's .config() method, we request the `$stateProvider` to be injected into our config function and use the state method to define our routes.
+Используя .config() метод приложения Angular 1 мы запрашиваем `$stateProvider` вставиться в нашу config функцию и использовать метод состояния для определения наших маршрутов.
 
-Our application routes are defined as follows:
+Наши маршруты приложения определяются следующим образом:
 
-* **('/parties')**: The parties list view will be shown when the URL hash fragment is /parties. To construct this view, Angular 1 will use the parties-list.ng.html template and the PartiesListCtrl controller.
-* **('/parties/:partyId')**: The party details view will be shown when the URL hash fragment matches '/parties/:partyId', where :partyId is a variable part of the URL. To construct the party details view, Angular will use the party-details.ng.html template and the PartyDetailsCtrl controller.
-* **$urlRouterProvider.otherwise('/parties')**: Triggers a redirection to /parties when the browser address doesn't match either of our routes.
-* **$locationProvider.html5Mode(true)**: Sets the URL to look like a regular one. more about it [here](https://docs.angularjs.org/guide/$location#hashbang-and-html5-modes).
-* Each template gets loaded by it's **absolute path** to the project's top folder ('party-details.ng.html').  this is done by angular-meteor's build process which loads the templates into a cache and names them according to their paths.
-If the templates are coming from a package, they will get a prefix of the package name like so - 'my-app_my-package_client/views/my-template.ng.html'.
-You can read more about the templating build process in [our code](https://github.com/Urigo/angular-meteor/blob/master/plugin/handler.js).
+* **('/parties')**: Отображение списка вечеринок будет показано, когда фрагмент хеша - /parties. Для создания этого отображения Angular 1 будет использовать шаблон parties-list.ng.html и контроллер PartiesListCtrl.
+* **('/parties/:partyId')**: Отображение деталей вечеринки будет показано, когда фрагмент хеша URL будет соответствовать '/parties/:partyId', где :partyId это переменная часть URL. Для создания отображения деталей вечеринки Angular использует шаблон party-details.ng.html и контроллер PartyDetailsCtrl.
+* **$urlRouterProvider.otherwise('/parties')**: Запускает перенаправление к /parties когда адрес браузера не соответствует никакому из маршрутов.
+* **$locationProvider.html5Mode(true)**: Устанавливает URL в обычный вид, подробнее об этом [здесь](https://docs.angularjs.org/guide/$location#hashbang-and-html5-modes).
+* Каждый шаблон загружается по своему **абсолютному пути** к корневому каталогу проекта ('party-details.ng.html'). Это осуществляется из-за angular-meteor процесса построенния, который загружает шаблоны в кеш и именует их исходя из их путей.
+Если шаблоны приходят из пакета, они получат префикс пакета следующим образом - 'my-app_my-package_client/views/my-template.ng.html'.
+Можете подробнее почитать о процессе построения шаблонов в [нашем коде](https://github.com/Urigo/angular-meteor/blob/master/plugin/handler.js).
 
-Note the use of the `:partyId` parameter in the second route declaration.
-The $state service uses the route declaration — `/parties/:partyId` — as a template that is matched against the current URL.
-All variables defined with the : notation are extracted into the $stateParams object.
+Обратите внимание, что используем параметр `:partyId` при описании второго маршрута.
+Служба $state использует описание маршрута — `/parties/:partyId` — как шаблон, отвечающий текущему URL.
+Все переменные определены с помощью : нотации и извлекаются в отдельный объект $stateParams.
 
-# Controllers
+# Контроллеры
 
-As you might have seen we removed the controller definition from the ng-controller directive in the `index.ng.html` and moved it into the routes definitions.
+Как вы уже заметили, мы убрали определение контроллера из директивы ng-controller в файле `index.ng.html` и поместили его в описание маршрута.
 
-But we still need to define our `PartyDetailsCtrl` controller.
-Add this code under the existing controller:
+Но по-прежнему нам нужно определить контроллер `PartyDetailsCtrl`.
+Добавьте этот код в существующий контроллер:
 
 {{> DiffBox tutorialName="angular-meteor" step="5.8"}}
 
-Now all is in place.  Run the app and you'll notice a few things:
+Всё теперь на месте. Запустите приложение и вы увидите две вещи:
 
-* Click on the link in the name of a party - notice that you moved into a different view and that the party's id appears in both the browser's url and in the template.
-* Click back - you are back to the main list, this is because of ui-router's integration with the browser's history.
-* Try to put arbitrary text in the URL - something like http://localhost:3000/strange-url.  You should to be automatically redirected to the main parties list.
+* Клик по ссылки имени вечеринки - обратите внимание вы попали в другое отображение и вот здесь появилось id вечеринки в url браузера и в шаблоне.
+* Клик назад - вы снова в основном списке, это случилось из-за интеграции ui-router с историей браузера.
+* Попробуйте ввести какой-то нестандартный URL - что-то типа http://localhost:3000/strange-url. Вы автоматически перенаправитесь в основной список вечеринок.
 
+#### Типичные ошибки
 
-#### Common Mistakes
-
-If you haven't entered the correct absolute path when defining the routes (e.g. by accident adding a relative one), then you might get the following error:
+Если вы не ввели правильный абсолютный путь при определении маршрутов (например случайно ввели относительный путь), тогда вы может получить ошибку:
 
 WARNING: Tried to load angular more than once.
 
-If that's the case, double check your paths and remember to use the file extension `.ng.html`.
+В этом случае перепроверьте ваши пути и помните об использовании расширения файлов `.ng.html`.
 
 
-# Summary
+# Итоги
 
-With the routing set up and the parties list view implemented, we're ready to go to the next step and implement the party details view.
+С установкой маршрутов и отображения списка вечеринок, мы готовы перейти к следующему этапу и создать отображение деталей вечеринки.
 
 {{/template}}

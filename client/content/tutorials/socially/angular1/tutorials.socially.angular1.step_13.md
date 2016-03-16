@@ -1,102 +1,99 @@
 {{#template name="tutorials.socially.angular1.step_13.md"}}
 {{> downloadPreviousStep stepName="step_12"}}
 
-Our next mission is to invite users to private parties.
+Следующа наша задача - пригласить пользователей на частные вечеринки.
 
-We have subscribed to list of all users, but we can't invite everyone.
-We can't invite the owner of the party and we can't invite users who are already invited, so why not filter them out of the view?
+Мы подписалиcь к списку всех пользоватлей, но мы никого не пригласили.
+Мы можем пригласить владельца вечеринки и мы не можем пригласить пользователей, которые уже приглашены, почему не отфильтровать это в нашем отображении?
 
-To do so we will use the powerful [filter feature](https://docs.angularjs.org/guide/filter) of Angular 1.
+Чтобы сделать это исопльзуем мощную [фильтр фичу](https://docs.angularjs.org/guide/filter) в Angular 1.
 
-Filters can work on array as well as single values.
-We can aggregate any number of filters on top of each other.
+Фильтры могут работать на массивах, так и на просто переменных.
+Мы можем включать любое количество фильтров над каждым.
 
-Here is the list of all of Angular 1 built-in filters:
+Вот список встроенных в Angular 1 фильтров:
 [https://docs.angularjs.org/api/ng/filter](https://docs.angularjs.org/api/ng/filter)
 
-And here is a 3rd party library with many more filters:
+И вот библиотека 3ей стороны с ещё большим количеством фильтров:
 [angular-filter](https://github.com/a8m/angular-filter)
 
 
-Now let's create a custom filter that will filter out users that are the owners of a certain party and that are already invited to it.
+Давайте создадим пользовательский фильтр, который отфильтрует пользователей, которые являются владельцами соответствующей вечеринки и уже приглашены к ней.
 
-Create a new folder named `filters` under the `client->parties` folder.
+Создайте новую папку `filters` в папке `client->parties`.
 
-Under that folder create a new file named `uninvited.js` and place that code inside:
+В этой папке создайте новый файл `uninvited.js` и поместите туда этот код:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="13.1"}}
 
-* First we define a filter to the 'socially' module (our app)
-* The filter is named `uninvited`
-* Filters always get at least one parameter and the first parameter is always the object or array that we are filtering (like the parties in the previous example)
-Here we are filtering the users array, so that's the first parameter
-* The second parameter is the party we want to check
-* The first if statement is to make sure we passed the initializing phase of the party and it's not undefined
+* Во-первых мы определили фильтр в модуле 'socially' (наше приложение)
+* Фильтр называется `uninvited`
+* Фильтры всегда получают минимум один параметр и первый параметр всегда объект или массив, который мы фильтруем (как другие вечеринки в предыдущем примере)
+Здесь мы фильтруем пользовательский массив, поэтому это первый параметр
+* Второй параметр - это вечеринка, которую нам нужно проверить
+* Первый if оператор - проверяем передали мы инициализирующую фазу вечеринки или она undefined
 
-At this point we need to return the filtered array.
+В этом моменте нам нужно вернуть отфильтрованный массив.
 
-The great thing here is that thanks to Meteor we have access to the great [underscore](http://docs.meteor.com/#underscore) library.
+Отличной вещью здесь есть то, что благодаря Meteor у нас есть доступ к отличной библиотеке [underscore](http://docs.meteor.com/#underscore).
 
-So we use underscore's `filter` method to remove each user that either isn't the party's owner or that
-is not already `_contains` (another underscore method) in the invited list.
+Поэтому мы будем использовать underscore метод `filter` для удаления каждого пользователя, который не является владельцем вечеринки или уже не находится `_contains` (другой метод underscore) в списке приглашённых.
 
-So now let's use our new filter
+Давайте используем новый фильтр
 
-Simply add the filter to the list of users and send the current party to the party parameter, inside `party-details.html`:
+Просто добавьте фильтр к списку пользователей и отправьте текущую вечеринку в параметре вечеринки всередине `party-details.html`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="13.2"}}
 
-Run the app and see the users in each party.
+Запустите приложение и посмотрите на пользователей в каждой из них.
 
-We still don't have invites but you can see that the filter already filters the party owners out of the list.
+У нас по-прежнему нет приглашений, но как видите фильтр уже фильтрует владельцев вечеринок вне списка.
 
-But some of the users don't have emails (maybe some of them may have signed in with Facebook). In that case we want to display their name and not the empty email field.
+Но у некоторых пользователей нет email (наверное некоторые из низ подписались с помощью Facebook). В этом случае мы хотели бы выводить их имена, а не пустые email поля.
 
-But it's only in the display so its perfect for a filter.
+Но это только при выводя, поэтому идеально подходит для фильтра.
 
-We want the list to simply look like this:
+Мы хотим, чтобы список просто выглядел так:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="13.4"}}
 
-and that the filter `displayName` will handle to logic and display the user's name in the best way possible.
+и фильтр с именем `displayName` будет содержать логику и выводить имена пользователей в наилучшем виде.
 
-So let's create another custom filter `displayName`.
+Давайте создадим ещё один кастомный фильтр `displayName`.
 
-Create a new file under the filters folder named `displayName.js` and place that code inside:
+Создайте новый файл в папке фильтров под именем `displayName.js` и разместите код внутри:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="13.3"}}
 
-Pretty simple logic but it's so much nicer to put it here and make the HTML shorter and more readable.
+Очень простая логика, но было бы лучше включить его здесь и сделать HTML короче и более читаемым.
 
-AngularJS can also display the return value of a function in the HTML.
+AngularJS может также выводить и возвращать значения функций в HTML.
 
-To demonstrate let's add to each party in the parties list the creator's name:
+Для демонстрации добавим к каждой вечеринке в списке имя её создателя:
 
-Add a line that displays the user information to the parties list in `parties-list.html`,
-so it will look like this:
+Добавьте строку, которая выводит пользовательскую информацию о списке в `parties-list.html`, она будет выглядеть так:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="13.5"}}
 
-And define `getPartyCreator` function in the `partiesList` component:
+Определите функцию `getPartyCreator` в компоненте `partiesList`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="13.6"}}
 
-As you can see, we are using the `Meteor.users` collection here but we haven't made sure that we are subscribing to it
-(If we visited the `partyDetails` controller before getting here, `partyDetails` controller would subscribe to the Meteor.users collection,
-but if we weren't, we would get an empty array in Meteor.users).
+Как видите, мы используем коллекцию `Meteor.users` здесь, но мы не убедились, что мы подписаны к ней 
+(Если бы мы посетили контроллер `partyDetails` перед этим, тогда бы контроллер `partyDetails` бы подписал на коллекцию Meteor.users, но если бы мы не были там, то получили бы пустой массив в Meteor.users).
 
-So let's add a subscription to `users` in the list component as well:
+Добавим подписку к пользователям `users` в списке компонентов:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="13.7"}}
 
-Now we get the user object to the HTML. But we want his name, so let's put the `displayName` filter on that as well:
+Получим пользовательский объект в HTML. Нам нужно также его имя, поэтому добавим фильтр `displayName` в него:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="13.8"}}
 
-# Summary
+# Итоги
 
-In this chapter we learned about Angular 1 filters and how easy they are to use and to read from the HTML.
+В этой части мы познакомились с фильтрами Angular 1 и узнали как легки они в использовании и чтении из HTML.
 
-In the next step we will learn about Meteor methods, which enables us to run custom logic in the server, beyond the Mongo API and the allow/deny methods.
+На следующем этапе мы познакомимся с методами Meteor, которые позволяют запускать кастомную логику в сервере, над Mongo API и методами allow/deny.
 
 {{/template}}

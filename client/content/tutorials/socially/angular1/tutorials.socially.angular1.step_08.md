@@ -71,53 +71,53 @@
 
   Пользователь userId хочет обновить документ doc. (doc - это текущая версия документа из базы данных, без предложенного обновления). Возвращает true при разрешении изменений.
 
-  fieldNames - это массив (top-level) полей в doc that the client wants to modify, for example ['name', 'score'].
+  fieldNames - это массив (top-level) полей в doc, которые хочет поменять пользователь например ['name', 'score'].
 
-  modifier is the raw Mongo modifier that the client wants to execute; for example, {$set: {'name.first': "Alice"}, $inc: {score: 1}}.
+  modifier это также чистый Mongo подификатор, который хочет выполнить клиент, например {$set: {'name.first': "Alice"}, $inc: {score: 1}}.
 
-  Only Mongo modifiers are supported (operations like $set and $push). If the user tries to replace the entire document rather than use $-modifiers, the request will be denied without checking the allow functions.
+  Поддерживаются только Mongo модификаторы (операции типа $set и $push). Если пользователь пытается заменить весь документ вместо использования $-modifiers, запрос будет запрещён без проверки фукнций разрешения.
 
 * `remove(userId, doc)`
 
-  The user userId wants to remove doc from the database. Return true to permit this.
+  Пользователь userId хочет удалить doc из базы данных. Возвращает true для разрешения.
 
 
-In our example:
+В нашем примере:
 
-* insert - only if the user who makes the insert is the party owner.
-* update - only if the user who makes the update is the party owner.
-* remove - only if the user who deletes the party is the party owner.
+* insert - только если пользователь, который вставляет вечеринку, владелец вечеринки.
+* update - только если пользователь, который обновляет вечеринку, владелец вечеринки.
+* remove - только если пользователь, который удаляет вечеринку, владелец вечеринки.
 
 
-OK, right now none of the parties has an owner so we can't change any of them.
+Отлично, сейчас у наших вечеринок есть владелец, поэтому мы не можем их менять. 
 
-So let's add the following simple code to define an owner for each party that gets created.
+Давайте добавим следующий простой код для определения владельца каждой создаваемой вечеринки.
 
-We can use `Meteor.userId()` method which returns the current user id. 
+Мы можем использовать метод `Meteor.userId()`, который возвращает текущий пользовательский id. 
 
-We will use this id that add it to our new party:
+Мы будем использовать этот id, который добавляет его к нашей новой вечеринке:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="8.7"}}
 
-So first we set the new party's owner to our current user's id and then insert it to the parties collection like before.
+Во-первых назначим нового владельца вечеринки к нашему id и далее вставим коллекцию вечеринок как ранее.
 
-Now, start the app in 2 different browsers and login with 2 different users.
+Теперь запустим приложение в двух разных браузерах и войдём двумя разными пользователями.
 
-Test editing and removing your own parties, and try to do the same for parties owned by another user.
+Протестируем редактирование и удаление наших вечеринок и попробуем сделать то же для вечеринок другим пользователем.
 
-# Social login
+# Вход через социальные службы
 
-We also want to let users login with their Facebook and Twitter accounts.
+Также мы ходим, чтобы пользователи логинились через свои Facebook и Twitter аккаунты.
 
-To do this, we simply need to add the right packages in the console:
+Для этого нужно просто добавить нужные пакеты из консоли:
 
     meteor add accounts-facebook accounts-twitter
 
-Now run the app.  when you will first press the login buttons of the social login, meteor will show you a wizard that will help you define your app.
+Теперь запустите приложение, как только вы нажмёте login кнопки соцвхода, meteor покажет вам мастера, который поможет определить ваше приложение.
 
-You can also skip the wizard and configure it manually like the explanation here: [http://docs.meteor.com/#meteor_loginwithexternalservice](http://docs.meteor.com/#meteor_loginwithexternalservice)
+Можете также пропустить мастера и сконфигурировать это вручную, как описано здесь: [http://docs.meteor.com/#meteor_loginwithexternalservice](http://docs.meteor.com/#meteor_loginwithexternalservice)
 
-There are more social login services you can use:
+Существует множество соцсервисов, которые можете использовать:
 
 * Facebook
 * Github
@@ -128,38 +128,37 @@ There are more social login services you can use:
 * Meteor developer account
 
 
-# Authentication With Routers
+# Авторизация с помощью маршрутов
 
-Now that we prevented authorized users from changing parties they don't own,
-there is no reason for them to go into the party details page.
+Теперь у нас авторизованые пользователи не могут менять вечеринки, которыми они не владеют, и нет для них необходимости переходить на страницу деталей вечеринки.
 
-We can easily prevent them from going into that view using our routes.
+Мы можем легко запретить им это делать через использование маршрутов.
 
-We will use Meteor's API again, and we will use AngularJS `$q` to easily create promises.
+Будем использовать API Метеора снова, а также AngularJS `$q` для легкого создания промисов.
 
-Our promise will resolve it there is a user logged in, and otherwise we will reject it.
+Наш промис будет решать залогинен ли пользователь и если нет, то отказывать ему в доступе.
 
-We are going to use the [resolve](https://github.com/angular-ui/ui-router/wiki#resolve) object of ui-router and ngRoute:
+Мы собираемся использовать объект [resolve](https://github.com/angular-ui/ui-router/wiki#resolve) наших ui-router и ngRoute:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="8.9"}}
 
-Now, if a user is not logged in to the system, it won't be able to access that route.
+Теперь, если пользователь не залогинен в систему, у него не будет доступа к этому маршруту.
 
-We also want to handle that scenario and redirect the user to the main page.
+Также нам нужно обработать этот сценарий и перенаправить пользователя на главную страницу.
 
-on the top of the routes file, let's add these lines (the `run` block), and we will also add a "reason" for the `reject()` call, to detect if it's our reject that cause the route error.
+Наверху файла маршрутов, давайте добавим эти строчки (блок `run`) и мы также добавим "причину" для вызова `reject()` для определения или это наш reject вызвал ошибку маршрута.
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="8.10"}}
 
-# Summary
+# Итоги
 
-Amazing, only a few lines of code and we have a secure application!
+Удивительно, только пара строчек кода и у нас уже безопастное приложение!
 
-Please note it is possible for someone with malicious intent to override your route on the client (in the client/routes.js). 
-As that is where we are validating the user is authenticated, they can remove the check and get access.
-You should never restrict access to sensitive data, sensitive areas, using the client router.  
-This is the reason we also made restrictions on the server using the allow/deny functionality, so even if someone gets in they cannot make updates.
-While this prevents writes from happening from unintended sources, reads can still be an issue.
-The next step will take care of privacy, not showing users parties they are not allowed to see.
+Обратите внимание, что кто-то с вредными намерениями может перезаписать ваш маршрут в клиенте (в файле client/routes.js). 
+Так как там мы проверяем авторизацию пользователя, то они могут убрать проверку и получить доступ.
+Вы никогда не должны ограничивать доступ к важным данным или областям, используя клиентский маршрутизатор.
+По этому причине мы также ввели ограничения на сервере, используя allow/deny функциональность, поэтому, если кто-то получит их, то не сможет делать обновления.
+Несмотря на то, что это предотвращает запись в незапланированные источники, чтение из них по-прежнему возможно.
+В следующем шаге мы позаботимся о безопастности, убрав из показа вечеринки для пользователей, которые не должны их видеть.
 
 {{/template}}

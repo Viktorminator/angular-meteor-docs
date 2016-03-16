@@ -1,117 +1,116 @@
 {{#template name="tutorials.socially.angular1.step_11.md"}}
 {{> downloadPreviousStep stepName="step_11"}}
 
-So far, we've been building our app and testing only in a web browser,
-but Meteor has been designed to work across different platforms - your socially website can become an iOS or Android app in just a few commands.
+Таким образом мы создали наше приложение и тестировали его только в веб-браузере, но Meteor был разработан кроссплатформенным - ваш социальный вебсайт может стать iOS или Android приложением с помощью всего лишь пары команд.
 
-## Angular 1 initialization
+## Angular 1 инициализация
 
-Before we set up PhoneGap (which is super simple with Meteor) we will need to make a small adjustment in our Angular 1 app initialization:
+Перед тем, как мы установим PhoneGap (что очень просто в Meteor) нам нужно сделать кое-какие изменения в нашей Angular 1 инициализации приложения:
 
-In `app.js` file, we will manually bootstrap our Angular 1 app according to the right platform:
+В файле `app.js` мы вручную отбутстрапим наше Angular 1 приложение к правильной платформе:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="11.1"}}
 
-And then we will remove
+И далее мы уберём
 
     ng-app="socially"
 
-from `index.html`:
+из `index.html`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="11.2"}}
 
 ## PhoneGap
 
-Meteor makes it easy to set up all of the tools required to build mobile apps, but downloading all of the programs can take a while - for Android the download is about 300MB and for iOS you need to install Xcode which is about 2GB.
-If you don't want to wait to download these tools, feel free to skip to the [next step](/tutorial/step_12).
+Meteor упрощает установку всех необходимых инструментов для  создания мобильных приложений, но загрузка всех програм займёт много времени - Android загрузка будет около 300MB и для iOS вам нужно установить Xcode, который занимает 2GB.
+Если вы не хотите ждать загрузки этих инструментов - можете пропустить и перейти к [следующему шагу](/tutorial/step_12).
 
-### Running on an Android emulator
+### Запуск на эмуляторе Android
 
-Follow this [instruction](https://github.com/meteor/meteor/wiki/Mobile-Development-Install:-Android-on-Mac) to install all of the necessary tools to build an Android app from your project.
+Следуйте этим [инструкциям](https://github.com/meteor/meteor/wiki/Mobile-Development-Install:-Android-on-Mac) для установки всех необходимых инструментов для построения Android приложения из вашего проекта.
 
-When you are done installing everything, type:
+Когда вы закончили всю установку, наберите:
 
     meteor add-platform android
 
-After you agree to the license terms, type:
+Когда вы согласитесь с правилами использования лицензии, запустите:
 
     meteor run android
 
-After some initialization, you will see an Android emulator pop up, running your app inside a native Android wrapper.
-The emulator can be somewhat slow, so if you want to see what it's really like using your app, you should run it on an actual device.
+После всяких инициализаций, вы увидите как появится окно эмулятора Android, запустите ваше приложение всередине нативной Android оболочки.
+Эмулятор может немного тормозить, поэтому если вы хотите увидеть как всё работает в реальности, то вам нужно использовать реальное устройство.
 
-### Running on an Android device
+### Запуск приложения Android
 
-First, complete all of the steps above to set up the Android tools on your system.
-Then, make sure you have USB Debugging enabled on your phone and the phone is plugged into your computer with a USB cable.
-Also, you must quit the Android emulator before running on a device.
+Во-первых, завершите все ваши шаги приведеные выше для установки Android инструментов на вашей системе.
+Далее убедитесь, что у вас разрешена USB Debugging на вашем телефоне и телефон подключён к компьютеру USB кабелем.
+Также вы должы выйти из Android эмулятора перед запуском на устройстве.
 
-Then, run the following command:
+Дальше запустите команду:
 
     meteor run android-device
 
-The app will be built and installed on your device. If you want to point your app to the server you deployed in the previous step, run:
+Приложение будет построено и установлено на ваше устройство. Если вы хотите перенаправить его на сервер, который вы запустили в предыдущем этапе, запустите:
 
     meteor run android-device --mobile-server my_app_name.meteor.com
 
-### Running on an iOS simulator (Mac Only)
+### Запуск симулятора iOS (только для Mac)
 
-If you have a Mac, you can run your app inside the iOS simulator.
+Если у вас есть Mac, то вы можете запустить iOS симулятор.
 
-Follow this [instruction](https://github.com/meteor/meteor/wiki/Mobile-Development-Install:-iOS-on-Mac) to run you through the setup necessary to build an iOS app from your project.
+Следуйте этой [инструкции](https://github.com/meteor/meteor/wiki/Mobile-Development-Install:-iOS-on-Mac) для построения iOS приложения из вашего проекта.
 
-When you're done, type:
+Как закончите наберите:
 
     meteor add-platform ios
     meteor run ios
 
-You will see the iOS simulator pop up with your app running inside.
+Вы увидите как запустится iOS симулятор с вашим приложением внутри.
 
-### Running on an iPhone or iPad (Mac Only; requires Apple developer account)
+### Запуск iPhone или iPad (Только Mac; требует аккаунт Apple developer)
 
-If you have an Apple developer account, you can also run your app on an iOS device. Run the following command:
+Если у вас есть Apple developer аккаунт, то вы можете также запустить ваше приложение на iOS устройстве. Запустите следующую команду:
 
     meteor run ios-device
 
-This will open Xcode with a project for your iOS app. You can use Xcode to then launch the app on any device or simulator that Xcode supports.
+Это откроет Xcode с проектом для вашего iOS приложения. Вы можете использовать Xcode для запуска приложения на любом устройстве или симуляторе, который поддерживает Xcode.
 
-If you want to point your app at the previously deployed server, run:
+Если вы хотите направить ваше приложение на уже размещённый сервер, то запустите:
 
     meteor run ios-device --mobile-server my_app_name.meteor.com
 
-Now that we have seen how easy it is to deploy our app and run it on mobile, let's get to adding some more features.
+Теперь видите как легко размещать наше приложение и запускать его на мобильных устройствах. Давайте добавим пару функций!
 
-### Submit your Android app to the Play Store:
+### Отправка вашего Android приложения в Play Store:
 
 [https://github.com/meteor/meteor/wiki/How-to-submit-your-Android-app-to-Play-Store](https://github.com/meteor/meteor/wiki/How-to-submit-your-Android-app-to-Play-Store)
 
-### Submit your iOS app to the App Store:
+### Отправка вашего iOS приложения в App Store:
 
 [https://github.com/meteor/meteor/wiki/How-to-submit-your-iOS-app-to-App-Store](https://github.com/meteor/meteor/wiki/How-to-submit-your-iOS-app-to-App-Store)
 
-# Summary
+# Итоги
 
-Now you can see how easy and amazing it is to work with Meteor and PhoneGap together.
+Теперь вы знаете как легко работать с Meteor и PhoneGap.
 
-But that's just the start - because of Meteor's hot code push, after you deploy your app to the stores, once you update your code, all your apps are
-instantly updated, no need to go through the stores update process!
+Это только начало, так как существует ещё горячий пуш кода уже после того как вы разместили ваше приложение в магазины, после того, как вы обновили ваш код, все приложения немедленно обновляются, нет необходимости снова проходить процесс обновления в магазинах!
 
-More more detailed information:
+Более детальная информация:
 
 * [https://github.com/meteor/meteor/wiki/Meteor-Cordova-Phonegap-integration](https://github.com/meteor/meteor/wiki/Meteor-Cordova-Phonegap-integration)
 
-# Troubleshoot
+# Решение проблем
 
-If your application does not work for any reason, first try running meteor with the verbose flag in order to get more information about your launch. In order to do that, run the following command:
+Если ваше приложение не работает по какой-то причине, попытайтесь запустить meteor с флагом verbose с целью получить больше информации про ваш запуск. С этой целью запустите следующую команду:
 
     meteor run ios --verbose
-    Note: You can also run it with "android" platform.
 
-The following are solution for common issues we encountered:
+Заметка: Вы тоже саоме можете сделать с платформой "android".
 
-### Emulator starts, but the application does not launch
-This issue caused because of permissions issue that prevents from Cordova to launch the APK/APP on the simulator.
-Usually you will see on the verbose log these errors:
+Дальше идут решения общих проблем, которые у нас возникли:
+
+### Эмулятор стартует, но приложение не запускается
+Эта проблема возникает из-за проблем в доступах, которое мешает Cordova запустить APK/APP на симуляторе.
+Обычно увидите это в логе ошибок:
 
     "Timed out waiting for device to boot"
     "You may not have the required environment or OS to run this project"
@@ -126,7 +125,7 @@ In order to fix that issue you will need to fix the permission by running these 
 
     Replace YOUR_PROJECT_FOLDER with your project folder and YOUR_USERNAME with the user you use to run the "meteor run" command.
     
-### ERROR whitelist rejection while running on iOS
+### ERROR whitelist rejection при запуске на iOS
 
 * Create `mobile-config.js` and add `App.accessRule('*');`
 * Re-run meteor

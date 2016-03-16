@@ -1,25 +1,25 @@
 {{#template name="tutorials.socially.angular1.step_10.md"}}
 {{> downloadPreviousStep stepName="step_10"}}
 
-Now that we have a working app, we can go public!
-Meteor makes it really easy to put an app up on the internet where other people can use it.
+Теперь у нас есть рабочее приложение и мы можем его опубликовать!
+Meteor облегчает процес публикации приложения в интернете.
 
-Simply type in the command line of your app directory
-(replace `myappname` with your own name and make sure there is no existing site already deployed in the same address):
+Просто введите в командной строке вашего приложения
+(замените `myappname` вашим собственным именем и убедитесь, что уже нет под этим именем размещённого приложения):
 
     meteor deploy myappname.meteor.com
 
-Once you answer all of the prompts and the upload completes, you can go to `http://myappname.meteor.com` and use your app from anywhere.
+После завершения всех запросов и загрузок вы сможете перейти по адресу `http://myappname.meteor.com` и использовать ваше приложение онлайн.
 
-Try opening the app on multiple devices such as your phone and your friend's computer.
-Add, remove, and invite some parties and you will see that the UI of your app is really fast.
-That's because Meteor doesn't wait for the server to respond before updating the interface - thanks to Meteor's latency compensation mechanism.
+Попробуйте открыть приложение на различных устройствах, на телефоне, компьютере отца.
+Добавьте, удалите и создайте пару вечеринок и вы увидите, что UI вашего приложения потрясающе быстр.
+Так происходит, так как Meteor не ждёт ответа сервера перед обновлением интерфейся - благодаря механизму компенсации задержки в Meteor.
 
-# Summary
+# Итоги
 
-Congratulations, you've made a working app that you can now use with your friends!
+Поздравления, у вас теперь рабочее приложение, которое можете использовать вместе с вашими  друзьями!
 
-Now, we'll take a detour to see that while we were building a web app, we also created a pretty nice mobile app along the way.
+Теперь узнаем, что пока мы делали веб приложение, мы также создали отличное мобильное приложение.
 
 {{/template}}
 

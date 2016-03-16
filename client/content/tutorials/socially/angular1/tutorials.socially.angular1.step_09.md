@@ -2,131 +2,131 @@
 {{> downloadPreviousStep stepName="step_08"}}
 
 
-Publish and subscribe to data is very different from other methods, such as using REST APIs. So don't miss the articles in the section below for deeper understanding how they work. 
+Публикация и подписка на данные очень отличается от других методов, как например от REST API. Поэтому не пропустите ниженаписанное для более глубокого понимания их работы.
 
 
-Right now our app has no privacy, every user can see all the parties on the screen.
+Сейчас в приложении не настроены частные разделы, поэтому пользователь может видеть все вечеринки.
 
-So let's add a `public` flag on parties - if a party is public we will let anyone see it, but if a party is private, only the owner can see it.
+Добавим флаг `public` для вечеринок - если какая-то вечеринка публичная, то каждый сможет её увидеть, если частная - только владелец.
 
-First we need to remove the `autopublish` Meteor package.
+Сперва нужно удалить пакет `autopublish`.
 
-`autopublish` is added to any new Meteor project. It pushes a full copy of the database to each client.
-It helped us until now, but it's not so good for privacy...
+`autopublish` добавляется автоматически к каждому проекту Метеор. Он отдаёт полную копию базы данных к каждому клиенту.
+Он помогал нам прежде, но он не настолько хорош для частных разделов...
 
-Write this command in the console:
+Напишите эту команду в консоли:
 
     meteor remove autopublish
 
 
-Now run the app.   You can't see any parties.
+Теперь запустите приложение. Вы не увидите вечеринок.
 
-So now we need to tell Meteor what parties should it publish to the clients.
+Теперь нужно сообщить Meteor, что вечеринки должны быть опубликованы для клиентов.
 
-To do that we will use Meteor's [publish function](http://docs.meteor.com/#/full/meteor_publish).
+Сделаем это с помощью [publish функций Meteor](http://docs.meteor.com/#/full/meteor_publish).
 
-Publish functions should go only in the server so the client won't have access to them.
+Функции публикации должны выполняться только на сервере, поэтому клиент не будет иметь к ним доступа.
 
-Let's create a new file named `parties.js` inside the server folder.
+Создадим новый файл, с имененм `parties.js` всередине папки server.
 
-Inside the file insert this code:
+Вставим в него этот код:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="9.2"}}
 
-Let's see what's happening here:
+Давайте посмотрим, что произошло:
 
-* We have `Meteor.publish` - a function to define what to publish from the server to the client
-* The first parameter is the name of the subscription. The client will subscribe to that name
-* The second parameter is a function that defines what will be returned in the subscription
+* У нас есть `Meteor.publish` - функция для определения что публиковать от сервера клиенту
+* Первый параметр - это название подписки. Клиент будет подписан на это имя
+* Второй параметр - это функция, которая определяет, что возвратится в подписке
 
-You can find out more about MongoDB `find()` method [here](http://docs.mongodb.org/manual/reference/method/db.collection.find/)
+Вы можете познакомиться подробнее с MongoDB методом `find()` [здесь](http://docs.mongodb.org/manual/reference/method/db.collection.find/)
 
-That function will determine what data will be returned and the permissions needed.
+Эта функция определит какие данные будут возвращены и какие нужны разрешения.
 
-In our case the first name parameter is **"parties"**. So we will need to subscribe to the **"parties"** collection in the client, so let's do it, using `this.subscribe` method:
+В нашем случае первый параметр - это **"parties"**. Поэтому нам нужно подписаться на коллекцию **"parties"** в клиенте, давайте сделаем это используя метод `this.subscribe`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="9.3"}}
 
-> Our publish function can also take parameters.  In that case, we would also need to pass the parameters from the client.
+> Наша функция публикации также берёт параметры. В этом случае нам также нужно передавать параметры из клиента.
 
-> For more information about the `subscribe` service [click here](/api/reactive-context)
+> Для подробной информацией по сервису `subscribe` [перейдите сюда](/api/reactive-context)
 
-In the second parameter of the publish function, we define a function uses the Mongo API to return the wanted documents (document are the JSON-style data structure of MongoDB).
+Во втором параметры функции публикации, мы определяем функцию использующую Mongo API для возврата необходимых документов (документы в базе данных Mongo храняться в JSON-формате).
 
-So we create a query on the Parties collection.
+Создадим запрос коллекции Parties.
 
-Inside the find method we use the [$or](http://docs.mongodb.org/manual/reference/operator/query/or/), [$and](http://docs.mongodb.org/manual/reference/operator/query/and/) and [$exists](http://docs.mongodb.org/manual/reference/operator/query/exists/) Mongo operators to pull our wanted parties:
+Всередине метода find мы будем использовать [$or](http://docs.mongodb.org/manual/reference/operator/query/or/), [$and](http://docs.mongodb.org/manual/reference/operator/query/and/) и [$exists](http://docs.mongodb.org/manual/reference/operator/query/exists/) Mongo операторы для получения необходимых вечеринок:
 
-Either that the owner parameter exists and it's the current logged in user (which we have access to with the command `this.userId`), or that the party's public flag exists and it's set as true.
+Если наш параметр пользователя существует и это текущий залогиненный пользователь (к которому у нас есть доступ через команду `this.userId`) или флаг вечеринки public существует и установлен в true.
 
-So now let's add the public flag to the parties and see how it affects the parties the client gets.
+Давайте добавим флаг public к вечеринкам и увидим как он влияет на вывод вечеринок к клиенту.
 
-Let's add a checkbox to the new party form in `parties-list.html`:
+Добавим чекбокс к новой форме вечеринки в `parties-list.html`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="9.4"}}
 
-Notice how easy it is to bind a checkbox to a model with Angular 1!
+Обратите внимание на лёгкость связывания чекбокса и модели с помощью Angular 1!
 
-Let's add the same to the `party-details.html` page:
+Проделаем то же самое со страницей `party-details.html`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="9.5"}}
 
-And we will add the ability to set this flag when updating a party details:
+Мы добавим возможность устанавливать этот флаг при обновлении деталей вечеринки:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="9.6"}}
 
-Now let's run the app.
+Запустим теперь приложение:
 
-Log in with 2 different users in 2 different browsers (you can use 2 different browsers, such as Chrome and Firefox, or use the anonymous mode on the same browser - e.g. incognito mode on Chrome, private browsing in Firefox or inPrivate mode in Edge).
+Войдите 2 разными пользователями через 2 браузера (вы можете использовать 2 разных браузера, например, Chrome и Firefox или использовать анонимный режим в том же браузере, например, инкогнито в Chrome, private browsing в Firefox или inPrivate режим в Edge).
 
-In each of the users create a few public parties and a few private ones.
+В каждом пользователе создайте несколько публичных и несколько частных вечеринок.
 
-Now log out and see which user sees which parties.
+Теперь разлогинтесь и посмотрите какой пользователь видит какие вечеринки.
 
 
-In the next step, we will want to invite users to private parties. For that, we will need to get all the users, but only their emails without other data which will hurt their privacy.
+На следующем шаге, мы пригласим пользователей к частным вечеринкам. Для этого нам нужно добавить всех пользователей. Но только их emails без других данных, которые могут затронуть их приватность.
 
-So let's create another publish method for getting only the needed data on the user.
+Давайте создадим ещё один метод публикации для получения только необходимых данных пользователя.
 
-Notice the we don't need to create a new Meteor collection like we did with parties. **Meteor.users** is a pre-defined collection which is defined by the [meteor-accounts](http://docs.meteor.com/#accounts_api) package.
+Обратите внимание, что нам  не нужно создавать новую коллекцию Метеор как мы делали для вечеринок. **Meteor.users** - это предопределённая коллекция, которая определена пакетом [meteor-accounts](http://docs.meteor.com/#accounts_api).
 
-So let's start with defining our publish function.
+Давайте начнём с определения наших функций публикации.
 
-Create a new file under the `server` folder named `users.js` and place the following code in:
+Создайте новый файл в папке `server` с именем `users.js` и поместите туда код:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="9.7"}}
 
-So here again we use the Mongo API to return all the users (find with an empty object) but we select to return only the emails and profile fields.
+Снова мы использовали Mongo API для выдачи всех пользователей (find с пустым объектом) но мы выбрали к выдаче только email и поля профиля.
 
-* Notice that each object (i.e. each user) will automatically contain its `_id` field.
+* Обратите внимание, что каждый объект (польователь, например) будет содержать поля `_id`.
 
-The emails field holds all the user's email addresses, and the profile might hold more optional information like the user's name
-(in our case, if the user logged in with the Facebook login, the accounts-facebook package puts the user's name from Facebook automatically into that field).
+Поля email содержат все адреса email пользователей и профиль может содержать больше информации, например, имя пользователя (в нашем случае
+если пользователь залогинен с помощью Facebook аккаунта, то пакет accounts-facebook возьмёт из Facebook имя автоматически в это поле).
 
-Now let's subscribe to that publish Method.  In the `partyDetails` component file add the following line inside the controller:
+Давайте подпишемся на этот метод публикации. В файле компонента `partyDetails` добавьте следующую строку всередине контроллера:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="9.8"}}
 
-* We subscribed to the `users` publication
-* We added a helper function to the `users` collection
+* Мы подписались к публикации `users`
+* Мы добавили функцию-хелпер к коллекции `users`
 
-Now let's add the list of users to the view to make sure it works.
+Давайте добавим список пользователей к отображению, чтобы убедится, что оно работает.
 
-Add this ng-repeat list to the end of `party-details.html`:
+Добавим этот ng-repeat список в конец `party-details.html`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="9.10"}}
 
-Also, let's add a subscription to the `parties` in this Component as well, in case we will laod the app directly from this Component before loading the parties-list Component:
+Также давайте добавим подписку к `parties` в этом компоненте, в том случае, если мы будем загружать приложение прямо в этом компоненте пред загрузкаой компонента parties-list:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="9.9"}}
 
-Run the app and see the list of all the users' emails that created a login and password and did not use a service to login.
+Запустите приложение и вы увидите список email клиентов, которые создали логин и пароль, но не использовали сервис для входа.
 
-# Working with Users collection in the client side
+# Работа с коллекциями пользователей Users на клиенской стороне
 
-Note that the structure of the Users collection is different between regular email-password, Facebook, Google etc.
+Обратите внимание, что структура коллекции Users отличается от обычной email-password, Facebook, Google и т.д.
 
-The Document structure looks like this (notice where the email is in each one):
+Структура документа выглядит так (обратите внимание, где находятся email каждого ряда):
 
 __`Email-Password`:__
 
@@ -216,27 +216,25 @@ __`Google`:__
     }
 
 
-Right now it means that the emails of the users that logged in with with email-password will be displayed.
+Прямо сейчас это значит, что email залогиненных пользователей с помощью email-пароля будут отображены.
 
-In the chapter of Angular 1 filters we will change the display code to show all emails.
+В главе "Angular 1 фильтры" мы поменяем код вывода для показа всех email.
 
 
-# Understanding Meteor's Publish-Subscribe
+# Понимание публикация-подписка
 
-It is very important to understand Meteor's Publish-Subscribe mechanism so you don't get confused and use it to filter things in the view!
+Важно понять механизм Метеора публикация-подписка, чтобы вы не путались и использовали его в фильтрах отображения!
 
-Meteor accumulates all the data from the different subscription of a collection in the client, so adding a different subscription in a different
-view won't delete the data that is already in the client.
+Meteor включает все данные из различных подписок коллекций в клиенте, поэтому добавление другой подписки в другом отображении не удалит данные, которые уже находятся в клиенте.
 
-More information about publications and subscription in [this blog article](https://medium.com/angular-meteor/coll-pub-sub-with-angular-meteor-cb13fe48f570) and this  [meteorpedia article](http://www.meteorpedia.com/read/Understanding_Meteor_Publish_and_Subscribe).
+Подробная информации о публикациях и подписках находится [в этой статье](https://medium.com/angular-meteor/coll-pub-sub-with-angular-meteor-cb13fe48f570) и в этой [meteorpedia статье](http://www.meteorpedia.com/read/Understanding_Meteor_Publish_and_Subscribe).
 
-# Summary
+# Итоги
 
-We've added the support of privacy to our parties app.
+Мы добавили поддержку частных разделов в нашем приложении.
 
-We also learned how to use the `Meteor.publish` command to control permissions and the data sent to the client
-and how to subscribe to it with the $meteor.collection subscribe function.
+Также мы научились, как использовать команду `Meteor.publish` для управления разрешениями и данными, отправляемыми клиенту и как подписываться к ним с помощью функции $meteor.collection.
 
-In the next step we will learn how to deploy. You will see that Meteor makes it easy to put the application online.
+На следующем шаге мы научимся разворачивать приложение. Вы увидите как легко развернуть онлайн приложение Meteor.
 
 {{/template}}

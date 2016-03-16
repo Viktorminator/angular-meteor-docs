@@ -1,208 +1,203 @@
 {{#template name="tutorials.socially.angular1.step_12.md"}}
 {{> downloadPreviousStep stepName="step_11"}}
 
-Currently we are dealing with only a few parties, but we also need to support a large number of parties.
+Сейчас мы работаем только с несколькими вечеринками, но что нужно сделать для поддержки их большего количества.
 
-Therefore, we want to have `pagination` support.
+То есть нам нужна поддержка `пагинации`.
 
-With pagination we can break the array of parties down to pages so the user won't have to scroll down to find a party,
-but also, and even more importantly, we can fetch only a few parties at a time instead of the entire parties collection for better performance.
+С пагинацией мы можем разбить массив вечеринок на страницы, таким образом пользователю не нужно будет прокручивать вниз для поиска вечеринки.
+И также, что более важно, мы можем получить только несколько вечеринок за раз, вместо всей коллекции вечеринок для большей производительности.
 
-The interesting thing about pagination is that it is dependent on the filters we want to put on top of the collection. 
-For example, if we are in page 3, but we change how we sort the collection, we should get different results. 
-Same thing with search: if we start a search, there might not be enough results for 3 pages.
+Интересно что пагинация зависит от фильтров, которые мы хотим  положить на верх коллекций.
+Например, если мы на странице 3, но хотим поменять направление сортировки коллекций, мы должны получить другие результаты.
+То же самое с поиском: если мы начинаем поиск, то может быть не достаточно результатов на 3х страницах.
 
-For Angular 1 developers this chapter will show how powerful Meteor is.
-In the official Angular 1 tutorial, we added sorting and search that only worked on the client side, which in real world scenarios is not very helpful.
-Now, in this chapter we are going to perform a real-time search, sort and paginate that will run all the way to the server.
+Для Angular 1 разработчиков эта глава покажет насколько мощным является Meteor.
+В официальном уроке Angular 1 мы добавили сортировку и поиск, который работает только на клиенте, что в реальном примере не очень поможет.
+Теперь в этой главе нам нужно осуществлять поиск в реальном времени, сортировку и пагинацию, которая будет работать и на сервере.
 
-# angular-meteor pagination support
+# angular-meteor поддержка пагинации
 
-What we want to achieve with angular-meteor is *server-based reactive pagination*.
-That is no simple task, but using angular-meteor could make life a lot simpler.
+Что нам нужно сделать, так это angular-meteor *серверную реактивную пагинацию*.
+Это не простая задача, но использование angular-meteor может намного упростить жизнь.
 
-To achieve server-based reactive pagination we need to have support for pagination on the server as well as on the client.
-This means that our publish function for the parties collection would have to change and so does the way that we subscribe to that publication.
-So first let's take care of our server-side:
+Чтобы реализовать серверную реактивную пагинцию нам нужно иметь поддержку на сервере, а также на клиенте.
+Это значит, что наши функции публикации для коллекций вечеринок будут меняться и таким образом, что мы подпишимся на эту публикацию.
+Давайте пока разберёмся с серверной стороной:
 
-In our `parties.js` file in the server directory we are going to add the `options` variable to the publish method like this:
+В нашем файле `parties.js` в папке server мы собираемся добавить переменную `options` для метода публикации, например так:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.1"}}
 
-Now our publish method receives an options argument which we then pass to the `Parties.find()` function call.
-This will allow us to send arguments to the find function's modifier right from the subscribe call. The options object can
-contain properties like `skip`, `sort` and `limit` which we will shortly use ourselves - [Collection Find](http://docs.meteor.com/#/full/find).
+Теперь наш метод публикации получает аргумент опций, который мы затем передаём в вызов функции `Parties.find()`.
+Это позволит нам отсылать параметры в модификатор функции find прямо перед вызовом подписки. Объект с параметрами может содержать такие свойства как `skip`, `sort` и `limit`, которые мы скоро будем использовать - [подробнее о Collection Find](http://docs.meteor.com/#/full/find).
 
-Let's get back to our client code. We now need to change our subscribe call with options we want to set for pagination.
-What are those parameters that we want to set on the options argument? In order to have pagination in our
-parties list we will need to save the current page, the number of parties per page and the sort order. So let's add these parameters to our component in `parties-list.component.js` file.
+Вернёмся к нашему клиентскому коду. Нам нужно добавить в наш вызов о подписке опции, которые мы хотим установить для пагинации.
+Что же это будут за опции? Для пагинации нам нужно в нашем списке вечеринок сохранить текущую страницу, количество вечеринок на странице и порядок сортировки. Давайте добавим эти параметры к нашему компоненту в файле `parties-list.component.js`.
 
-We will `perPage`, `page` and `sort` variables will later effect our subscription and we want the subscription to re-run every time one of them changes.
+Мы добавим переменные `perPage`, `page` и `sort`, которые потом повлияют на нашу подписку и мы хотим, чтобы подписка перезапускалась каждый раз как одна из них меняется.
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.2"}}
 
-Right now, we just use `subscribe` without any parameters, but we need to provide some arguments to the subscriptions.
+Прямо сейчас мы просто будем использовать `subscribe` без каких-либо параметров, но нам нужно задать некоторые аргументы для подписок.
 
-In order to do that, we will add a second parameter to the `subscribe` method, and we will provide a function that returns an array of arguments for the subscription.
+С этой целью мы добавим второй параметр к методу `subscribe` и мы обеспечим функцию, которая возвратит массив аргументов для подписки.
 
-We will use `getReactively` in order to get the current value, and this will also make them Reactive variables, and every change of them will effect the subscription parameters.
+Мы будем использовать `getReactively` с целью получения текущего значения и это сделает их также реактивными переменными и каждое их изменнение будет влиять на параметры подписки.
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.3"}}
 
-That means that `this.page` and `this.sort` are now reactive and Meteor will re-run the subscription every time one of them will change. 
+Это значит, что `this.page` и `this.sort` теперь являются реактивными и Meteor будет перезапускать подписку каждый раз, когда одна из них изменится.
 
-Now we've built an object that contains 3 properties:
+Теперь мы создадим объект, который содержит 3 свойства:
 
-* **limit** - how many parties to send per page
-* **skip**  - the number of parties we want to start with, which is the current page minus one, times the parties per page
-* **sort**  - the sorting of the collection in [MongoDB syntax](http://docs.mongodb.org/manual/reference/method/cursor.sort/)
+* **limit** - сколко вечеринок отправлять за страницу
+* **skip**  - количество вечеринок для начала, это текущая страница минус один, количество вечеринок на странице
+* **sort**  - сортировка коллекции в [MongoDB синтаксисе](http://docs.mongodb.org/manual/reference/method/cursor.sort/)
 
-Now we also need to add the sort modifier to the way we get the collection data from the Minimongo.
-That is because the sorting is not saved when the data is sent from the server to the client.
-So to make sure our data is also sorted on the client, we need to define it again in the parties collection.
+Также нам необходимо добавить модификатор сортировки, чтобы получить данные коллекции из Minimongo.
+Это нужно сделать, так как сортировка не сохраняется, когда данные отправляются из сервера к клиенту.
+Чтобы убедиться, что данные также отсортированы в клиенте, нам нужно это определить в коллекции вечеринок.
 
-To do that we are going to add the `sort` variable, and use it again with `getReactively`, in order to run the helper each time the `sort` changes:
+Чтобы сделать это мы добавим переменную `sort` и будем использовать её снова с `getReactively` с целью запуска хелпера каждый раз когда параметр `sort` меняется:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.4"}}
 
-# pagination directive
+# Директива пагинации
 
-Now we need a UI to change pages and move between them.
+Теперь нам нужно, чтобы UI менял страницы и двигался между них.
 
-In Angular 1's eco system there are a lot of directives for handling pagination.
+В Angular 1 эко системе есть множество директив для управления пагинацией.
 
-Our personal favorite is [angular-utils-pagination](https://github.com/michaelbromley/angularUtils/tree/master/src/directives/pagination).
+Наша любимая - это [angular-utils-pagination](https://github.com/michaelbromley/angularUtils/tree/master/src/directives/pagination).
 
-To add the directive add its Meteor package to the project:
+Для добавления директивы добавьте этот Meteor пакет к проекту:
 
     meteor add angularutils:pagination
 
-Add it as a dependency to our Angular app in `app.js`:
+Для добавления её как зависимости к нашему Angular приложению в `app.js`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.6"}}
 
-Now let's add the directive in `parties-list.html`, change the `ng-repeat` of parties to this:
+Теперь добавим директиву в `parties-list.html`, поменяем `ng-repeat` вечеринок для этого:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.7"}}
 
-and after the UL closes, add this directive:
+и после закрытия UL добавьте эту директиву:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.8"}}
 
-As you can see, `dir-paginate` list takes the number of objects in a page (that we defined before) but also takes the total number of items (we will get to that soon).
-With this binding it calculates which page buttons it should display inside the `dir-pagination-controls` directive.
+Как видите, `dir-paginate` список берёт количество объектов на странице (которое мы ранее определили), но также берёт общее количество элементов (мы доберёмся до этого скоро).
+С этим связыванием оно считает какие кнопки страницы оно должно выдавать всередине директивы `dir-pagination-controls`.
 
-On the `dir-pagination-controls` directive there is a method `on-page-change` and there we can call our own function.
+В директиве `dir-pagination-controls` существует метод `on-page-change` и там мы можем вызывать нашу собственную функцию.
 
-So we call the `pageChanged` function with the new selection as a parameter.
+Поэтому мы вызываем функцию `pageChanged` с новой выборкой как с параметром.
 
-Let's create the `pageChanged` function inside the `partiesList` component:
+Создадим функцию `pageChanged` всередине компонента `partiesList`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.9"}}
 
-Now every time we change the page, the scope variable will change accordingly and update the bind method that watches it.
+Теперь каждый раз при смене страницы, переменная области видимости сменится соответственно и обновит метод связывания, который за ней наблюдает.
 
-* Note that, at this point, the pagination will *not* work until we add the missing `partiesCount` variable in the next step of the tutorial.
+* Внимание! В этом моменте, пагинация *не будет работать* пока мы не добавим недостающую переменную `partiesCount` на следующем шаге этого урока.
 
-# Getting the total count of a collection
+# Получение общего количества коллекции
 
-Getting a total count of a collection might seem easy, but there is a problem:
-The client only holds the number of objects that it subscribed to. This means that, if the client is not subscribed to the whole array, calling find().count on a collection will result in a partial count.
+Получение общего количества коллекции может показаться простой задачей, но есть одна проблема:
+Клиент только содержит количество объектов, на которые он подписан. Это ведёт к тому, что если клиент не подписан на весь массив, вызывая find().count на коллекции приведёт к частичному подсчёту.
 
-So we need access on the client to the total count even if we are not subscribed to the whole collection.
+Поэтому нам нужен доступ клиента к общему количеству, даже если мы не подписаны ко всей коллекции.
 
-For that we can use the [tmeasday:publish-counts](https://github.com/percolatestudio/publish-counts) package. 
-On the command line:
+С этой целью мы можем использовать пакет [tmeasday:publish-counts](https://github.com/percolatestudio/publish-counts). 
+В командной строке:
 
     meteor add tmeasday:publish-counts
 
-This package helps to publish the count of a cursor in real-time, without any dependency on the subscribe method.
+Этот пакет поможет опубликовать количество курсора в реальном времени без какой-то зависимости от метода подписки.
 
-Inside the `server/parties.js` file, add the code that handles the count inside the `Meteor.publish("parties")` function, at the beginning of the function, before the existing return statement.
-So the file should look like this now:
+Всередине файла `server/parties.js` добавьте код, который обрабатывает количество всередине функции `Meteor.publish("parties")` в начале функции перед существующем оператором return.
+Теперь файл должен выглядеть так:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.11"}}
 
-As you can see, we query only the parties that should be available to that specific client, but without the options variable so we get the full number of parties.
+Как видите мы запросили только вечеринки, которые должны быть доступны к этому соответствющему клиенту, но без переменной параметров, чтобы мы получили всё количество вечеринок.
 
-* We are passing `{ noReady: true }` in the last argument so that the publication will be ready only after our main cursor is ready - [readiness](https://github.com/percolatestudio/publish-counts#readiness).
+* Мы передаём  `{ noReady: true }` последним аргементом, поэтому публикации будут готовы только после готовности главного курсора - [см. readiness](https://github.com/percolatestudio/publish-counts#readiness).
 
-With this, we have access to the Counts collection from our client.
+С этим у нас будет полный доступ к коллекции Counts из нашего клиента.
 
-So let's create another helper that uses `Counts`:
+Создадим другой хелпер, который будет использовать `Counts`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.12"}}
 
-Now the `partiesCount` will hold the number of parties and will send it to the directive in `parties-list.html` (which we've already defined earlier).
+Теперь `partiesCount` будет содержать количество вечеринок и будет посылать их директиве в `parties-list.html` (который мы уже ранее определили).
 
-# Reactive variables
+# Реактивные переменные
 
-Meteor is relying deeply on the concept of [reactivity](http://docs.meteor.com/#/full/reactivity).
+Meteor глубоко опирается на концепцию [реактивности](http://docs.meteor.com/#/full/reactivity).
 
-This means that, when a [reactive variable](http://docs.meteor.com/#/full/reactivevar) changes, Meteor is made aware of it via its [Tracker object](http://docs.meteor.com/#/full/tracker_autorun).
+Это значит, что когда [реактивная переменная](http://docs.meteor.com/#/full/reactivevar) меняется, то Meteor оповещается об этом через его [отслеживатель объектов](http://docs.meteor.com/#/full/tracker_autorun).
 
-But Angular's scope variables are only watched by Angular and are not reactive vars for Meteor...
+Но переменные области видимости Angular только наблюдаются Angular и не являются реактивными для Метеора...
 
-For that, angular-meteor provides the `helpers`, and each time you will defined a variable, a new `ReactiveVar` will be created and will cause the Tracker to update all the subscriptions!
+Для этого angular-meteor содержит `хелперы`, и каждый раз при определении переменной, новый `ReactiveVar` будет создан и будет заставлять Трекер обновлять все подписки!
 
 
-# Changing the sort order reactively
+# Смена порядка сортировки реактивно
 
-We haven't placed a way to change sorting anywhere in the UI, so let's do that right now:
+Мы не разместили способ смены сортировки где-либо в UI поэтому давайте сделаем это сейчас:
 
-In our HTML template, let's add a sorting dropdown inside the UL:
+В нашем HTML шаблоне давайте добавим выпадающий список всередине UL:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.13"}}
 
-In the component, let's implement the `updateSort` method:
+В компоненте развернём метод `updateSort`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.14"}}
 
-> Note that we also created `orderProperty` in order to make sure it's available from the beginning.
+> Обратите внимание, что мы также создали `orderProperty` с целью обеспечения доступности этого параметра с самого начала.
 
-And we don't have to do anything other than that, because we defined `sort` variable as helper, and when we will change it, Angular-Meteor will take care of updating the subscription for us. 
+Нам не нужно делать что-либо ещё, так как мы определили сортировочную переменную `sort` как хелпер и когда мы поменяем её, Angular-Meteor позаботится об обновлении подписки для нас. 
 
-So all we have left is to sit back and enjoy our pagination working like a charm.
+Нам осталось только лишь сесть поудобнее и насладится тем как пагинация заработает по-щучьему велению.
 
-We've made a lot of changes, so please check the step's code [here](https://github.com/Urigo/meteor-angular-socially/compare/step_14...step_15)
-to make sure you have everything needed and can run the application.
+Мы сделали много изменений поэтому, пожалуйста, проверьте код [здесь](https://github.com/Urigo/meteor-angular-socially/compare/step_14...step_15)
+чтобы убедиться, что вы сделали всё возможное и можете запустить приложение.
 
-# Reactive Search
+# Реактивный поиск
 
-Now that we have the basis for pagination, all we have left to do is add reactive full stack searching of parties. This means that we will be able to enter a search string, have the app search for parties that match that name in the server and return only the relevant results! This is pretty awesome, and we are going to do all that in only a few lines of code. So
-let's get started!
+Теперь, когда у нас есть база для пагинации, всё что осталось - это добавить полнореативный поиск вечеринок. Это значит, что мы сможем ввести строку поиска и приложение будет искать вечеринку соответствующую этому имени на сервере и возвратит только релевантные результаты! Это просто отлично и мы сделаем это всё всего лишь несколькими строчками кода. Давайте начнём!
 
-As before, let's add the server-side support. We need to add a new argument to our publish method which will hold the
-requested search string. We will call it... `searchString`! Here it goes:
+Как и ранее добавим поддержку сервера. Нам нужно добавить новый аргумент к нашему методу публикации, который задержит запрошенную строку. Мы назовём её... `searchString`! Вот она:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.15"}}
 
-Now we are going to filter the correct results using mongo's regex ability. We are going to add this
-line in those two places where we are using `find`: in publish Counts and in the return of the parties cursor:
+Теперь мы отфильтруем правильные результаты используя mongo regex возможности. Мы сделаем это добавив строку в эти два места, где мы используем `find`: в публикации Подсчёта количеств и в возврате курсора вечеринок:
 
     'name' : { '$regex' : '.*' + searchString || '' + '.*', '$options' : 'i' },
 
-So `server/parties.js` should look like this:
+Теперь `server/parties.js` должен выглядеть так:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.16"}}
 
-As you can see, this will filter all the parties whose name contains the searchString.
+Как видите, мы отфильтруем все вечеринки, чьи имена содержат searchString.
 
-> We added also `if (searchString == null) searchString = '';`  so that, if we don't get that parameter, we will just return the whole collection.
+> Мы добавили также `if (searchString == null) searchString = '';`  для того, что когда мы не получаем этот параметр, мы возвращаем всю коллекцию. 
 
-Now let's move on to the client-side.
-First let's place a search input into our template and bind it to a 'searchText' component variable:
+Перейдём к клиенту.
+Во-первых давайте разместим серверный инпут в наш шаблон и привяжем его к переменной компонента 'searchText':
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.17"}}
 
-And all we have left to do is call the subscribe method with our reactive variable, and add the `searchText` as reactive helper:
+Всё, что осталось сделать это вызывать метод подписки с нашими реактивными переменными и добавить `searchText` как реактивный помощник:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="12.18"}}
 
-Wow, that is all that's needed to have a fully reactive search with pagination! Quite amazing, right?
+Ух ты! Всё что и нужно было для полного реактивного поиска с пагинацией! Отлично, не так ли?
 
-# Summary
+# Итоги
 
-So now we have full pagination with search and sorting for client and server-side, with the help of Meteor's options and Angular 1's directives.
+Теперь у нас есть полноценная пагинация с поиском и сортировкой для клиента и сервера с помощью Meteor опций и директив Angular 1.
 
 {{/template}}

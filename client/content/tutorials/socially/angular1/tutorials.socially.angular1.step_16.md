@@ -1,101 +1,100 @@
 {{#template name="tutorials.socially.angular1.step_16.md"}}
 {{> downloadPreviousStep stepName="step_15"}}
 
-Let's add location to our parties.
+Добавьте локацию к нашим вечеринкам.
 
-The most popular maps widget is Google Maps so let's use that.
+Наиболее популярным виджетом для выода карт является Google Maps, давайте установим пакет для его вывода.
 
-First, let's add the angular-google-maps Meteor package:
 
     meteor add angularui:angular-google-maps
 
 
-Then let's define the module dependency in our app. go to `app.js` inside the `client/lib` folder:
+Определим зависимости в модуле нашего приложения, перейдите в `app.js` всередину папки `client/lib`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="16.2"}}
 
-Now let's add a map to `party-details.html` , first add this HTML snippet to the end of the template:
+Добавим карту к `party-details.html`, вначале добавим этот HTML кусок в конец шаблона:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="16.3"}}
 
-Here we created the google-map directive with attributes for binding the center, handling events and zoom of the map.
-So let's define those variables in our component. Go to `partyDetails` component.
+Здесь мы создали директиву google-map с атрибутами для связывания центра, управления событиями и увеличения карты.
+Давайте определим эти переменные в нашем компоненте. Перейдём в компонент `partyDetails`.
 
-Inside we will create the `this.map` variable to hold the properties on the map:
+Всередине мы создадим переменную `this.map` для содержания свойств карты:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="16.4"}}
 
-To display a Google Map widget we have to define it's height and width. Let's do that now.
-Create a new file named `google-maps.css` inside a new folder called `styles` placed like this `client->parties->styles` and place to following CSS code inside:
+Для вывода виджета Google Map нам нужно определить его высоту и ширину. Давайте сделаем это.
+Создадим новый файл с названием `google-maps.css` всередине новой папки с названием `styles` таким образом `client->parties->styles` и поместим туда следующий CSS код:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="16.5"}}
 
-Now run the app and go to the party details page. You should see a new Google Map widget, but it doesn't do anything yet.
+Теперь запустим приложение и перейдём на страницу деталей вечеринки. Вы должны увидеть новый Google Map виджет, но это ничего не значит.
 
-Let's add a marker that will be bound to the party's location.
+Давайте добавим маркер, который будет привязан к местоположению вечеринки.
 
-Inside `party-details.html`:
+Всередине `party-details.html`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="16.6"}}
 
-The `ui-gmap-marker` directive represents a marker inside the map. We use the following attributes:
+Директива `ui-gmap-marker` представляет маркер всередине карты. Мы используем следующие аттрибуты:
 
-* coords - where is the scope the marker location will be bound to.
-* options - object that holds the marker options. We are going to use the draggable option.
-* events - handling the events on the marker. We will use the click event.
-* idKey - where in the scope there exists the unique id of the object that the marker represent.
+* coords - область, к которой будет привязано местоположение.
+* options - объект, который содержит опции маркера. Мы будем использовать опцию draggable.
+* events - обрабатывание событий маркера. Мы будем использовать событие click.
+* idKey - область, где существует уникальный id объекта, который представляет маркер.
 
-Let's extend our `this.map` variable to include handling those options:
+Давайте расширим нашу переменную `this.map`для включения содержания этих опций:
 
-Inside `partyDetails` component:
+Всередине компонента `partyDetails`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="16.7"}}
 
-What happened here:
+Что здесь происходит:
 
-* We added the click event to the map. Every time the user clicks the map, we take the location from the click event's params and save it as the party's new location.
-* We defined the options object under the marker to specify the marker is draggable.
-* We handled the dragend event that happens when the marker is dropped to a new location. We take the location from the event's params and save it as the party's new location.
+* Мы добавили событие click к карте. Каждый раз, когда пользователь нажимает на карту, мы берём положение от параметров click события и сохраняем его как новое положение вечеринки.
+* Мы определили объект событий под маркером для определения маркера обладающего свойством draggable.
+* Мы обработали событие "тянуть", которое произошло, когда маркер переместили на новое место. Мы взяли место из параметров события и сохранили их как новое место вечеринки.
 
-Again, with the great Meteor platform there is no need for sync or save function. We just set it and it syncs in all other clients.
+Снова с отличной Meteor платформой нет необходимости синхронизировать и сохранять. Мы просто установили и оно само синхронизировалось с остальными клиентами.
 
-Test it to see clicking and dragging works.
+Протестируйте его реакцию на клики и перетягивание.
 
 
-# Multiple markers
+# Различные маркеры
 
-Now let's add a map to the parties list to show all the parties on the map.
+Давайте добавим карту к списку вечеринок, чтобы показать все вечеринки на карте.
 
-So let's add the directives to `parties-list.html`:
+Давайте добавим директивы к `parties-list.html`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="16.8"}}
 
-Add it under the search and sorting div.
+Добавьте их под search и sorting div.
 
-You can see that the difference between the directive we used in `party-details.html` is that `ui-gmap-markers` is plural.
+Как видите вся разница между директивами, которые мы использовали в `party-details.html` в том, что `ui-gmap-markers` множественная.
 
-The attributes we use:
+Атрибуты, что мы использовали.
 
-* models - the scope array that the markers represent.
-* coords - the property that holds the location.
-* click - handler for the click event on a marker
-* fit - a boolean to automatically zoom the map to fit all the markers inside
-* idKey - the property that holds the unique id of the array
-* doRebuildAll - a refresh option, will help us to refresh the markers in search
+* models - массив области, который представляет маркеры.
+* coords - свойство, которое содержит место.
+* click - обработчик события нажатия на маркер.
+* fit - boolean для  автоматического увеличения карты, чтобы поместились внутри все маркера
+* idKey - свойство, содержащее все уникальные id массива
+* doRebuildAll - функция обновления, которая поможет нам обновить маркера в поиске
 
-Now, inside `partiesList` component let's add the following code:
+Теперь всередине компонента `partiesList` добавим следующий код:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="16.9"}}
 
-What we just did?
+Что мы только что сделали?
 
-* Adding to each party a function that handles a click event with the party's specific information
-* Initializing the map object
+* Добавили к каждой вечеринке функцию, которая обрабатывает событие нажатия с соответствующей информацией
+* Инициализация объекта карты
 
-# Summary
+# Итоги
 
-Run the app.  Look at how little code we needed to add maps support to our app.
+Запустите приложение. Посмотрите сколько мало кода нужно для карты в нашем приложении.
 
-Angular 1 has a huge eco system full of great directives like the angular-google-maps one.
+Angular 1 имеет огромную эко-систему полную классных директив таких как angular-google-maps, например.
 
 {{/template}}

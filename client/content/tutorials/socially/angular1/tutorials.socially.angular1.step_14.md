@@ -1,138 +1,138 @@
 {{#template name="tutorials.socially.angular1.step_14.md"}}
 {{> downloadPreviousStep stepName="step_13"}}
 
-In this step we will learn how to use [Meteor methods](http://docs.meteor.com/#/full/meteor_methods) and how to use `Meteor.call` method from our AngularJS code.
+На этом этапе мы изучим как использовать [методы Meteor](http://docs.meteor.com/#/full/meteor_methods) и как использовать метод `Meteor.call` в нашем коде AngularJS.
 
-Meteor methods are a way to perform more complex logic than the direct Mongo.Collection API.
-The Meteor methods are also responsible for checking permissions, just like the allow method does.
+Методы Meteor - это способ осуществлять более комплексную логику, чем просто Mongo.Collection API.
+Методы Meteor также отвечают за проверку разрешений, совсем как делает метод allow.
 
-In our case, we will create an invite method that invites a user to a party.
+В нашем случае мы создадим наш метод invite, который приглашает пользователя на вечеринку.
 
-Paste the following code into the end of `parties.js` file in the model directory:
+Вставьте следующий код в конец файла `parties.js` в папку model:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.1"}}
 
-Let's look at the code.
+Давайте взглянем на код.
 
-First, all Meteor methods are defined inside `Meteor.methods({});` object.
+Во-первых, все методы Meteor определяются всередине объекта `Meteor.methods({});`.
 
-Each property of that object is a method and the name of that property in the name of the method. In our case - invite.
+Каждое свойство этого объекта - это метод и название этого свойства в имени - это название метода. В нашем случае - invite.
 
-Then the value of the property is the function we call. In our case it takes 2 parameters - the party id and the invited user id.
+Далее значение свойства - это функция, которую мы вызываем. В нашем случае она принимает 2 параметра - пользовательский id и id приглашённого пользователя.
 
-First, we check validation with the the [check](http://docs.meteor.com/#check_package) function.
+Вначале проверим валидацию функцией [check](http://docs.meteor.com/#check_package).
 
-To use [check](http://docs.meteor.com/#check_package) we need to add the [check package](https://atmospherejs.com/meteor/check):
+Для использования [check](http://docs.meteor.com/#check_package) нам нужно добавить [пакет check](https://atmospherejs.com/meteor/check):
 
     meteor add check
 
-The rest of the code is pretty much self explanatory, but important thing to notice is the Email function that sends email to the invited client.
-This function can't be called from the client side so we have to put it inside an `isServer` statement.
+Остальной код понятен сам по себе, но важно также обратить внимание на функцию Email, которая отсылает email приглашённому пользователю.
+Эта функция может быть вызвана из клиента, поэтому нам нужно разместить её всередине оператора `isServer`.
 
-Don't forget to add the email package to your project in the command line:
+Не забудьте добавить пакет email к вашему проекту через командную строку:
 
     meteor add email
 
-Now let's call that method from the client.
+Давайте вызовем этот метод из клиента.
 
-Add a method to the component called `invite`:
+Добавьте метод к компоненту с названием `invite`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.4"}}
 
-We just used a regular Meteor API to call a method, inside our component.
+Мы просто использовали просто Meteor API для вызове метода всередине нашего компонента.
 
-Note that we also used another parameter, a callback function that called when Meteor is done with our method.
+Обратите внимание, что мы также использовали другой параметр - колбек функцию, которая вызывается, когда Meteor заканчивает работу с нашим методом.
 
-The callback have 2 parameters:
+Колбек имеет 2 параметра:
 
-* Parameter 1 - `error` - which is `undefined` when the call succeeded.
-* Parameter 2 - `result` - which is the return value from the server method.
+* Параметр 1 - `error` - будет `undefined` при успешном вызове.
+* Параметр 2 - `result` - будет возвращена величина из метода сервера.
 
-Now let's add a button to invite each user we want. Edit the users lists in the `partyDetails` component to look like this:
+Давайте добавим кнопку для приглашения каждого желаемого пользователя. Отредактируйте списки пользователей в компоненте `partyDetails`, чтобы они приняли вид:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.5"}}
 
-Now that we have the invite function working, we also want to publish the parties to the invited users.
-Let's add that permission to the publish parties method:
+Теперь у нас работает функция для приглашения, дальше нам нужно опубликовать вечеринки приглашённым пользователям.
+Давайте добавим это разрешение к методу публикации вечеринок:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.6"}}
 
-### Serve Email
+### Отправка Email
 
-NOTE: If you want to test email functionality locally with your own gmail account, create a new file called `environments.js` in the `server/startup/` directory. Add the following lines substituting [YOUR_EMAIL] and [YOUR_PASSWORD].  
+Обратите внимание, если вы хотите протестировать функциональность email локально с помощью вашего gmail аккаунта, то создайте новый файл `environments.js` в папке `server/startup/`. Добавьте следующие строки заменив значения [YOUR_EMAIL] и [YOUR_PASSWORD].  
 
     Meteor.startup(function () {
         process.env.MAIL_URL="smtp://[YOUR_EMAIL]@gmail.com:[YOUR_PASSWORD]@smtp.gmail.com:465/";
     })
 
-You may need to set your gmail account to use [Less Secure Apps](https://www.google.com/settings/u/2/security/lesssecureapps).
+Вам может понадобиться установить ваш gmail аккаунт с настройками для использования [Less Secure Apps](https://www.google.com/settings/u/2/security/lesssecureapps).
 
-In production you could use a service like Mandrill with this [Meteor Mandrill Package](https://atmospherejs.com/wylio/mandrill).
+В продакшене вы можете использовать такой сервис как Mandrill с помощью [пакета Mandrill](https://atmospherejs.com/wylio/mandrill).
 
-Great!
+Отлично!
 
-Now test the app.  Create a private party with user1.  Then invite user2. Log in as user2 and check if he can see the party in his own parties list.
+Протестируем приложение. Создайте частную вечеринку с пользователем user1. Далее пригласите пользователя user2. Залогинтесь как user2 и проверьте видите ли вы вечеринки в его списке.
 
 
-Now let's add the RSVP functionality so invited users can respond to invitations.
+Добавьте RSVP функциональность, чтобы приглашённые пользователи могли отвечать на приглашения.
 
-First let's add a `Meteor.method` to `parties.js` in the model folder (remember to place it as a property inside the `Meteor.methods` object):
+Давайте добавим метод `Meteor.method` к `parties.js` в папке model (помните, что нужно разместить его как свойство всередине объекта `Meteor.methods`):
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.7"}}
 
-The function gets the party's id and the response ('yes', 'maybe' or 'no').
+Функция получает id и ответ ('yes', 'maybe' или 'no').
 
-Like the invite method, first we check for all kinds of validations, then we do the wanted logic.
+Как и метод invite, сначала мы проверим все типа валидации, а затем необходимую логику.
 
-Now let's call that function from the `partiesList` component!
+Давайте вызовем эту функцию из компонента `partiesList`!
 
-Add the `rsvp` method to the `partiesList` component:
+Добавьте метод `rsvp` к компоненту `partiesList`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.8"}}
 
-and let's add action buttons to call the right rsvp in the HTML.
+и добавим кнопки действий для вызова соответствующих rsvp метедом в HTML.
 
-Add this code into `parties-list.html` inside the parties list itself (inside the `ng-repeat`):
+Добавьте этот код к `parties-list.html` всередине списка вечеринок (всередине `ng-repeat`):
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.9"}}
 
-Now let's display who is coming for each party.
+Давайте выведем список тех, кто приходит на каждую вечеринку.
 
-Just after the code you just added (still inside the parties `dir-paginate`) add the following code:
+Сразу после добавленного кода (всередине вечеринок `dir-paginate`) добавьте следующий код:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.10"}}
 
-And we will need to implement the `getUserById` method:
+Нам нужно реализовать метод `getUserById`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.11"}}
 
-First, take a look at the use of filter with length to find how many people responded with each response type.
+Сначала взгляните на фильтр с длинной, чтобы выяснить сколько людей ответило, с каждым типом ответа.
 
-Then, look at using ng-repeat inside a `dir-paginate` - `ng-repeat` on RSVPs inside party from the parties `dir-paginate`.
+Далее взгляните на использование ng-repeat всередине `dir-paginate` - `ng-repeat` на RSVP всередине вечеринки из вечеринок `dir-paginate`.
 
-Now let's add a list of the users who haven't responded yet just below the code we just added:
+Далее добами список пользователей, которые ещё не ответили, сразу под кодом, что мы только добавили:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.12"}}
 
-Again, an `ng-repeat` inside a `dir-paginate`.  This time we are calling a function that will give us all the users who haven't responded to that specific party.
+Снова, `ng-repeat` всередине `dir-paginate`.  В этот момент мы вызываем функцию, которая даст нам всех пользователей, которые не ответили на эту отдельную вечеринку.
 
-Add that function inside the `partiesList` component:
+Добавьте функцию внутрь компонента `partiesList`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.13"}}
 
-Here we are using underscore's `_.filter`, `_.contains` and `_.findWhere` to extract the users who are invited to the party but are not exist in the rsvps array.
+Здесь мы используем underscore методы `_.filter`, `_.contains` и `_.findWhere` для получения приглашённых на вечеринку пользователей, но которые не вошли в rsvp массив.
 
-And now let's add the users collection to the component:
+Добавим коллекцию пользователей к компоненту:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="14.14"}}
 
-# Summary
+# Итоги
 
-Run the application.
+Запустим приложение.
 
-Looks like we have all the functionality we need but there is a lot of mess in the display.
-There are stuff that we can hide if the user is not authorized to see or if they are empty.
+Посмотрите что у нас получилось с необходимой функциональности, но ещё видно много недоделок.
+Есть вещи, которые мы можем скрыть, если пользователь не авторизирован или они пусты.
 
-So in the next chapter we are going to learn about a few simple but very useful Angular 1 directive to help us conditionally add or remove DOM.
+В следующей главе мы научимся нескольким простым, но очень полезным директивам Angular 1, которые помогут нам добавлять или удалять DOM исходя из определённых условий.
 
 {{/template}}

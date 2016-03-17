@@ -1,91 +1,90 @@
 {{#template name="tutorials.socially.angular1.step_15.md"}}
 {{> downloadPreviousStep stepName="step_14"}}
 
-Angular 1 has great and very simple directives that help us show and hide DOM elements conditionally.
+Angular 1 содержит отличные и очень простые директивы, которые скрывают и показывают DOM элементы исходя из условий.
 You can bind them to an expression, variables or functions.
 
-# ng-show and ng-hide
+# ng-show и ng-hide
 
-First, let's learn about [ng-show](https://docs.angularjs.org/api/ng/directive/ngShow) and [ng-hide](https://docs.angularjs.org/api/ng/directive/ngHide).
+Сперва, познакомимся с [ng-show](https://docs.angularjs.org/api/ng/directive/ngShow) и [ng-hide](https://docs.angularjs.org/api/ng/directive/ngHide).
 
-So one thing we want to hide and show is the form for creating a new party. If a user is not logged in, they can't create a party, so why displaying the form for them?
-If the user is not logged in, we want to display a message saying they need to log in to create a new party.
+Мы хотим скрыть и показать форму создания новой вечеринки. Если пользователь не вошёл и он не может создать вечеринку, зачем тогда выводить для него форму?
+Если пользователь не вошёл, мы хотели бы вывести сообщение о том, что нужно войти для создания новой вечеринки.
 
-In `parties-list.html` add a `ng-show` directive to the form like that:
+В `parties-list.html` добавьте директиву `ng-show` для показа формы:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.1"}}
 
-Now, we need to add the ability to detect if there is a user logged in at the moment, so let's add a helper for that:
+Далее нам нужно добавить возможность определения зашёл ли пользователь в данный момент, добавим для этого хелпер:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.2"}}
 
-Then right after the form, add this HTML:
+Сразу после формы, добавьте этот HTML:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.3"}}
 
-That is exactly the opposite - if `isLoggedIn` is true or we're in the processing of logging in, hide that div.
+Как раз наоборот, если - if `isLoggedIn` true или мы в обработке логина прячем этот div.
 
-Now add the same to the RSVP buttons:
+Сделаем то же с кнопками RSVP:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.4"}}
 
-Add let's add this to the end of the RSVP buttons:
+Добавим это в конец наших кнопок RSVP:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.5"}}
 
-Next thing we want to hide is the 'delete party' option, in case the logged-in user is not the party's owner.
+Следующим скроем опцию 'delete party' на случай, если залогиненный пользователь не является владельцем вечеринки.
 
-Lets add ng-show to the delete button like that:
+Добавим ng-show к кнопке delete следующим образом:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.6"}}
 
-In here you can see that `ng-show` can get a statement, in our case - the user exists (logged in) and is also the party's owner.
+Здесь вы увидите, что `ng-show` может получить оператор, в нашем случае - пользователь существует (залогинен) и является владельцем вечеринки.
 
-But we just missing the helper we used:
+Мы пропустили использование хелпера:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.7"}}
 
 
 # ng-if
 
-[ng-if](https://docs.angularjs.org/api/ng/directive/ngIf) acts almost the same as `ng-show` but the difference between them
-is that `ng-show` hides the element by changing the display css property and `ng-if` simply removes it from the DOM completely.
+[ng-if](https://docs.angularjs.org/api/ng/directive/ngIf) работает почти так же как и `ng-show` с разницей, что `ng-show` скрывает элемент меняя отображение свойство css display и `ng-if` просто удаляет его из DOM.
 
-So let's use `ng-if` to hide the outstanding invitations from a party, if the party is public (everyone is invited!):
+Давайте используем `ng-if`, чтобы скрыть выдающиеся приглашения из вечеринки, если она публична (все приглашены!):
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.8"}}
 
-# Assigning a function
+# Назначение функции
 
-Now lets hide the 'Users to invite' inside `party-details.html` in case the user is not logged in or can't invite to the party:
+Давайте скроем 'Users to invite' всередине `party-details.html` на случай, если пользователь не вошёл или не может быть приглашён на вечеринку:
 
-To do that we will create a scope function that returns a boolean and associate it with `ng-show`:
+Чтобы сделать это мы создадим функцию окружения, которая возвращает boolean и ассоциирует его с `ng-show`:
 
-Create a new function inside `partyDetails` component, called `canInvite`:
+Создайте новую функцию всередине компонента `partyDetails` с названием `canInvite`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.9"}}
 
-and add the `ng-show` to the `ul` in `party-details.html`, and lets add a `li` that tells the user that everyone is already invited, if that is the case:
+и добавьте `ng-show` к `ul` в `party-details.html` и добавьте `li`, который сообщает пользователю, что каждый приглашённый, если он в кейсе:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.10"}}
 
-Here, we are taking the result of the uninvited users and checking for its length.
+Вот, мы берём результат неприглашённых пользователей и проверяем его длину.
 
-But we are just missing the helpers in this component, so let's add it here as well:
+Нам нехватает только хелперов в этом компоненте, добавим же их:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.11"}}
 
 
 # ng-disabled
 
-Now lets disable the `partyDetails` input fields in case the user doesn't have permission to change them (currently, the server is stopping the user, but there is no visual feedback aside from the server overriding the local edit immediately after):
+Давайте отключим поля ввода `partyDetails` на случай, если у пользователя нет разрешения на их смену (на данный момент сервер останавливает пользователя, но нет никаких визуальных фидбеков от сервера на перезапись локальных исправлений сразу же после):
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="15.12" filename="client/parties/party-details/party-details.html"}}
 
-# Summary
+# Итоги
 
-So now our example looks much better after we hide things based on the current situation.
+Теперь наш пример выглядит гораздо лучше, после того, как мы скрыли элементы исходя из текущей ситуации.
 
-In the next chapters we will add Google Maps and some CSS and styling to our app.
+В следующих главах мы добавим Google Maps и некоторые CSS стили к нашему приложению.
 
 {{/template}}

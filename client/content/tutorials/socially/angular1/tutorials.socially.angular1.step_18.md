@@ -2,197 +2,197 @@
 {{> downloadPreviousStep stepName="step_17"}}
 
 
-In this step we will consider switching from *Twitter Bootstrap* to [*angular-material*](https://material.angularjs.org/#/).
+На этом этапе мы переключимся с *Twitter Bootstrap* на [*angular-material*](https://material.angularjs.org/#/).
 
-Angular-material is an Angular 1 implementation of Google's [Material Design specifications](http://www.google.com/design/spec/material-design/introduction.html). Material Design is a mobile-first design language used in many new Google's applications, especially on the Android platform.
+Angular-material - это Angular 1 реализация Google [Material Design спецификации](http://www.google.com/design/spec/material-design/introduction.html). Material Design  - это mobile-first язык разработки используемый во многих приложениях Google. Особенно на платформах Android.
 
-To start, first we have to remove bootstrap from our application. Type in the console:
+Удалим из прилоежния bootstrap. Наберите в консоли:
 
     meteor remove twbs:bootstrap
 
-Now we have to add the angular-material Meteor package:
+Теперь добавим пакет angular-material Meteor:
 
     meteor add angular:angular-material
 
-Next, we want to inject the angular-material module into our Angular 1 application. Edit your `client/lib/app.js` and add `ngMaterial`:
+Далее нужно вставить angular-material модуль в наше Angular 1 приложение. Отредактируйте `client/lib/app.js` и добавьте `ngMaterial`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.3"}}
 
-> Don't forget to remove the `ui.bootstrap` dependency! It's no longer needed!
+> Не забудьте удалить зависимость `ui.bootstrap`! Она больше не нужна!
 
-That's it, now we can use `angular-material` in our application layout.
+Вот и всё, теперь мы можем использовать `angular-material` в макете нашего приложения.
 
-Our application will have some errors now because we used to use services like `$modal` that belong to bootstrap's core.
+Сейчас приложение будет выдавать ошибки, так как мы использовали такие службы как `$modal` которые принадлежат к ядру bootstrap.
 
-So first, let's fix is by using `$mdDialog` instead of `$modal`:
+Давайте починим это используя `$mdDialog` вместо `$modal`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.4"}}
 
-And we need to modify the `close` logic of the modal:
+Нам нужно модифицировать логику `close` модуля:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.5"}}
 
-Great! So now in order get rid of all the bootstrap change we make, we need to remove some and modify some CSS and LESS.
+Отлично! Теперь, чтобы избавится от всяких bootstrap элементов, нам нужно кое-что удалить и поменять CSS и LESS.
 
-> Note that most of the change in this commit includes deleting CSS rules that used to override the Bootstrap's design.
+> Обратите внимание, что изменения в этом коммите включают удаление правил CSS, которые использовались для перезаписи дизайна Bootstrap.
 
-Angular-material uses declarative syntax, i.e. directives, to utilize Material Design elements in HTML documents.
+Angular-material использует декларативный синтак, например директивы для использования элементов Материального дизайна в HTML документах.
 
-First we want to change our `index.html` to make use of the flex grid layout provided by Material Design. So, change your `client/index.html` to look like this:
+Во-первых нам нужно изменить наш `index.html` для использования макета flex сетки Материального дизайна. Приведём `client/index.html` к виду:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.6"}}
 
-We also need to made some changes in our `.less` files, I made them and you and find it in [this commit](https://github.com/Urigo/meteor-angular-socially/commit/0eb86d862ad703f5887fee3d558414ac14873a5c);
+Также нужно поменять наши `.less` файлы. Я это сделал, можете посмотреть [этот коммит](https://github.com/Urigo/meteor-angular-socially/commit/0eb86d862ad703f5887fee3d558414ac14873a5c);
 
-You can see we use `layout="column"` in the `body` tag, which tells angular-material to lay all inner tags of `body` vertically.
+Как вы заметили мы используем `layout="column"` в теге `body`, который сообщает angular-material разместить все внутренние теги `body` вертикально.
 
-Next, we use the handy `md-toolbar` directive as a wrapper for our app's toolbar.
-We tell it to shrink on vertical scroll with `md-scroll-shrink` attribute and to lay inner elements in a row.
+Далее мы используем удобную директиву `md-toolbar` как обёртку для тулбара нашего приложения.
+Мы сообщаем ей обрезать вертикальный скрол с помощью аттрибута `md-scroll-shrink` и разместить все внутренние элементы в ряд.
 
-We also tell it `layout-align="start center"` to lay inner elements at `start` of the primary direction (row), meaning element should start at the left edge, and lay them at `center` of the secondary direction (column), so they are stacked centrally in the vertical direction.
-We also tell it to put padding around all inner elements with `layout-padding`.
+Также мы сообщаем `layout-align="start center"` разместить внутренние элементы начиная с первичного направления (ряд), что значит что элемент должен начинаться с левого угла и расположить их в `центре` вторичного направления (колонки), так они расположаться посередине в вертикальном направлении.
+Также придадим отступы вокруг внутренних элементов с помощью `layout-padding`.
 
-Inside the `md-toolbar` you see we used
+Всередине `md-toolbar` вы увидите, что мы использовали
 
     <span flex></span>
 
-element which is actually a separator blank element which is used to fill all the available blank space between the first and third element in the toolbar.
+элемент, который на самом деле является - пустым элементом, который используется для заливки пустого пространства между вторым и третьим элементов в тулбаре.
 
-So, now we have a link to Parties to the left, a span to fill all space, and a login button.
-Element layout flex grid is very simple and intuitive in `angular-material` and you can read all about it [here](https://material.angularjs.org/#/layout/grid).
+Таким образом у нас есть ссылка на вечеринки слева, span для заполнения пространства и кнопка входа.
+Элемент макета flex сетки - очень простой и интуитивный в `angular-material`, можете детальнее познакомиться [здесь](https://material.angularjs.org/#/layout/grid).
 
-Next, we need to convert our parties list and party detail views to `angular-material`.
+Далее нам нужно преобразовать отображения списка вечеринок и деталей вечеринки в `angular-material`.
 
-First, replace the code in your `parties-list.html` with this code:
+Заменим вначале код в нашем `parties-list.html` на код:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.8"}}
 
-What did we do:
+Что мы сделали:
 
-* Wrapped everything into the `md-content` tag
-* Replaced all the buttons with `md-button` tags
-* Wrapped form inputs into `md-input-container` tags which enable the Material Design style labels for inputs
-* Added material design Icons
+* Обернули всё в тег `md-content`
+* Заменили все кнопки на теги `md-button`
+* Обернули поля ввода формы в теги `md-input-container`, что даст нам материальные ярлыки для полей ввода
+* Добавили иконки из Материального дизайна
 * Use `md-card-content` to display each item in the list
 
-## Material Design Icons
+## Иконки
 
-One new thing we also have to add is usage of Material Design icon set. Google provides free icons for Material Design. You can install it by typing:
+Ещё в наше приложение нужно добавить использование иконок Материального дизайна. Google предоставляет бесплатные иконки. Вы можете их установить набрав:
 
     meteor add planettraining:material-design-icons
 
-We have to define the `$mdIconProvider` in the `client/lib/app.js`. Insert these lines after the `angular.module` declaration:
+Нам нужно определить провайдер иконок `$mdIconProvider` в `client/lib/app.js`. Вставьте эти строки сразу после декларации `angular.module`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.10"}}
 
-You don't have to define all these icon sets.
-You just need to define those you need to use.
-You can see a full list of available icons [here](http://google.github.io/material-design-icons/).
-You can see in the view code above that to use icons you write:
+Вам не нужно определять все эти иконки.
+Вам нужно просто определить те, которые будете использовать.
+Список всех доступных иконок можно найти [тут](http://google.github.io/material-design-icons/).
+Выводить иконки нужно следующим образом:
 
     <md-icon md-svg-icon="content:ic_clear_24px"></md-icon>
 
-in the `md-svg-icon` attribute you list `<iconset>:<icon_name>` in our case `content:ic_clear_24px`.
+В аттрибуте `md-svg-icon` вы указываете значения `<iconset>:<icon_name>` в нашем случае `content:ic_clear_24px`.
 
-Now, replace the code in the `party-details.html` with the following code:
+Теперь заменим код в `party-details.html` на следующий:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.11"}}
 
-And now replace the HTML in the new party modal to use angular-material:
+Замените теперь HTML нового модального окна вечеринки:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.12" filename="client/parties/add-new-party-modal/add-new-party-modal.html"}}
 
-Here, as you can see a specific type of button used by `angular-material`. We have a link button:
+Как видите, мы используем специальный тип кнопки `angular-material`. Наша кнопка со ссылкой:
 
     <md-button ng-href="/parties">Cancel</md-button>
 
-Angular-Material makes a regular button that points to a link using `ng-href`.
+Angular-Material создаёт обычные кнопки, которые направляют по ссылке используя `ng-href`.
 
-## Create main page component
+## Создание основной страницы компонента
 
-First, we have an unfinished business with the main page - we did not use component in there - so let's finish with it first.
+Теперь нужно закончить с основной странице - мы не использовали там компонента, поэтому закончим с этим.
 
-So replace the whole HTML with a new tag - `socially`:
+Заменим весь HTML на новый тег - `socially`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.13"}}
 
-And let's create a view for that component, inside `client/socially` folder (yes, create it as well):
+Создадим отображение к этому компоненту всередине `client/socially` папки (создайте её вначале):
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.14"}}
 
-And now let's create the component JS code:
+Теперь создадим компонент с JS кодом:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.15"}}
 
-## Custom Angular 1 forms and Accounts-UI Material Design
+## Angular 1 формы и Accounts-UI Материальный дизайн
 
-Next, we need to make our users management pages use Material Design.
+Далее сменим дизайн управления страниц на материальный.
 
-To do that we are going to define our accounts routes manually and use Meteor and Accounts API in our code.
+Чтобы это сделать, мы определим наши маршруты к аккаунтам вручную и будем использовать Meteor и Accounts API в нашем коде.
 
-Let' change the code inside the `socially.html` page, and use custom buttons instead of `login-buttons`:
+Сменим код всередине `socially.html` странице и используем кастомные кнопки вместо `login-buttons`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.16"}}
 
-Now show `Login` and `Sign up` buttons when the user is not logged in, and we show user name and `Logout` button when the user is logged in.
+Выведем `Login` и `Sign up` кнопки для незалогиненного пользователя и мы покажем пользовательское имя и `Logout` кнопку для залогиненного пользователя.
 
-Having created these buttons we need to assign them corresponding routes as referenced in the `ng-href` attributes of our buttons.
+После создания этих кнопок, нам нужно назначить для них соответственные маршруты в аттрибутах `ng-href` этих кнопок.
 
-Open the `client/routes.js` and insert following routes below the `$stateProvider` line, and above the existing routes:
+Откройте `client/routes.js` и вставьте следующие маршруты внизу под строкой `$stateProvider` и выше существующих маршрутов:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.17"}}
 
-So we have the routes and state defined, now let's go ahead and create them. Create a subfolder `users` in the `client/` folder, and in the `users` subfolder for each component we will create: login, reset password and sign-up.
+Мы определили маршруты и состояния и давайте продолжим и создадим их. Создайте подпапку `users` в папке `client/` и в подпапке `users` для каждого компонента мы создадим: логин, сброс паролей и выход.
 
-Create the `.js` file for the login component:
+Создайте файл `.js` для компонента login:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.18"}}
 
-We created a `credentials` object containing email and password that will be passed to us from the view. We created a `login` method that will execute the user log in.
+Мы создали объект `credentials`, содержащий email и пароль, которые будут передаваться нам от отображения. Мы создали метод `login`, который будет выполнятся для залогиненного пользователя.
 
-So we use `Meteor.loginWithPassword()` which takes three arguments
+Мы использовали `Meteor.loginWithPassword()`, который принимает 3 аргумента
 
-1. Username / E-mail
-2. Password
-3. Result callback
+1. Имя пользователя / E-mail
+2. Пароль
+3. Колбек результата
 
-On the result callback we want to handle success and redirect the user to the`parties` state, or assign error message to our `this.error` property of the component.
+В колбеке результата мы обработам успешный ответ и перенаправим пользователя в состояние `parties` или выдадим сообщение об ошибке для нашего свойства `this.error` компонента.
 
-And of course, the view for the login component:
+И конечно же, отображение компонента login:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.19"}}
 
-So now we have the login, we need to implement the opposite - logout. 
+Теперь у нас есть login, и нам нужно сделать logout. 
 
-Just create a method on the `socially` component, that uses Meteor's API:
+Создайте метод в компонентe `socially`, который использует Meteor API:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.20"}}
 
-The procedure is the same for the `register` and `resetpw` routes!
+Процедура такая же для `register` и `resetpw` маршрутов!
 
-This is the sign up component logic:
+Это логика компонента подписки:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.21"}}
 
-And it's view:
+И его отображение:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.22"}}
 
-And the reset password component logic:
+И логика компонента сброса пароля:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.23"}}
 
-And, finally, create a corresponding view:
+И, наконец, создание соответствующего отображения:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="18.24"}}
 
-# Summary
+# Итоги
 
-In this chapter we two main things:
+В этой главе мы разобрались с двумя вещами:
 
-1. How to work with angular-material-design in our angular-meteor app
-2. How to create custom Angular 1 forms for our application's auth
+1. Как работать с angular-material-design в нашем angular-meteor приложении
+2. Как создавать кастомные Angular 1 формы для авторизации в нашем приложении
 
-I hope one of you will create an accounts-ui package based on that code and will save us all tons of code!
+Надеюсь кто-то из вас создаст пакет accounts-ui основываясь на этом коде и сохранит наш код!
 
 {{/template}}

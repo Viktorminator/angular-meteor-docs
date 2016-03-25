@@ -1,113 +1,113 @@
 {{#template name="tutorials.socially.angular1.step_22.md"}}
 {{> downloadPreviousStep stepName="step_21"}}
 
-Ionic is a CSS and JavaScript framework. It is highly recommended that before starting this step you will get yourself familiar with its [documentation](http://ionicframework.com/docs/).
+Ionic это CSS и JavaScript фреймоврк. Очень рекомендую перед тем, как начинать этот урок ознакомиться с  [документацией](http://ionicframework.com/docs/).
 
-In this step we will learn how to add Ionic library into our project, and use its powerful directives to create cross platform mobile (Android & iOS) applications. 
+На этом этапе научимся добавлять библиотеку Ionic к нашему проекту и использовать её мощные директивы для создания кроссплатформенных мобильных (Android & iOS) приложений. 
 
-We will achieve this by creating separate views for web and for mobile  so be creating a separate view for the mobile applications, but we will keep the shared code parts as common code!
+Достигнем этого через создание различных отображений для веб и мобильных устройств, то есть мы создадим отдельное отображение для мобильных приложений, но будем держать расшаренные части как общий код!
 
-### Separate the main view file
+### Разделение файла основного отображения
 
-So we already have `socially` component, which is the main component, for browser, so we need to move it to the browser package, and update it's AngularJS module name:
+У нас уже есть компонент `socially`, который является главным для браузера, поэтому нам нужно его переместить в пакет браузера и обновить его имя AngularJS модуля:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.1" filename="packages/socially-browser/client/socially/socially.component.js"}}
 
-> Note that we also changed the `templateUrl` path.
+> Обратите внимание, что мы сменили путь `templateUrl`.
 
-And now let's update the `package.js` of the `socially-browser` package:
+Давайте обновим `package.js` пакета `socially-browser`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.2"}}
 
-So we got the point - let's just do the same with the signup, reset password, parties list, add new party modal and the party details views.
+Поняли в чём смысл - сделаем тоже с подпиской, сбросом пароля, списком вечеринок, добавим новое модальное окно вечеринки и отображение деталей вечеринки.
 
-I did it in [this commit](https://github.com/Urigo/meteor-angular-socially/commit/89b159e7e6b42a2540e8886ca6f82f5364ff4f88), and updated the `package.js` in [this commit](https://github.com/Urigo/meteor-angular-socially/commit/f4e927d21fc8fa74f008eec9230f534f9defa7fb).
+Я сделал это [в этом коммите](https://github.com/Urigo/meteor-angular-socially/commit/89b159e7e6b42a2540e8886ca6f82f5364ff4f88), и обновил `package.js` в [этом коммите](https://github.com/Urigo/meteor-angular-socially/commit/f4e927d21fc8fa74f008eec9230f534f9defa7fb).
 
-Also, the filters are one of the thing we can make common right now, because we can use them in both Mobile and Browser, so we move them out of the `parties` folder, but still keep the in the root project (changed it in [this commit](https://github.com/Urigo/meteor-angular-socially/commit/b078a263799e817b7381de516f1ff43559ee7c1b))
+Также, фильтры - это одна из вещей, которые мы можем сделать прямо сейчас, так как мы можем использовать их в Mobile и Browser, поэтому уберём их из папки `parties`, но по-прежнему будем содержать в корне проекта (поменял их в [этом коммите](https://github.com/Urigo/meteor-angular-socially/commit/b078a263799e817b7381de516f1ff43559ee7c1b))
 
-In this point - you probably understood that we might need to implement the whole logics of the components again - but do not worry! in the next steps of the tutorial, we will take some of the logics and use them as "common" logics for both platforms!
+На этом этапе - вы должно быть поняли, что нам нужно будет реализовать всю логику компонентов снова - но не волнуйтесь! В следующих шагах этого урока, мы возьмём некоторую логику и используем как "общую" логику для обеих платформ!
 
-### Adding Ionic
+### Добавление Ionic
 
-Using ionic is pretty simple - first, we need to add a dependency in the `package.js` of our `socially-mobile`:
+Использование ionic очень просто - сперва нам нужно добавить зависимость в `package.js` нашего `socially-mobile`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.6"}}
 
-Ionic is based on AngularJS, therefore we also need to load the `ionic` as a module dependency in the `socially.mobile` module:
+Ionic основан на AngularJS, так что нам также нужно загрузить `ionic` как зависимость модуля в модуле `socially.mobile`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.7"}}
 
-So now we will use Ionic and create the `socially` view again, now with ionic's directives.
+Теперь мы будем использовать Ionic и создадим отображение `socially` снова, теперь с директивами ionic.
 
-This is a simple navigation layout that is copied & pasted from the Ionic documentation.
+Этот простой макет навигации скопирован с документации Ionic.
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.9" filename="packages/socially-mobile/client/socially/socially.html"}}
 
-> The `ion-nav-view` tag is similar to the `ui-view` tag, so we can use the same view (`main`) here.
+> Тег `ion-nav-view` схож с тегом `ui-view`, поэтому мы можем использовать тот же (`main`) здесь.
 
-And add it to the `package.js`:
+И добавим его к `package.js`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.10"}}
 
-And now the component:
+и теперь компонент:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.8"}}
 
-But hey! it's the same component logic! exactly! 
+Хей! Это же та же логика компонента! Вот именно!
 
-So what can we do? 
+Что мы можем сделать?
 
-We can share the `socially` logic, and load the view according to the platform that we run at the moment!
+Мы можем поделится логикой `socially` и загрузить отображение соответсвенной платформе, которую запускаем в данный момент!
 
-### Share and make components common
+### Расшаривание и создание общих компонентов
 
-So the basic of sharing components is to put the `.component.js` file in the root project, and put the view of each platform in separated package.
+Основой расшаривания компонентов является помещение файла `.component.js` в корень проекта и помещение отображения каждой платформы в отдельный пакет.
 
-So now we already have view in each package (mobile and browser), so let's make sure that we delete completely the `socially.component.js` from those packages (also from it's `package.js`), and put this implementation of `socially.component.js` under the root project:
+Таким образом у нас есть отображение в каждом пакете (мобильное и браузера), убедимся, что мы полностью удалили `socially.component.js` из этих пакетов (также из их `package.js`), и поместим реализацию - `socially.component.js` в корень проекта:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.11"}}
 
-> Note that usage of `templateUrl` - we can provide a function, and AngularJS will use it's return value as template url.
+> Использование `templateUrl` - мы можем задать функцию и AngularJS будет использовать её результат как url шаблона.
 
-So now we have the *same logic* of `socially` component, and the only different thing is the view!
+Теперь у нас *такая же логика* компонента `socially` с единственной разницей - отображением!
 
 
-### Using Ionic
+### Использование Ionic
 
-And now we need to create the view of the parties list for the mobile platform, using Ionic's directives and CSS.
+Теперь нужно создать отображение списка вечеринок для мобильной платформы, используя директивы Ionic и CSS.
 
-Now we add the content of the parties list. This is pretty straight forward using Angular directives and Ionic classes:
+Теперь мы добавим содержимое к списку вечеринок. Это полностью прямой процес с использованием директив Angular и Ionic классов:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.13"}}
 
-As with any other file inside a package, this one also need to be added to the `package.js` file :
+Как и с любым другим файлом всередине пакета, этот также нужно добавить к файлу `package.js`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.14"}}
 
-So now as we did with `socially` component, we understand that the only difference between the mobile parties list and the browser parties list is the view!
+Как мы и делали с компонентом `socially`, мы понимаем, что единственной разницей между мобильным и браузерным списком вечеринок является отображение!
 
-So we can move the `parties-list.component.js` back to the root project (and remove it from the `package.js`!), and use the same trick to load the `templateUrl`:
+Теперь мы можем вернуть `parties-list.component.js` назад в корень проекта (у убрать его из `package.js`!), используем тот же приём для загрузки `templateUrl`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="22.15"}}
 
-And... we're done!
+И ... мы закончили!
 
-We will use the techniques we learned in Step 21 of the tutorial and run the project in our favorite emulator, I used iOS so
+Мы будем использовать эту технику изученную в Разделе 21 и запускать проект в любимом эмуляторе, я использовал iOS:
 
     $ meteor run ios
 
-And this is the result:
+И вот результат:
 
 {{tutorialImage 'angular1' 'step22_1.png' 500}}
 
-## Summary
+## Итоги
 
-In this tutorial we showed how to use Ionic and how to separate the whole view into two different application, using packages isolation and AngularJS modules.
+В этом уроке мы показали как использовать Ionic и как разделять всё отображение в два разных приложения используя изоляцию пакетов и модули AngularJS.
 
-We also learnt how to share component between platforms, and change the view only!
+Мы также научились делиться компонентами между платформами и менять только отображение!
 
-We also used Ionic directives in order to provide user-experience of mobile platform instead of regular responsive layout of website.
+Мы также использовали директивы Ionic для обеспечения user-experience мобильных платформ вместо обычного отзывчивого макета вебсайта.
 
-Using these techniques we can create a separated code and logic for each platform, but still share some code parts (for example, AngularJS filters, services or components).
+Используя эти техники мы можем создать отдельный код и логику для каждой платформы, но по-прежнему некоторые части кода (например, AngularJS фильтры, сервисы или компоненты).
 
 {{/template}}

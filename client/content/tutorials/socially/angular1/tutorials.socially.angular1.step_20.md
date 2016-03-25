@@ -1,236 +1,236 @@
 {{#template name="tutorials.socially.angular1.step_20.md"}}
 {{> downloadPreviousStep stepName="step_19"}}
 
-In this step we are going to add the ability to upload images into our app, and also sorting and naming them.
+На этом этапе мы добавим возможность заливать изображения в наше приложение, а также сортировать их и давать названия.
 
-Angular-Meteor can use Meteor [CollectionFS](https://github.com/CollectionFS/Meteor-CollectionFS) which is a suite of Meteor packages that together provide a complete file management solution including uploading, downloading, storage, synchronization, manipulation, and copying.
+Angular-Meteor может использовать сборку пакетов [CollectionFS](https://github.com/CollectionFS/Meteor-CollectionFS), которые вместе обеспечивают полную поддержку файлов, включая заливку, загрузку, хранение, синхронизацию, манипуляцию и копирование.
 
-It supports several storage adapters for saving files to the local filesystem, GridFS, Amazon S3, or DropBox,  and additional storage adapters can be created.
+Он поддерживает несколько адаптеров хранения для сохранения файлы на локальные файловые системы, GridFS, Amazon S3 или DropBox, и дополнительные адаптеры хранения могут быть созданы.
 
-The process is very similar for handling any other MongoDB Collection!
+Процес очень похож на работу с любыми другими MongoDB коллекциями!
 
-So let's add image upload to our app!
+Давайте добавим заливку изображений к нашему приложению!
 
 
-We will start by adding CollectionFS to our project, by running the following command:
+Начнём с добавления пакета CollectionFS к нашему проекту, запустим команду:
 
     $ meteor add cfs:standard-packages
 
-Now, we will decide the storage adapter we want to use. 
-In this example, we will use the GridFS as storage adapters, so we will add the adapter by running this command:
+Теперь решим какой адаптер хранения мы хотим использовать.
+В этом примере мы будем использовать GridFS как адаптер хранения, добавим его используя команду:
 
     $ meteor add cfs:gridfs
 
-Note: you can find more information about Stores and Storage Adapters on the [CollectionFS](https://github.com/CollectionFS/Meteor-CollectionFS)'s GitHub repository.
+Внимание: можете узнать подробную информацию про Хранилища и Адаптеры хранения в [CollectionFS](https://github.com/CollectionFS/Meteor-CollectionFS) репозитории.
 
-So now we have the CollectionFS support and the storage adapter installed - we still need to create a CollectionFS object to handle our files.
-Note that you will need to define the collection as shared resource because you will need to use the collection in both client and server side.
+Теперь у нас есть поддержка CollectionFS и установленный адаптер хранения, нам нужно теперь создать объект CollectionFS для работы с файлами.
+Обратите внимание, вам нужно будет определить коллекцию как расшаренный ресурс, так как вам нужно будет использовать коллекцию в обеих - клиенте и сервере.
 
-### Creating the CollectionFS
+### Создание CollectionFS
 
-Let's start by creating `model/images.js` file, and define a regular CollectionFS object called "Images".
-Also we will use the CollectionFS API that allows us to defined auth-rules.
-Finally, We will publish the collection just like any other collection, in order to allow the client to subscribe to those images:
+Начнём с создания `model/images.js` файла и определим постоянный объект CollectionFS под названием "Images".
+Также мы будем использовать CollectionFS API, который позволит нам определить наши права авторизации.
+Наконец, мы опубликуем коллекцию как и любую другую с целью позволить клиенту подписываться на эти изображения:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.3"}}
 
-Now let's add a regular subscription to the `images` publication, and also add the `Images` collection as helper:
+Добавим постоянную подписку к публикациям `images` и также добавим коллекцию `Images` как хелпер:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.4"}}
 
-So now we have the collection, We can now create a client-side that handles the images upload.
+Теперь у нас есть коллекция и мы можем создать клиент, который будет управлять загрузкой изображений.
 
-### Image Upload
+### Загрузка изображений
 
-Note that for file upload you can use basic HTML `<input type="file">`  or any other package - you only need the HTML5 File object to be provided.
+Для загрузки файла вы можете использовать базовый HTML `<input type="file">` или любой другой пакет - вам только нужен HTML5 файловый объект.
 
-For our application, we would like to add ability to drag-and-drop images, so we use AngularJS directive that handles file upload and gives us more abilities such as drag & drop, file validation on the client side.
-In this example, I will use [ng-file-upload](https://github.com/danialfarid/ng-file-upload), which have many features for file upload.
-In order to do this, lets add the package to our project:
+Для нашего приложения мы бы добавили возможность drag-and-drop изображений, поэтому мы используем AngularJS директиву, которая обрабатывает загрузку файла и даёт нам больше функций - drag & drop, валидацию файлов на клиенте.
+В этом примере, я буду использовать [ng-file-upload](https://github.com/danialfarid/ng-file-upload), у которого есть много фич для загрузки файлов.
+С этой целью добавим пакет к нашему проекту:
 
     $ meteor add danialfarid:ng-file-upload
 
-Now, lets add a dependency in the `app.js` file:
+Добавим зависимость в файл `app.js`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.6"}}
 
-Now, let's add the usage of `ng-file-upload` to the add new party modal:
+Добавим использование `ng-file-upload` к новому модальному окну:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.7"}}
 
-And now let's add some CSS rules to make the upload box look better, and it also create an area for drag & drop:
+Добавим некоторые правила CSS, чтобы окно загрузки выглядело чуть лучше и также создадим область для drag & drop:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.8"}}
 
-And of course, let's import this file:
+И конечно же импортируем этот файл:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.9"}}
 
-And now let's add the `addImages` method to our component:
+Добавим метод `addImages` к нашему компоненту:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.10"}}
 
-> Note that the `addImages` is used in `nfg-change` attribute on html file we just created.
+> обратите внимание, что `addImages` использует в `nfg-change` атрибут html файл, который мы только создали.
 
-And that's it! now we can upload images by using drag and drop!
-Just note that the Application UI still don't show the new images we upload... we will add this later.
-Now let's add some more cool features, And make the image uploaded image visible!
+Вот и всё! Теперь мы можем загрузить изображения используя только перетаскивание!
+Обратите внимание что интерфейс приложения по-прежнему не показывает загруженные изображения... этим мы займёмся чуть позже.
+Добавим ещё пару крутых функций. Давайте сделаем процес загрузки изображений наглядным!
 
-### Image Crop
+### Обрезка изображений
 
-One of the most common actions we want to make with pictures is edit them before saving. 
-We will add to our example ability to crop images before uploading them to the server, using [ngImgCrop](https://github.com/alexk111/ngImgCrop/) package.
-So lets start by adding the package to our project:
+Обычно загруженные изображения нужно редактировать перед сохранением.
+Добавим к нашему примеру возможность обрезки изображений перед заливкой на серевер, используя пакет [ngImgCrop](https://github.com/alexk111/ngImgCrop/).
+Давайте добавим его к нашему проекту:
 
     $ meteor add alexk111:ng-img-crop
 
-And add a dependency in our module:
+Добавим зависимость в наш модуль:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.12"}}
 
-We want to perform the crop on the client, before saving it to the `CollectionFS`, so lets get the uploaded image, and instead of saving it to the server - we will get the Data Url of it, and use it in the `ngImgCrop`:
+Нам нужно делать обрезку на клиенте перед сохранением их в `CollectionFS`, давайте получим загруженное изображение и вместо сохранения его на сервер - получим его Data Url и используем его в `ngImgCrop`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.15"}}
 
-We took the file object and used HTML5 FileReader API to read the file from the user on the client side, without uploading it to the server.
-Then we saved the DataURI of the image into a variable.
-Next, we will need to use this DataURI with the `ngImgCrop` directive as follow:
+Мы взяли объект файла и использовали HTML5 FileReader API для чтения файла из пользователя на клиенте без его загрузки на сервер.
+Далее мы сохранили DataURI изображения в переменную.
+Далее, мы будем использовать этот DataURI с директивой `ngImgCrop` следующим образом:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.13"}}
 
->Moreover we add `ng-hide` to the upload control, in order to hide it, after the user picks an image to crop.
+>Далее мы добавим `ng-hide` к управлению заливкой, чтобы скрыть его, после того, как пользователь выберет изображение для обрезки.
 
-And add some CSS to make it look better:
+Добавим чуть CSS, чтобы преобразить внешний вид:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.14"}}
 
-And let's add a button that saves the new cropped image.
+Добавим кнопку для сохранения обрезанного изображения.
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.16"}}
 
-In order to save, we need to implement `saveCroppedImage()` function. We will use the same `CollectionFS` API we used before - with the `insert` method.
+Чтобы сохранить, нам нужно реализовать функцию `saveCroppedImage()`. Мы будем использовать то же `CollectionFS` API, которое мы использовали до этого с методом `insert`.
 
-CollectionFS have the ability to receive DataURI and save it, just like a File object. So the implementation looks like that:
+CollectionFS имеет возможность получать DataURI и сохранять его совсем как файловый объект. Поэтому реализация будет выглядеть вот так:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.17"}}
 
-So we take the image object and save it to the CollectionFS and put it in an array we called `images` that will hold the images for the new party.
+Мы получаем объект изображения и сохраняем его в CollectionFS и ложим его в массив `images`, который будет содержать изображения новой вечеринки.
 
-Then we reset the form by updating the value of `cropImgSrc` variable (we used it in the `ng-hide`).
+Далее мы сбрасываем форму обновляя значение переменной `cropImgSrc` (мы использовали её в `ng-hide`).
 
-We also change the login under `addNewParty` method, we take only the `_id` property of the images, because we want to save the id and not the whole image object when saving it.
+Мы также меняем login в методе `addNewParty`, мы берём только свойство `_id` изображений, так как нам нужно сохранять id, а не целый объект изображения при его сохранении.
 
-And we are almost done, Now we have the ability to crop images and then save them using CollectionFS.
+Мы почти закончили. Теперь у нас есть возможность обрезать изображения и сохранять их используя CollectionFS.
 
-We are just missing the display of the uploaded images in our form!
+Не хватает только вывода залитых изображений в нашей форме!
 
-### Display Uploaded Images
+### Вывод залитых изображений
 
-Let's add a simple gallery to list the images in the new party form:
+Добавим простую галерею к списку изображений в форме новой вечеринки:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.18"}}
 
-And that's it! We just repeated them and used it built-in method called `.url()`!
+Вот и всё! Мы повторили их и использовали встроенный метод `.url()`!
 
-Now let's add description to our images!
+Добавим описание к нашим изображениям!
 
-### Images Metadata & Description
+### Метаданные изображений и описание
 
-Using CollectionFS, we can also save metadata on the files we store.
-In order to do that, we just need to update the `metadata` property of the image object.
+Используя CollectionFS, мы можем также хранить метаданные файлов, что мы храним.
+С этой целью, нам нужно обновить свойство `metadata` объекта изображения.
 
-In order to do that with really nice and user-friendly ui, I used [angular-xeditable](https://github.com/vitalets/angular-xeditable).
-Lets add the angular-xeditable package to our project:
+С целью создания отличного интерфейся я использоватл [angular-xeditable](https://github.com/vitalets/angular-xeditable).
+Добавим angular-xeditable пакет к проекту:
 
     $ meteor add vitalets:angular-xeditable
 
-And add a dependency in our module:
+Добавим зависимость в наш модуль:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.20"}}
 
-Now, let's use `angular-xeditable` and add usage under the image:
+Давайте использовать `angular-xeditable` и добавим использование его для изображения:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.21"}}
 
-Due to problem with open issue in [angular-xeditable](https://github.com/vitalets/angular-xeditable/issues/6) 
-We need to change the `form` on `add-new-party-modal.html` into `div` to make the inline editing of `angular-xeditable` work.
+Из-за проблемі с открытием тикетов для [angular-xeditable](https://github.com/vitalets/angular-xeditable/issues/6) 
+Нам нжуно сменить `form` в `add-new-party-modal.html` на `div`, чтобы сделать инлайн редактирование `angular-xeditable` рабочим.
 
-And, of course, implement `updateDescription` function on the parties list scope:
+И, конечно же, реализовать функцию `updateDescription` области видимости вечеринок:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.22"}}
 
-> We used the CollectionFS API again, using the `update()` method, and we put the description under the `metadata.description` property.
+> Мы снова использовали CollectionFS API, используя метод `update()` и мы положим описание в свойство `metadata.description`.
 
-That's it! Now we have a photo gallery with description for each image!
+Вот и всё! теперь у нас есть фото-галерея с описанием для каждого изображения!
 
-### Sort Images
+### Сортировка изображений
 
-After we learned how to use CollectionFS metadata and how to update metadata values, we can also add an ability to sort and update the images order.
-To get the ability to sort the images, let's use [angular-sortable-view](https://github.com/kamilkp/angular-sortable-view).
+После того, как мы научились пользоваться метаданными CollectionFS и как обновлять значения метаданых, мы также можем добавить возможность сортировки и обновления порядка изображений.
+Для получения возможности сортировки изображений, давайте используем [angular-sortable-view](https://github.com/kamilkp/angular-sortable-view).
 
-Add the package by running this command:
+Добавим пает запустив эту команду:
 
     $ meteor add netanelgilad:angular-sortable-view
 
-And then add a dependency for the module:
+Добавим зависимость к модулю:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.24"}}
 
-The basics of `angular-sortable-view` is to add the `sv-?` attributes to our page, just like the examples in the `angular-sortable-view` repository, So let's do that:
+Основой `angular-sortable-view` является добавление `sv-?` аттрибутов к нашей странице, совсем как примеры в репозитории `angular-sortable-view` репозитории. Давайте сделаем это:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.25"}}
 
-> We also added `draggable="false"` to prevent the browser's default behavior for dragging images.
+> Также добавили `draggable="false"` для предотвращения поведения браузера при перетаскивании изображений по-умолчанию.
 
-We can also add a highlight to the first image, which we will use as the main image, by adding an indication for that:
+Также мы можем добавить подсветку первого изображения, которое мы будем использовать как основное изображение, используя для этого индикацию:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.26"}}
 
-And some CSS to make it look better:
+Добавим CSS для улучшения вида:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.27"}}
 
-So now we have image gallery with ability to add images, edit them, add a description and sort.
-Now we just need to add the logic that connect those images with the party we are creating!
+Теперь у нас есть галерея изображений с возможностью добавлять изображения, редактировать их, добавлять описание и сортировать.
+Теперь добавим логику, которая соединит эти изображения с создаваемой вечеринкой!
 
-### Link Image To Object
+### Привяжите изображение к объекту
 
-So as you know, we have all the images stored in `newParty.images` array, and we changed `addNewParty` method in step 20.17 to save only the ids of the images.
+Как вы знаете, у нас есть изображения хранимые в `newParty.images` массиве и мы сменили метод `addNewParty` на этапе 20.17 для сохранения только id изображений.
 
-So finally, to display the main image in the parties list, add the following code to the component:
+Наконец, для вывода основного изображения в списке вечеринок добавим следующий код к компоненту:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.29"}}
 
-And implement the `getMainImage` function:
+И реализуем функцию `getMainImage`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.28"}}
 
-With some CSS rules to make it look better:
+Добавим CSS для улучшения его вида:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.30"}}
 
-And that's it!
+Вот и всё!
 
-### Thumbnails
+### Миниизображения
 
-Another common usage with image upload, is the ability to save thumbnails of the image as soon as we upload it.
-CollectionFS gives the ability to handle multiple Stores object, and perform manipulations before we save it in each store.
-You can find the full information about image manipulation in the [CollectionFS docs](https://github.com/CollectionFS/Meteor-CollectionFS#image-manipulation).
+Вместе с заливкой изображений необходимой функцией является сохранение миниизображений после заливки. 
+CollectionFS даёт возможность хранить множественные объекты хранения и делать различные манипуляции перед тем, как мы сохраним его в каждом хранилище.
+Вы можете найти полную информацию про манипуляции над изображениями в [документации CollectionFS](https://github.com/CollectionFS/Meteor-CollectionFS#image-manipulation).
 
-Also, make sure you add graphicsmagick package by inserting the following line in the terminal :
+Убедитесь, что вы добавили пакет graphicsmagick вставив следующую строку в терминале:
 
     $ meteor add cfs:graphicsmagick
 
-For more information, follow the instructions on the [CollectionFS](https://github.com/CollectionFS/Meteor-CollectionFS) GitHub page.
-In order to add ability to save thumbnails, lets add a new store in the `images.js` modal and use `transformWrite` ability:
+Для подробной информации следуйте инструкциям на [CollectionFS](https://github.com/CollectionFS/Meteor-CollectionFS) GitHub странице.
+Для добавления возможности хранить миниизображения, создадим новое хранилище в `images.js` и используем возможность `transformWrite`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.31"}}
 
-So now each image we upload will be saved also as thumbnail.
-All we have to do in order to display the thumbnail instead of the original image is to add a param to `url()` method of File objects and decide which Store to use when creating the URL:
+Теперь каждое загруженное изображение будет также храниться как миниизображение.
+Теперь, чтобы выводилось миниизображение вместо оригинала, нужно добавить параметр к методу `url()` объектов файла и решить какое хранилище использовать при создании URL:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="20.32"}}
 
-That's it! Now we added the ability to save thumbnails for the images and use them in the view!
+Вот и всё! Добавим возможность хранить миниизображения для изображений и используем их в отображении!
 
 {{/template}}

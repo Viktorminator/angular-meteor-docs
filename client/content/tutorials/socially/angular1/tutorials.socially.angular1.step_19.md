@@ -1,63 +1,63 @@
 {{#template name="tutorials.socially.angular1.step_19.md"}}
 {{> downloadPreviousStep stepName="step_18"}}
 
-This part of the tutorial will cover the usage of third-party libraries with angular-meteor.
+В этой части мы разберёмся с использованием библиотек 3х сторон вместе с angular-meteor.
 
-Parts of this tutorial are also relevant for users who uses only Meteor, without angular-meteor, because the solution for third-party libraries comes from Meteor packaging manager - **Atmosphere**.
+Часть этого занятия относится к пользователям, которые используют только Meteor, без angular-meteor, так как решение использованиz библиотек 3х сторон пришло из системы пакетов Meteor - **Atmosphere**.
 
-In this part of the tutorial we will show multiple solution for the same problem - using third-party libraries with Meteor and angular-meteor.
+В этом уроке рассмотрим как можно одну проблему решить несколькими способами - используя библиотеки 3х строн вместе с Meteor и angular-meteor.
 
 
-Every Angular 1 developer knows and uses third-party libraries (like angular-ui-bootstrap, ui-router, etc..), but because we do not have the ability to easily include the ".js" file on our "head" tag - we need another solutions.
+Каждый разработчик Angular 1 знает и использует библиотеки 3х сторон (такие как angular-ui-bootstrap, ui-router, и др.), но так как у нас нет возможности легко включать ".js" файл в наш тег "head", то нам нужно другое решение.
 
-In order to add third-party libraries to your Meteor project - you can use the `meteor add PACKAGE_NAME` command to add the package.
+С целью добавления библиотек 3х сторон к вашему Meteor проекту - вы можете использовать `meteor add PACKAGE_NAME` командну для добавления пакета.
 
-Also, for **most** of the Angular 1 third-party libraries - there's already a Meteor package (which is an equivalent to bower or NPM).
+Также для **большинства** библиотек 3х сторон Angular 1 - уже существует пакет Meteor package (эквивалент bower или NPM).
 
-You can search for those packages using the [Atmosphere](https://atmospherejs.com/) website.
+Вы можете найти эти пакеты используя [Atmosphere](https://atmospherejs.com/) сайт.
 
-For example, in order to use **[angular-ui-router](https://atmospherejs.com/angularui/angular-ui-router)** in your project, easily run this command:
+Например, для использования**[angular-ui-router](https://atmospherejs.com/angularui/angular-ui-router)** в вашем проекте просто запустите команду:
 ```
 meteor add angularui:angular-ui-router
 ```
-And then just use the angular-ui-router on your angular-meteor project, by adding it to the Angular 1 module initialization:
+А далее просто используйте angular-ui-router в вашем angular-meteor проекте, добавив инициализацию модуля Angular 1:
 ```
 angular.module('myModule', [
   'angular-meteor',
   'ui.router'
 ]);
 ```
-**But this is an easy one** - because angular-ui-router is one of the most common library for Angular 1.
+**Но это лёгких случай** - так как angular-ui-router - это самая часто используемая библиотека Angular 1.
 
-In some cases, we want to use some packages that does not have an Atmosphere package exists - you can use the following instructions to solve your problem.
+В некоторых случаях, нам нужно использовать некоторые пакеты, для которых нет Atmosphere пакета - вы можете использовать следующие инструкции для решения вашей проблемы.
 
-**But First**, we need to understand how Meteor and it's package manager - Atmosphere, works: Any package registered on Atmosphere has some meta-data and the real JS and CSS files that written on a file named "**package.js**".
+**Но вначале**, нам нужно понять как Meteor и его пакетный менеджер - Atmosphere, работает: любой пакет, зарегистрированный в Atmosphere имеет некоторые мета-данные и реальные JS и CSS файлы, что записано в файле "**package.js**".
 
-The meta-data contain there parameters:
+Мета-данные содержат эти параметры:
 
-* Package name
-* Package version (based on the [semver](http://semver.org/) standard)
-* Package summary
-* Package GIT repository
-* Package documentation file (usually the README.md file)
+* Название пакета
+* Версия пакета (базируясь на [semver](http://semver.org/) стандарте)
+* Итоги пакета
+* GIT репозиторий пакета
+* Файл документации пакета (обычно это README.md файл)
 
-Also, each package declares these:
+Также каждый пакет декларирует:
 
-* Package dependencies (on other 3rdParty libraries).
-* Meteor minimal version.
-* Files in use (usually the CSS and the JS files of the library).
-* JavaScript exports (In case that there are any).
+* Зависимости пакета (от других библиотек 3х сторон).
+* Минимальную версию Meteor.
+* Файлы, которые используются (обычно CSS и JS файлы библиотеки).
+* JavaScript экспорты (если есть таковые).
 
-If you would like to know some more about Meteor packaging system and versioning, you can read [this](https://meteorhacks.com/meteor-packaging-system-understanding-versioning) article by MeteorHacks.
+Подробную информацию по созданию пакетов Meteor и их версий можете узнать [здесь](https://meteorhacks.com/meteor-packaging-system-understanding-versioning) статью от MeteorHacks.
 
-This is an example for angular-ui-router's package.js file:
+Это пример файла package.js для angular-ui-router:
 ```
-// package metadata file for Meteor.js
+// файл метаданных пакета Meteor.js
 var packageName = 'angularui:angular-ui-router'; // https://atmospherejs.com/angularui/angular-ui-router
-var where = 'client'; // where to install: 'client' or 'server'. For both, pass nothing.
+var where = 'client'; // куда устанавливать: 'client' или 'server'. Для обеих, оставляйте пустым.
 var version = '0.2.14';
 
-// Meta-data
+// Мета-данные
 Package.describe({
   name: packageName,
   version: version,
@@ -67,37 +67,37 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom(['METEOR@0.9.0', 'METEOR@1.0']); // Meteor versions
+  api.versionsFrom(['METEOR@0.9.0', 'METEOR@1.0']); // Meteor версия
 
-  api.use('angular:angular@1.0.8', where); // Dependencies
+  api.use('angular:angular@1.0.8', where); // Зависимости
 
-  api.addFiles('release/angular-ui-router.js', where); // Files in use
+  api.addфайлы('release/angular-ui-router.js', where); // Используемые файлы
 });
 ```
 
-# Solution #1
-This solution is the most helpful solution of all - because in the end of this solution, you achieve these results:
+# Решение #1
+Это решение наиболее полезное решение из всех, так как в конце этого решения вы получите эти результаты:
 
-* The package will be listed on the Atmosphere package manager and you'll be able to use it with "meteor add" command.
-* You will create a pull request to the package author in order to provide Meteor support for the package.
+* Пакет появится в списке менеджеров пакетов Atmosphere и вы сможете использовать его с помощью команды "meteor add".
+* Вы создадите пул-запрос к автору пакета с целью обеспечить поддержку Meteor для пакета.
 
-**If you are not interested on this solution and just want to do some "monkey patch" in order to your an unlisted package - just the Solution #2.**
+**Если вы не заинтересованы в таком решении и просто хотите делать "обезъяний патч" - тогда используйте Решение #2.**
 
-In order to learn in this example, we will use [angularjs-dropdown-multiselect](https://github.com/dotansimha/angularjs-dropdown-multiselect) as an example for a package.
+С целью обучения, будем использовать [angularjs-dropdown-multiselect](https://github.com/dotansimha/angularjs-dropdown-multiselect) как пример пакета.
 
-First, we want to fork the repository and clone it to our computer by using `git clone FORKED_REPOSITORY_LINK`.
+Сперва нужно добавить форк репозитория и клонировать его наш компьютер используя команду `git clone FORKED_REPOSITORY_LINK`.
 
-Then, create the "`package.js`" file on the root directory of the project, and use this basic template:
+Далее, создайте файл "`package.js`" в корневой директории проекта и используйте этот базовый шаблон:
 ```
-// package metadata file for Meteor.js
+// файл метаданных пакета для Meteor.js
 var packageName = 'PACKAGE_NAME';
-var where = 'client'; // where to install: 'client' or 'server'. For both, pass nothing.
+var where = 'client'; // куда устанавливать: 'client' или 'server'. Для обеих оставляйте пустым.
 var version = 'PACKAGE_VERSION';
 var summary = 'PACKAGE_SUMMARY';
 var gitLink = 'GIT_LINK';
 var documentationFile = 'README.md';
 
-// Meta-data
+// Мета-данные
 Package.describe({
   name: packageName,
   version: version,
@@ -107,21 +107,21 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom(['METEOR@0.9.0', 'METEOR@1.0']); // Meteor versions
+  api.versionsFrom(['METEOR@0.9.0', 'METEOR@1.0']); // Meteor версия
 
-  api.use('DEPENDENCY_NAME', where); // Dependencies
+  api.use('DEPENDENCY_NAME', where); // Зависимости
 
-  api.addFiles('FILE_NAME', where); // Files in use
+  api.addфайлы('FILE_NAME', where); // используемые файлы
 });   
 ```
 
-Now, just fill the information inside the file, according to the package information, the `bower.json` could be helpful to fill missing information you can't find.
+Теперь просто запишите информацию в файл, согластно информации пакета, файл `bower.json` может быть полезен для заполнения недостающей информации.
 
-So in our case, the final `package.js` file will look like that:
+В нашем случае окончательный файл `package.js` примет вид:
 ```
-// package metadata file for Meteor.js
+// файл метаданных пакета для Meteor.js
 var packageName = 'dotansimha:angularjs-dropdown-multiselect';
-var where = 'client'; // where to install: 'client' or 'server'. For both, pass nothing.
+var where = 'client'; // куда устанавливать: 'client' или 'server'. Для обеих оставляйте пустым.
 var version = '1.5.2';
 var summary = 'Angular 1 Dropdown Multiselect directive';
 var gitLink = 'https://github.com/dotansimha/angularjs-dropdown-multiselect';
@@ -137,51 +137,51 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.versionsFrom(['METEOR@0.9.0', 'METEOR@1.0']); // Meteor versions
+  api.versionsFrom(['METEOR@0.9.0', 'METEOR@1.0']); // Meteor версии
 
-  api.use('angular:angular@1.2.0', where); // Dependencies
-  api.use('stevezhu:lodash@3.5.0', where); // Surprised?! Read the bower.json file!
+  api.use('angular:angular@1.2.0', where); // Зависимости
+  api.use('stevezhu:lodash@3.5.0', where); // Удивлены?! Читайте файл bower.json!
 
-  api.addFiles('src/angularjs-dropdown-multiselect.js', where); // Files in use
+  api.addфайлы('src/angularjs-dropdown-multiselect.js', where); // используемые файлы
 });   
 ```
 
-**Important Notes:**
+**Важные замечания:**
 
-* The prefix for the package name should be the package author username - you can use YOUR username or create an Meteor organization and use that name you created.
-* The dependencies are build in this form: AUTHOR\_NAME:PACKAGE\_NAME@VERSION, you can also FORCE a specific version by adding "=" before the version number.
-* In this case, a dependency on *Lodash* is needed, so we will search the Atmposhere website for Lodash package and we will find the full package name.
-* It's okay to use the source file and not the minified version of the package - because on production - Meteor minifies everything for you!
+* Префикс для названия пакета должен быть именем автора пакета - вы можете использовать ВАШЕ имя пользователя или создать Метеор организацию и использовать её имя.
+* Зависимости строятся в таком виде: AUTHOR\_NAME:PACKAGE\_NAME@VERSION, вы также можете СПЕЦИАЛЬНО указать особенную версию, добавив "=" перед номером версии.
+* В этом случае нужна зависимость от *Lodash*, поэтому мы поищем по сайту Atmposhere пакет Lodash и найдём полное имя пакета.
+* Вы спокойно можете использовать файл-источник и неминифицированную версию пакета, так как на продакшене Метеор минифицирует всё за вас!
 
-So now, after we created the `package.js` file, we just need to run the Meteor's publish command on the folder with the package file:
+После создания файла `package.js`, нам нужно запустить команду publish Метеор в папке с файлом пакета:
 ```
 meteor publish
 ```
 
-And if the package does not exists, we need to add `--create` flag:
+Если пакет не существует, то нам необходимо добавить флаг `--create`:
 ```
 meteor publish --create
 ```
 
-So now - the package will be registered on Atmosphere package manager and you'll be able to use it.
+Теперь пакет будет зарегистрирован в менеджере пакетов Atmosphere и вы сможете его использовать.
 
-The last part of this solution is to commit the `package.js` file into your forked repository, and then create a Pull Request in order to help the package's author to maintain the Meteor package on a regular basis.
+Последней частью этого решение является коммит файла `package.js` в форкнутый вами репозитории и далее создание пул-запроса для помощи автору пакета для поддержки пакета Метеор на регулярной основе.
 
-**If you want to provide even some more helpful solution** - you can use [these instructions](https://github.com/MeteorPackaging/grunt-gulp-meteor) to create a Gulp/Grunt task that automatically published a new version of the package every time the developer publishes a new release.
+**Если вы хотите быть ещё более полезным** - можете использвать [эти инструкции](https://github.com/MeteorPackaging/grunt-gulp-meteor) для создания Gulp/Grunt задачи, которая автоматически опубликует новую версию пакета каждый раз, когда разработчик делает новый релиз.
 
-# Solution #2
-This is a more simple solution - this solution will be useful in case you want just to create an Atmosphere package without helping the developer to integrate Meteor in his versions publishing process.
+# Решение #2
+Это более простое решение - это решение будет полезным в случае, если вы просто хотите создать Atmosphere пакет не помогая разработчику интегрировать Meteor в его процес публикации разных версий.
 
-You can just use `bower`, install the package locally on your computer, then create a `package.js` file and run `meteor publish`.
+ВЫ можете просто использовать `bower`, установить пакет локально на свой компьютер, дальше создать `package.js` файл и запустить `meteor publish`.
 
-But you can even be more lazy! there is a tool named [angular-meteor-publisher](https://github.com/dotansimha/meteor-package-publisher) that provides a full solution for transferring a package from `bower` (will support NPM on the future) into `Atmosphere` just by providing the meta-data.
+Можно ещё больше полениться! Есть инструмент с названием [angular-meteor-publisher](https://github.com/dotansimha/meteor-package-publisher), который обеспечивает полное решение передачи пакета от `bower` (будет поддерживать NPM в будущем) в `Atmosphere` просто предоставив метаданные.
 
-You  just need to provide the basic information of the source package (the `bower` meta-data, usually it's `bower install angular-ui-router@0.2.14` and the destination meta-data (the information that Atmosphere requires), add the JS and CSS files and the package dependencies and just run it by using:
+Вам нужно просто предоставить базовую информацию о исходном пакете (метаданные `bower`, обычно это `bower install angular-ui-router@0.2.14` и метаданные цели (информация, которую требует Atmosphere), добавить JS и CSS файлы и зависимости пакета и запустить команду:
 ```
 node meteor-package-publisher myJSONfile.json
 ```
 
-For example, this is how the ngInfiniteScroll package will be published using this tool (the JSON meta-data file):
+Например, вот как пакет ngInfiniteScroll будет опубликован используя этот инструмент (JSON файл метаданных):
 ```
 {
   "source": {
@@ -196,7 +196,7 @@ For example, this is how the ngInfiniteScroll package will be published using th
     "git": "https://github.com/sroze/ngInfiniteScroll",
     "documentation": null,
     "versionsFrom": "METEOR@0.9.0.1",
-    "filesToAdd": [
+    "файлыToAdd": [
       {"name": "build/ng-infinite-scroll.js", "platforms": ["client"]}
     ],
     "use": [
@@ -207,11 +207,11 @@ For example, this is how the ngInfiniteScroll package will be published using th
 }
 ```
 
-# Summary
-As you can see, using existing packages in your angular-meteor application is simple, and when we encounter a third-party library without Meteor package support we can help by creating the "package.js" file and created a pull request (Solution #1).
+# Итоги
+Как видите, очень просто использовать существующие пакеты в вашем angular-meteor приложении и когда вы сталкиваетесь со сторонними библиотеками без поддержки через Метеор пакет, то можно просто создать файл "package.js" и сделать пул-запрос (Решение #1).
 
-Also, you can use a automatic publisher that helps us to publish packages real quick (Solution #2).
+Также вы можете использвоать автопубликатор, который помогает очень быстро публиковать пакеты (Решение #2).
 
-**We prefer that the first solution will be your choice in order to enrich the Meteor and angular-meteor community and help other developers to use third-party packages.**
+**Мы предпочитаем первое решение, так как оно обогащает Meteor и angular-meteor сообщество и помогает другим разработчикам использвоать пакеты 3х сторон.**
 
 {{/template}}

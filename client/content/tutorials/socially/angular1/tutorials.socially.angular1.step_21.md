@@ -1,171 +1,171 @@
 {{#template name="tutorials.socially.angular1.step_21.md"}}
 {{> downloadPreviousStep stepName="step_20"}}
 
-This step of the tutorial teaches us how to add mobile support for iOS and Android and how to elegantly reuse code using the Meteor packaging system.
+На этом этапе мы научимся добавлять поддержку мобильных устройств: iOS и Android и как элегантно использовать код с помощью системы пакетов Meteor.
 
-First, let's understand Meteor's packages: 
-- A folder named `packages` under the root directory defines the *local* package of our project. "Local" means packages that we develop ourselves, rather than use existing packages. 
-- We use packages to separate the code that is used for for mobile and web.
+Давайте разберёмся, что такое Meteor пакеты: 
+- Папка `packages` в корне опрпделяет *локальный* пакет нашего проекта. "Локальный" значит пакеты, которые мы разрабатываем самостоятельно, а не используем существующие. 
+- Мы используем пакеты для разделения кода, который используется для мобильных устройств и веба.
 
-In this tutorial's example we will differentiate the login part of the project: in the browser users will login using email and password and in the mobile app users will login with SMS verification.
+В этом примере урока мы разделим часть с login проекта: в браузере пользователи будут логинится используя email и password и в мобильном приложении пользователи будут входить через SMS верификацию.
 
-We create seperate AngularJS modules for mobile and web in order to seperate between this code part - it's a perfect alternative for using `Meteor.isCordova` multiple times!
+Мы создадим отдельные AngularJS модули для мобильных устройств и веба с целью разделить эту часть кода - это отличная альтернатива использованию `Meteor.isCordova` множественное количество раз!
 
-### Adding mobile support for the project: 
+### Поддержка мобильных устройств в проекте:
 
-To add mobile support, select the platform(s) you want and run the following command:
+Для добавления поддержки выберите желаемую платформу(ы) с помощью команды:
 
     $ meteor add-platform ios
-    # OR / AND
+    # ИЛИ / И
     $ meteor add-platform android
 
-And now to run in the emulator, run:
+И для запуска в эмуляторе запустите команду:
 
     $ meteor run ios
-    # OR
+    # ИЛИ
     $ meteor run android
 
-You can also run in a real mobile device, for more instructions, read [Meteor and Cordova integration](https://github.com/meteor/meteor/wiki/Meteor-Cordova-integration).
+Вы также можете запустить в мобильном устройстве, почитайте [интеграция Meteor и Cordova](https://github.com/meteor/meteor/wiki/Meteor-Cordova-integration).
 
-### creating packages
+### создание пакетов
 
-To work with packages we need to create the `packages` directory:
+Для работы с пакетами нам нужно создать папку `packages`:
 
     $ mkdir packages
 
-We will initially work on the package that contains the mobile logic. Let's create the mobile package by running the following command:
+Мы вначале начнём работу с пакетом, который содержит логику мобильного приложения.. Давайте создадим мобильный пакет запустив команду:
 
     $ meteor create --package socially-mobile
 
-Meteor will create for us a default package. The main file is `package.js` that look like that:
+Meteor создаст для нас пакет по-умолчанию. Главный файл - `package.js` будет выглядеть так:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.2" filename="packages/socially-mobile/package.js"}}
 
-As with any auto-generated code, we do not always need everything. In this case we will remove the auto generated files that we are not using for now:
+Как и с нашим авто-генерированным кодом, вам не нужно всё. В этом случае мы удалим сгенерированные файлы, которые мы сейчас не используем:
 
 `packages/socially-mobile/socially-mobile-tests.js`
 
 `packages/socially-mobile/socially-mobile.js`
 
-And also remove them from the `package.js` file:
+Мы также удалим их из файла `package.js`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.3" filename="packages/socially-mobile/package.js"}}
 
-The package is ready and can be added to our project running: 
+Пакет готов и может быть добавлен к нашему проекту: 
 
   `$ meteor add socially-mobile`
 
-We make sure that AngularJS and angular-meteor are loaded before our package by adding the following dependency using the `api.use` method:
+Мы убедились, что AngularJS и angular-meteor загружаются перед нашим пакетом добавив эту зависимость с помощью метода `api.use`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.4"}}
 
-### Angular Mobile Module 
+### Модуль Angular Mobile 
 
-In this part we will create an Angular module that contains a login route and specific html for mobile. 
+В этой части мы создадим модуль Angular, который содержит маршрут для входа и соответствующий html для мобильных устройств.
 
-We are preserving the same folder structure as we had in the main project, so the files will be located under `client/lib/` inside our pagckage. 
+Мы имеем ту же файловую структуру как и в основном проекте, поэтому файлы будут размещены в `client/lib/` внутри нашего проекта.
 
-Here are the steps: 
+Проведём следующие шаги: 
 
-Create the AngularJS module and name it `socially.mobile`:
+Создайте модуль AngularJS и назовите его `socially.mobile`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.5"}}
 
-Now let's create a new component for the `login`, under our package:
+Теперь создадим новый компонент для `login`, внутри нашего пакета:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.6"}}
 
-And it's view, just a dummy view for now:
+И его отображение, пока что простой его вид:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.7"}}
 
-### Add module's files to the package
+### Добавьте файлы модуля к пакету
 
-We need to tell our `package.js` to use the files that we created above, so we will use `api.addFiles`.
+Нам нужно сообщить нашему `package.js` использовать файлы, которые мы недавно создали, так мы будем использовать `api.addFiles`.
 
-We also need to add the platform declaration, using the last argument of these functions.
+Нам также необходимо добавить описание платформы, используя последний аргумент этих функций.
 
-> The available platforms are: `web.browser`, `web.cordova`, `client` (both browser and cordova) and `server`.
+> Доступные платформы: `web.browser`, `web.cordova`, `client` (обое browser и cordova) и `server`.
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.8"}}
 
-Last, we want to load the `socially.mobile` module only in Cordova environment. We can update `app.js` to load the module only when running inside Cordova (`Meteor.isCordova`):
+Наконец, нам нужно загрузить модуль `socially.mobile` только в окружении Cordova. Мы можем обновить `app.js` для загрузки модуля только при запуске всередине Cordova (`Meteor.isCordova`):
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.9"}}
 
-Let's try to run it inside an emulator (I used iOS Simulator on Mac OS X), it should look like that:
+Давайте попытаемся запустить его всередине эмулятора (я использовал iOS Simulator на Mac OS X), он должен выглядеть так:
 
 {{tutorialImage 'angular1' 'step21_1.png' 500}}
 
-Great! Seems that it is working!
+Отлично! Похоже, что всё работает!
 
-### Angular Browser Module 
+### Модуль Angular Browser 
 
-We will do a similar process to add support for browser package. The first step is to load another AngularJS module when we run in the browser:
+Сделаем то же для добавления поддержки пакета браузера. Вначале загрузим другой модуль AngularJS, когда мы запускаемся в браузере:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.10"}}
 
-We will create a package again, named `socially-browser`, and remove the default files:
+Мы создадим пакет снова, с названием `socially-browser`, и удалим файлы по-умолчанию:
 
     $ meteor create --package socially-browser
 
-Make some modifications to the `package.js` file, very similar to the mobile package:
+Модифицируем файл `package.js` схожим образом как и в случае с мобильным пакетом:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.11" filename="packages/socially-browser/package.js"}}
 
-> Note that we load the files only in the `web.browser` platform.
+> Внимание: мы загружаем файлы только в платформе `web.browser`.
 
-Create the `socially.browser` module:
+Создайте модуль `socially.browser`:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.11" filename="packages/socially-browser/client/lib/module.js"}}
 
-Add the browser login stub view:
+Добавьте начальное отображение для логина в браузере:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.11" filename="packages/socially-browser/client/auth/login/login.html"}}
 
-And the stub component:
+Добавьте начальный компонент:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.11" filename="packages/socially-browser/client/auth/login/login.component.js"}}
 
-Add the browser package to our project:
+Добавьте пакет браузера к нашему проекту:
 
   $ meteor add socially-browser
 
-### Implement Browser Login
+### Реализация Browser Login
 
-We will use the existing code for our web login. That means 2 things: 
-- Copying the original login view file from `client/users/login/login.html` to our package view (`login.html`):
+Мы будем использовать существующий код для веб-логина. Это значит 2 вещи:
+- копирование файла оригинального отображения логина из `client/users/login/login.html` в наш пакет отображения (`login.html`):
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.14"}}
 
-- Moving the current `login` component from `client/users/login/login.component.js` to our package, and update the module's name for this component:
+- перемещение текущего компонента `login` из `client/users/login/login.component.js` в наш пакет и обновление имени модуля для этого компонента:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.13"}}
 
-> We can also delete `client/users/login/login.html` and `client/users/login/login.component.js` files. It is no longer needed!
+> Мы также можем удалить `client/users/login/login.html` и `client/users/login/login.component.js` файлы. Они больше не нужны!
 
-> **A note on package name prefixing**: It is important to note that if you include a prefix in the declaration of your package name (as seen in `21.11  Create socially-browser package`) then you should remember to include this prefix in absolute path references elsewhere. E.g. if package name is declared as `name: 'my-prefix:socially-browser'` then the templateUrl in the above code snippet would need to read `templateUrl: '/packages/my-prefix:socially-browser/client/auth/login/login.html'`
+> **Заметка по поводу префикса имени пакета**: Важно знать, что если вы включаете префикс в описании имени пакета (как можно было увидеть в `21.11 Создание пакета socially-browser`) тогда вы должны помнить и включить этот префикс в абсолютных ссылках везде. Например, если имя пакета `name: 'my-prefix:socially-browser'` тогда templateUrl в вышеприведенном коде будет читаться как `templateUrl: '/packages/my-prefix:socially-browser/client/auth/login/login.html'`
 
-### Implement Mobile Login
+### Реализация мобильного логина
 
-We need to take care of the login view for mobile only. We will add a view with two steps: 
-- Capture the user's phone number 
-- Enter the SMS code verification
+Нужно разобраться с отображением логина для мобильных устройств. Мы создадим его в два шага:
+- Определим телефонный номер пользователя
+- Введём SMS верификацию
 
-We will use an external package that extends Meteor's Accounts, called `accounts-phone` that verifies phone number with SMS message, so let's add it:
+Мы будем использовать внешний пакет, который расширяет Meteor аккаунты, под названием `accounts-phone`, который верифицирует номера с помощью SMS, давайте сделаем это:
 
     $ meteor add okland:accounts-phone
 
-And now we will add to the mobile package a `login` component logic that uses Accounts-Phone package to verify our phone number:
+И теперь мы добавим к мобильному пакету логику компонента `login`, котoрая использует пакет Accounts-Phone для верификации телефонного номера:
 
 {{> DiffBox tutorialName="meteor-angular1-socially" step="21.17"}}
 
-> Note that in development mode - the SMS will not sent - and the verification code will be printed to the Meteor log.
+> В режиме разработки - СМСки не будут отправляться и верификационный код будет заносится в Meteor log.
 
-And that's it! we got a different component for each platform!
+Вот и всё! У нас разные компоненты для каждой платформы!
 
-## Summary
+## Итоги
 
-In this tutorial we showed how to make our code behave differently in mobile and web platforms and load different files using Meteor's packaging system. We did this by creating separate AngularJS modules with specific code for mobile and web, and loading them into the client based on the platform that runs the application. 
+В этом уроке мы показали как сделать так, чтобы наш код вёл себя различным образом в мобильных устройствах и вебе и загружался по-разному. Мы достигли этого используя систему пакетов Meteor. Мы сделали это создав отдельные модули AngularJS с соответствующим кодом для мобильных устройств и веба загружая их в клиент, базируясь на платформе, которая запускает приложение.
 
 {{/template}}

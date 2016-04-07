@@ -8,7 +8,7 @@ ANGULAR_SERVER = {
       redirectRoute: "serverBase.bootstrapping",
       template: "server-base",
       seoTitleSuffix: " | Angular-Server API",
-      seoDesc: "Angular-Server let you use Angular on the server side using the Meteor Platform.",
+      seoDesc: "Angular-Server позволяет использовать Angular on the server side using the Meteor Platform.",
       pages: [
         {
           id: "01",
@@ -22,8 +22,8 @@ ANGULAR_SERVER = {
           id: "02",
           route: "serverBase.di",
           path: "/server/base/di",
-          title: "Dependency Injection",
-          seoTitle: "Dependency Injection",
+          title: "Внедрение зависимости",
+          seoTitle: "Внедрение зависимости",
           mdContent: "server.di"
         },
         {

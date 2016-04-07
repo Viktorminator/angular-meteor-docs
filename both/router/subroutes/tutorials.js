@@ -4,7 +4,7 @@ TUTORIALS = {
     // while the rest of meteor.com is closed-source
     {
       id: "0",
-      title: "Tutorials",
+      title: "Уроки",
       route: "tutorials",
       path: "/tutorials",
       pathRedirect: "/tutorialIntro",

@@ -11,7 +11,7 @@
 
 Давайте сделаем наш шаблон динамическим:
 
-{{> DiffBox tutorialName="angular-meteor" step="2.1"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="2.1"}}
 
 Мы заменим список вечеринок на директиву [ngRepeat](https://docs.angularjs.org/api/ng/directive/ngRepeat) и два выражения Angular 1:
 
@@ -25,7 +25,7 @@
 
 Для создания нашего контроллера и модели мы начнём с контроллера `PartiesListCtrl` и разместим в нём данные.
 
-{{> DiffBox tutorialName="angular-meteor" step="2.2"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="2.2"}}
 
 Мы описали контроллер с названием `PartiesListCtrl` и зарегистрировали его в модули приложения Angular 1 - `socially`.
 
@@ -47,11 +47,11 @@
 
 Существует очень популярный Angular 1 инструмент [ng-annotate](https://github.com/olov/ng-annotate), который заботися об этом всём, поэтому мы можем писать обычный код, который затем минифицируется.
 
-angular-meteor делает это автоматически. Всё, что нужно - это сменить названия файлов с `.js` на `.ng.js`
+meteor-angular1-socially делает это автоматически. Всё, что нужно - это сменить названия файлов с `.js` на `.ng.js`
 
 Давайте поменяем `app.js` на `app.ng.js` и сменим использование в нашем контроллере:
 
-{{> DiffBox tutorialName="angular-meteor" step="2.4"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="2.4"}}
 
 И отныне каждый файл Angular 1, который мы будем создавать будет использовать расширение `ng.js`!
 

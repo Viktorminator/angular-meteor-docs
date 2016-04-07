@@ -29,7 +29,7 @@ Meteor делает написание распределённого клиен
 
 Добавьте:
 
-{{> DiffBox tutorialName="angular-meteor" step="3.1"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="3.1"}}
 
 в начало нашего `app.js` файла.
 
@@ -45,7 +45,7 @@ Meteor делает написание распределённого клиен
 
 Мы собираемся заменить описание `$scope.parties` на следующую команду всередине контроллера `PartiesListCtrl`:
 
-{{> DiffBox tutorialName="angular-meteor" step="3.2"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="3.2"}}
 
 Эта строка описывает новую переменную `$scope.parties` (поэтому нам не нужно делать что-то наподобие `$scope.parties = [];` ) и далее связывать это с коллекцией Parties Mongo.
 
@@ -53,7 +53,7 @@ Meteor делает написание распределённого клиен
 
 Наш `app.js` файл должен выглядеть так:
 
-{{> DiffBox tutorialName="angular-meteor" step="3.3"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="3.3"}}
 
 Теперь при каждом изменении в `$scope.parties` переменная будет автоматически сохранена в локальную minimongo и синхронизированна с сервером MongoDB и другими клиентами в реальном времени!
 
@@ -61,7 +61,7 @@ Meteor делает написание распределённого клиен
 
 Создаддим файл `server.js` и добавим следующее содержимое:
 
-{{> DiffBox tutorialName="angular-meteor" step="3.4" filename="server.js"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="3.4" filename="server.js"}}
 
 > Обратите внимание, что мы также убрали строку `Mongo.Collection` из `app.ng.js`, так как мы хотим, чтобы эта строка работала в сервере и клиенте  и `.ng.js` файлы загружаются только в клиенте.
 

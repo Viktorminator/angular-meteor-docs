@@ -1,4 +1,4 @@
-{{#template name="tutorial.step_05.md"}}
+{{#template name="tutorials.socially.angular1.step_05.md"}}
 {{> downloadPreviousStep stepName="step_04"}}
 
 На этом этапе вы научитесь создавать шаблон макета и как строить приложение, которое имеет различные отображения через добавление маршрутов используя Angular 1 модуль называемый `ui-router`.
@@ -21,7 +21,7 @@
 
 Далее добавьте ui-router как зависимость к нашему приложению в `app.js`:
 
-{{> DiffBox tutorialName="angular-meteor" step="5.2"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="5.2"}}
 
 # Множественные отображения, маршрутизация и шаблон макета
 
@@ -49,7 +49,7 @@
 
 Давайте создадим новый html-файл `parties-list.ng.html` и вставим существующий код списка из `index.ng.html` в него:
 
-{{> DiffBox tutorialName="angular-meteor" step="5.3"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="5.3"}}
 
 Код почти такой же за исключением двоих изменений:
 
@@ -58,7 +58,7 @@
 
 Вернёмся к `index.html` и заменим содержимое с директивой `ui-view`:
 
-{{> DiffBox tutorialName="angular-meteor" step="5.4"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="5.4"}}
 
 Обратите внимание - мы сделали 3 вещи:
 
@@ -71,7 +71,7 @@
 Добавим плейсхолдер в новую страницу деталей вечеринки.
 Создайте новый html файл с названием `party-details.ng.html` и вставьте следующий код:
 
-{{> DiffBox tutorialName="angular-meteor" step="5.6"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="5.6"}}
 
 Этот код может служить как плейсхолдер. Мы вернёмся к заполнению деталей попозже.
 
@@ -80,7 +80,7 @@
 Сконфигурируем наши маршруты.
 Добавим этот код конфигурации в `app.js`, после определения приложения Angular 1:
 
-{{> DiffBox tutorialName="angular-meteor" step="5.7"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="5.7"}}
 
 Используя .config() метод приложения Angular 1 мы запрашиваем `$stateProvider` вставиться в нашу config функцию и использовать метод состояния для определения наших маршрутов.
 
@@ -105,7 +105,7 @@
 Но по-прежнему нам нужно определить контроллер `PartyDetailsCtrl`.
 Добавьте этот код в существующий контроллер:
 
-{{> DiffBox tutorialName="angular-meteor" step="5.8"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="5.8"}}
 
 Всё теперь на месте. Запустите приложение и вы увидите две вещи:
 

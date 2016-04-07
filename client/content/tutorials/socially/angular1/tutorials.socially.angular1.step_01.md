@@ -5,7 +5,7 @@
 
 Добавьте шаблон HTML к `index.ng.html`:
 
-{{> DiffBox tutorialName="angular-meteor" step="1.1"}}
+{{> DiffBox tutorialName="meteor-angular1-socially" step="1.1"}}
 
 Далее мы сгенерируем динамически тот же список используя Angular 1.
 

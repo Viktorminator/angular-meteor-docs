@@ -17,35 +17,29 @@
 <template name="stepbarButtons">
   {{#if prev}}
     <a href="{{prev.path}}" class="prev-button btn btn-default">{{#if prevContent}}{{prevContent}}{{else}}
-      Prev{{/if}}</a>
+      Назад{{/if}}</a>
   {{/if}}
   {{#if next}}
     <a href="{{next.path}}" class="next-button btn btn-default">{{#if nextContent}}{{nextContent}}{{else}}
-      Next{{/if}}</a>
+      Вперёд{{/if}}</a>
   {{/if}}
 </template>
 
 <template name="stepbarButtonsPrevious">
   <a href="{{prev.path}}">
-    <li class="btn btn-primary"><i class="glyphicon glyphicon-step-backward"></i> Previous</li>
+    <li class="btn btn-primary"><i class="glyphicon glyphicon-step-backward"></i> Назад</li>
   </a>
 </template>
 
 <template name="stepbarButtonsNext">
   {{#if next}}
     <a href="{{next.path}}">
-      <li class="btn btn-primary">Next <i class="glyphicon glyphicon-step-forward"></i></li>
+      <li class="btn btn-primary">Вперёд <i class="glyphicon glyphicon-step-forward"></i></li>
     </a>
   {{/if}}
 </template>
 
-<template name="stepbarLiveDemo">
-  {{#if next}}
-    <a href="{{liveDemoLink}}">
-      <li class="btn btn-primary"><i class="glyphicon glyphicon-play"></i> Live Demo</li>
-    </a>
-  {{/if}}
-</template>
+
 
 <template name="stepbarCodeDiff">
   {{#if next}}
@@ -64,7 +58,6 @@
 <template name="tutorialNavigationButtons">
   <ul class="btn-group nav">
     {{> stepbarButtonsPrevious }}
-    {{> stepbarLiveDemo }}
     {{> stepbarCodeDiff }}
     {{> stepbarButtonsNext }}
   </ul>
@@ -73,7 +66,7 @@
 <template name="improveDoc">
   <a href="https://github.com/Urigo/angular-meteor-docs/edit/master/client/content/tutorials/{{tutorialName}}/{{contentTemplate}}"
      class="btn btn-default btn-lg improve-button">
-    <i class="glyphicon glyphicon-edit">&nbsp;</i>Improve this doc
+    <i class="glyphicon glyphicon-edit">&nbsp;</i>Улучшить этот урок
   </a>
 </template>
 
@@ -85,7 +78,7 @@
     </div>
   </div>
   <div class="row">
-    <h1 class="col-md-8 col-xs-12 title">Step {{id}} - {{title}}</h1>
+    <h1 class="col-md-8 col-xs-12 title">Шаг {{id}} - {{title}}</h1>
     <div class="col-md-4 col-xs-12 video">
       {{#if video}}
         <iframe src="{{video}}" frameborder="0" allowfullscreen></iframe>
@@ -97,11 +90,10 @@
 <template name="downloadPreviousStep">
   <div class="am-note">
     <p>
-      <em class="am-note-bold">Note:</em>
-      If you skipped ahead to this section,
-      <a href="{{ghRepoName}}/archive/{{stepName}}.zip">here is a zip
-      </a>
-      of the tutorial at this point.
+      <em class="am-note-bold">Внимание:</em>
+      Если вы перепрыгнули на эту статью,
+      <a href="{{ghRepoName}}/archive/{{stepName}}.zip">вот zip-архив</a>
+      урока на этой точке.
     </p>
   </div>
 </template>

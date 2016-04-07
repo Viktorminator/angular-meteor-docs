@@ -2,11 +2,11 @@ Router.configure({
   layoutTemplate: 'layout',
   notFoundTemplate: 'notFound',
   seoTitle: 'angular-meteor',
-  seoAuthor: 'Uri Goldshtein',
-  seoDesc: 'angular-meteor is a realtime full stack that combines the best frameworks. use your existing Angular applications with Meteor - the best backend framework for AngularJS applications.',
+  seoAuthor: 'Viktor Matushevskyi',
+  seoDesc: 'angular-meteor - это фул-стек платформа реального времени, соединяющая лучшие из JS фреймворков - используйте ваши Angular приложения вместе с Meteor - лучшим бекенд фреймворком для AngularJS приложений.',
   seoType: 'website',
   seoImage: 'https://angular-meteor.com/images/logo-large.png',
-  seoTwitter: '@urigoldshtein'
+  seoTwitter: '@viktorminator'
 });
 
 if (Meteor.isClient) {
@@ -36,7 +36,7 @@ Router.map(function () {
   self.route('manifesto', {
     path: '/manifesto',
     template: 'manifesto',
-    seoTitle: 'Angular Meteor Manifesto'
+    seoTitle: 'Angular Meteor Манифест'
   });
 
   // Redirect old link
@@ -45,7 +45,7 @@ Router.map(function () {
   self.route('about', {
     path: '/about',
     template: 'about.html',
-    seoTitle: 'About Angular Meteor'
+    seoTitle: 'О сайте'
   });
 
   // -------------------------------------------------------------------------
@@ -151,13 +151,13 @@ Router.map(function () {
   self.route('tutorials.socially', {
     path: '/tutorials/socially',
     template: 'tutorials.socially.intro',
-    seoTitle: 'Angular Meteor Tutorials'
+    seoTitle: 'Angular Meteor уроки'
   });
 
   self.route('tutorials.whatsapp', {
     path: '/tutorials/whatsapp',
     template: 'tutorials.whatsapp.intro',
-    seoTitle: 'Angular Meteor and Ionic tutorial'
+    seoTitle: 'Angular Meteor и Ionic уроки'
   });
 
   var directedRouteNames = [];

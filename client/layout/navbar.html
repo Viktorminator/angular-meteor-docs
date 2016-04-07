@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
+          <span class="sr-only">Свернуть</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -13,16 +13,16 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-left">
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Уроки<span class="caret"></span></a>
             <ul class="dropdown-menu tutorial-dropdown" role="menu">
 
-                <li><a href="/tutorials/socially/"><strong>Tutorial - From start to full app</strong></a></li>
+                <li><a href="/tutorials/socially/"><strong>Уроки - с нуля до приложения</strong></a></li>
 
                 {{#each sociallyLinks}}
                     <li><a href="{{path}}">{{id}}. {{title}}</a></li>
                 {{/each}}
 
-                <li><a href="/tutorials/whatsapp/"><strong>WhatsApp clone with Angular & Meteor</strong></a></li>
+                <li><a href="/tutorials/whatsapp/"><strong>WhatsApp клон с помощью Angular и Meteor</strong></a></li>
             </ul>
           </li>
           <li><a href="/api">API Reference</a></li>
@@ -32,10 +32,8 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="https://github.com/Urigo/angular-meteor"><i class="fa fa-github"></i> Github</a></li>
-          <li><a href="http://info.meteor.com/blog/author/uri-goldshtein">Blog</a></li>
-          <li><a href="http://info.meteor.com/tell-us-about-you">Contact Us</a></li>
-          <li><a href="/manifesto">Manifesto</a></li>
-          <li><a href="/about">About us</a></li>
+          <li><a href="/manifesto">Манифест</a></li>
+          <li><a href="/about">О нас</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div>

@@ -41,7 +41,7 @@ Template.stepbarButtonsNext.helpers({
   }
 });
 
-Template.stepbarLiveDemo.helpers({
+/* Template.stepbarLiveDemo.helpers({
   liveDemoLink: function () {
     var self = this;
     var zeroToStep = '';
@@ -66,7 +66,7 @@ Template.stepbarLiveDemo.helpers({
       return self.parent.pages[parseInt(self.id, 10) + 1]
     }
   }
-});
+}); */
 
 Template.stepbarCodeDiff.helpers({
   CommitDiff: function () {
@@ -118,7 +118,7 @@ Template.downloadPreviousStep.helpers({
     if (rData.parent.route == 'tutorials.socially.angular2'){
       return 'https://github.com/Urigo/meteor-angular2.0-socially';
     } else {
-      return 'https://github.com/Urigo/meteor-angular-socially';
+      return 'https://github.com/Viktorminator/meteor-angular-socially';
     }
   }
 });

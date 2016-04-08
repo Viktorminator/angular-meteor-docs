@@ -116,7 +116,7 @@ Now that we have a login process, we can stop unlogged users from going into the
 
 {{tutorialImage 'ionic' '7.png' 500}}
 
-`angular-meteor-auth` provides us with the [$auth.requireUser](http://www.angular-meteor.com/api/auth) function that we can use in the `resolve` of ui-router to make sure unlogged user can’t go inside that route:
+`angular-meteor-auth` provides us with the [$auth.requireUser](http://www.http://angular-meteor.ru/api/auth) function that we can use in the `resolve` of ui-router to make sure unlogged user can’t go inside that route:
 
 Update the `angular-meteor-auth` bundle dependency in the `index.html` file:
 

@@ -60,7 +60,7 @@ $scope.tasks = $meteor.collection(function() {
   return Tasks.find({}, { sort: { createdAt: -1 } })
 });
 ```
-To better understand the difference between using the sort filter and the collection options, check out the advanced tutorial about [search, sort and pagination](http://angular-meteor.com/tutorial/step_12).
+To better understand the difference between using the sort filter and the collection options, check out the advanced tutorial about [search, sort and pagination](http://http://angular-meteor.ru/tutorial/step_12).
 
 In the next step, we'll add some very important todo list functions: checking off and deleting tasks.
 {{/template}}

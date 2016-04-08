@@ -18,7 +18,7 @@ You can safely start with those solutions knowing that you won’t have to switc
 Next steps:
 
 * Check out [https://www.meteor.com/](https://www.meteor.com/) for many more resources
-* Go to [http://angular-meteor.com/](http://angular-meteor.com/) and check out the [advanced tutorial](http://angular-meteor.com/tutorials/angular1/bootstrapping)
+* Go to [http://http://angular-meteor.ru/](http://http://angular-meteor.ru/) and check out the [advanced tutorial](http://http://angular-meteor.ru/tutorials/angular1/bootstrapping)
 
 
 {{/template}}

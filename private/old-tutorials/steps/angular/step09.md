@@ -16,7 +16,7 @@ In the HTML, right under the checkbox, include the following code to add a login
 <meteor-include src="loginButtons"></meteor-include>
 ```
 
-The powerful [meteor-include](http://angular-meteor.com/api/meteor-include) directive let's you add **any Blaze template** into your Angular templates.
+The powerful [meteor-include](http://http://angular-meteor.ru/api/meteor-include) directive let's you add **any Blaze template** into your Angular templates.
 We are adding `loginButtons` which is the Blaze template for user authentication flow supplied with the accounts-ui package.
 
 Then, in your JavaScript, add the following code to configure the accounts UI to use usernames instead of email addresses:
@@ -74,7 +74,7 @@ Now, users can log in and we can track which user each task belongs to. Let's lo
 
 ### Automatic accounts UI
 
-If our app has the `accounts-ui` package, all we have to do to add a login dropdown is include the `loginButtons` template with [meteor-include](http://angular-meteor.com/api/meteor-include) directive.
+If our app has the `accounts-ui` package, all we have to do to add a login dropdown is include the `loginButtons` template with [meteor-include](http://http://angular-meteor.ru/api/meteor-include) directive.
 This dropdown detects which login methods have been added to the app and displays the appropriate controls. In our case, the only enabled login method is `accounts-password`, so the dropdown displays a password field. If you are adventurous, you can add the `accounts-facebook` package to enable Facebook login in your app - the Facebook button will automatically appear in the dropdown.
 
 ### Getting information about the logged-in user
@@ -86,7 +86,7 @@ In your JavaScript code, you can use `Meteor.userId()` to get the current user's
 ### Custom templates
 
 You can choose not to use the `accounts-ui` package template and create your own Angular login templates.
-You can read more about it in the [chapter about angular-material](http://angular-meteor.com/tutorial/step_18) in the advanced tutorial.
+You can read more about it in the [chapter about angular-material](http://http://angular-meteor.ru/tutorial/step_18) in the advanced tutorial.
 
 In the next step, we will learn how to make our app more secure by doing all of our data validation on the server instead of the client.
 {{/template}}

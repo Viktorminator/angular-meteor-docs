@@ -1,7 +1,7 @@
 {{#template name="angular-step01"}}
 # Creating your first angular-meteor app
 
-In this tutorial, we are going to create the same 'todo' app as in the other tutorial, but this time using the [angular-meteor](http://angular-meteor.com) package to integrate angular as our reactive front-end.
+In this tutorial, we are going to create the same 'todo' app as in the other tutorial, but this time using the [angular-meteor](http://http://angular-meteor.ru) package to integrate angular as our reactive front-end.
 
 To create a Meteor app, open your terminal and type:
 

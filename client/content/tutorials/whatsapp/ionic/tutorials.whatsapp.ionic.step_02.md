@@ -92,7 +92,7 @@ And don’t forget to update the `index.html` with the new file:
 
 Now let’s bind those collections to Angular `ChatsCtrl` controller.
 
-We will use `$scope.helpers`, each key will be available on the template and will be updated when it changes [read more about helpers in the API](http://www.angular-meteor.com/api/helpers).
+We will use `$scope.helpers`, each key will be available on the template and will be updated when it changes [read more about helpers in the API](http://www.http://angular-meteor.ru/api/helpers).
 
 {{> DiffBox tutorialName="ionic-tutorial" step="2.14"}}
 

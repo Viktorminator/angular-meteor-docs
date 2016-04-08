@@ -27,7 +27,7 @@ it will be rewritten fully in angular.
 Through our process, we will use several packages, so make sure that you are familiar with their concepts.
 
 1. [**angular**](https://angularjs.org/)- Is the main reason why you are here, so make sure you know the basics.
-2. [**angular-meteor**](http://www.angular-meteor.com/)- Is the main package witch handles the connection between angular and meteor.
+2. [**angular-meteor**](http://www.http://angular-meteor.ru/)- Is the main package witch handles the connection between angular and meteor.
 In fact, angular-meteor is a set of packages that provide support for different scenarios regarding this connection.
 We will discuss it later on.
 3. [**angular2now**](https://github.com/pbastowski/angular2-now)- We believe that at some point you would wish to migrate from angular 1 to angular 2.

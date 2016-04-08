@@ -56,6 +56,7 @@ minifiers@1.1.5
 minimongo@1.0.8
 mobile-status-bar@1.0.3
 mongo@1.1.0
+mrt:googleanalytics@0.0.8
 mrt:leaflet@0.3.8
 my-moment@0.0.1
 npm-bcrypt@0.7.8_2

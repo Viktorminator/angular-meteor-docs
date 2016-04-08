@@ -5,7 +5,7 @@ Router.configure({
   seoAuthor: 'Viktor Matushevskyi',
   seoDesc: 'angular-meteor - это фул-стек платформа реального времени, соединяющая лучшие из JS фреймворков - используйте ваши Angular приложения вместе с Meteor - лучшим бекенд фреймворком для AngularJS приложений.',
   seoType: 'website',
-  seoImage: 'https://angular-meteor.com/images/logo-large.png',
+  seoImage: 'https://angular-meteor.ru/images/logo-large.png',
   seoTwitter: '@viktorminator'
 });
 

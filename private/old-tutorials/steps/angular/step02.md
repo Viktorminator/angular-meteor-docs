@@ -1,7 +1,7 @@
 {{#template name="angular-step02"}}
 # Defining views with templates
 
-To turn our Meteor app into Angular compatible, we need to add the [angular-meteor package](http://angular-meteor.com/) by typing the following
+To turn our Meteor app into Angular compatible, we need to add the [angular-meteor package](http://http://angular-meteor.ru/) by typing the following
 command into your command line:
 
     meteor add urigo:angular
@@ -69,7 +69,7 @@ Now let's find out what all these bits of code are doing!
 
 ### Angular templates in Meteor
 
-The [angular-meteor package](http://angular-meteor.com/) parses all of the `.ng.html` files in your app folder and puts them in Angular's template cache with the id of their full path.
+The [angular-meteor package](http://http://angular-meteor.ru/) parses all of the `.ng.html` files in your app folder and puts them in Angular's template cache with the id of their full path.
 
 So, for example, when a file is named `my-angular-template.ng.html` is placed in the `client` folder, it will be available for `ng-include` or `ui-router` with the name `client/my-angular-template.ng.html`.
 
